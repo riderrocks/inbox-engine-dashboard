@@ -1,45 +1,68 @@
 'use strict';
-angular.module('myApp.new', ['ngRoute', 'ui.bootstrap']).config(['$routeProvider', function($routeProvider) {
+angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/new', {
         templateUrl: 'views/new.html',
-        controller: 'NewCtrl'
     });
-}]).controller('NewCtrl', ['$scope', '$window', '$location', function($scope, $window, $location) {
-    $scope.tabIndex = 0;
-    $scope.buttonLabel = "Next";
+}]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', function($scope, $window, $location, UserNotificationService) {
 
-    $scope.tabs = [{
-            title: "WHO",
-            content: "WHO do you want to send this campaign to?",
-            active: true
-        }, {
-            title: "WHEN",
-            content: "WHEN do you want to schedule this campaign?"
-        }, {
-            title: "WHAT",
-            content: "WHAT do you want to send?"
-        }, {
-            title: "OVERVIEW",
-            content: "Campaign Overview"
+    UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+        $scope.selectOptions = {
+            dataSource: {
+                data: regionCode.data
+            }
+        };
+    });
+
+    $scope.endDateBeforeRender = endDateBeforeRender;
+    $scope.endDateOnSetTime = endDateOnSetTime;
+    $scope.startDateBeforeRender = startDateBeforeRender;
+    $scope.startDateOnSetTime = startDateOnSetTime;
+
+    function startDateOnSetTime() {
+        $scope.$broadcast('start-date-changed');
+    }
+
+    function endDateOnSetTime() {
+        $scope.$broadcast('end-date-changed');
+    }
+
+    function startDateBeforeRender($dates) {
+        if ($scope.dateRangeEnd) {
+            var activeDate = moment($scope.dateRangeEnd);
+            $dates.filter(function(date) {
+                return date.localDateValue() >= activeDate.valueOf()
+            }).forEach(function(date) {
+                date.selectable = false;
+            })
         }
+    }
 
-    ];
+    function endDateBeforeRender($view, $dates) {
+        if ($scope.dateRangeStart) {
+            var activeDate = moment($scope.dateRangeStart).subtract(1, $view).add(1, 'minute');
 
-    $scope.proceed = function() {
-        if ($scope.tabIndex !== $scope.tabs.length - 1) {
-            $scope.tabs[$scope.tabIndex].active = false;
-            $scope.tabIndex++
-                $scope.tabs[$scope.tabIndex].active = true;
+            $dates.filter(function(date) {
+                return date.localDateValue() <= activeDate.valueOf()
+            }).forEach(function(date) {
+                date.selectable = false;
+            })
         }
+    }
 
-        if ($scope.tabIndex === $scope.tabs.length - 1) {
-            $scope.buttonLabel = "Finish";
-        }
-
-    };
-
-    $scope.setIndex = function($index) {
-        $scope.tabIndex = $index;
+    $scope.create = function(announcement) { 
+        $scope.appCodes = [];
+        $scope.callToAction = [];
+        $scope.appCodefieldsAll = {};
+        $scope.callToAction.push($scope.appCodefield);
+        $scope.appCodefieldsAll.appCode = $scope.appCodefield.appCode;
+        $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+        $scope.appCodes.push($scope.appCodefieldsAll);
+        announcement.flag = 'A';
+        announcement.from = 'cms';
+        announcement.validFrom = $scope.dateRangeStart;
+        announcement.validTill = $scope.dateRangeEnd;
+        announcement.appCodes = $scope.appCodes;
+        UserNotificationService.createAnnouncement(announcement); 
     }
 
 }]);

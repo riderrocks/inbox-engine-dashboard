@@ -4,7 +4,7 @@ angular.module('myApp.sent', ['ngRoute']).config(['$routeProvider', function($ro
         templateUrl: 'views/sent.html',
     });
 }]).controller('SentCtrl', ['$scope', '$location', 'UserNotificationService', function($scope, $location, UserNotificationService) {
-    
+
     var notificationCount = UserNotificationService.getAllNotifications().then(function(notification) {
         $scope.notifications = notification;
     });

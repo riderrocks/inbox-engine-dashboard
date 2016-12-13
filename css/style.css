@@ -2346,3 +2346,51 @@ background: -webkit-linear-gradient(top, rgba(246,246,246,1) 0%,rgba(234,234,234
 
 .account-head{height: auto !important; padding: 5px 10px;}
 .account-head h3{line-height: inherit;}
+
+/* announcement table */
+table.announcement {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'montserratlight'
+}
+
+td.announcement {
+    font-size: 12px;
+    text-transform: capitalize
+}
+
+th.announcement {
+    background: #363f50;
+    color: #fff
+}
+
+td.announcement,
+th.announcement {
+    text-align: left;
+    padding: 16px 10px;
+    transition: all .5s ease
+}
+
+td.announcement {
+    border-right: 1px solid #d7e0e2
+}
+
+td.announcement:last-child {
+    border: none
+}
+
+td.announcement:nth-child(3) {
+    padding: 0 1%
+}
+
+tr.announcement:nth-child(odd) {
+    background: #fff
+}
+
+tr.announcement:nth-child(even) {
+    background: #eef1f7
+}
+
+#red {
+  color: red;
+}

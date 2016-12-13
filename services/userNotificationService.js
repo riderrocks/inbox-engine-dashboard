@@ -1,12 +1,23 @@
 var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function($q, $http, CONFIG, $filter) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
-    this.getAllNotifications = function() {
-        currentObject = this;
+    this.getAllRegionCodes = function() {
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: this.baseUrl + "inbox/notifications"
+            url: this.baseUrl + "/inbox/regionCodes"
+        }).then(function successCallback(response) {
+            var regionCodes = response;
+            defer.resolve(regionCodes);
+        });
+        return defer.promise;
+    }
+
+    this.getAllNotifications = function() {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/inbox/notifications"
         }).then(function successCallback(response) {
             var notifications = response;
             defer.resolve(notifications);
@@ -15,14 +26,61 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
     }
 
     this.getAllAnnouncements = function() {
-        currentObject = this;
         var defer = $q.defer();
         $http({
             method: 'GET',
-            url: this.baseUrl + "inbox/announcements"
+            url: this.baseUrl + "/inbox/announcements"
         }).then(function successCallback(response) {
             var announcements = response;
             defer.resolve(announcements);
+        });
+        return defer.promise;
+    }
+
+    this.getAnnouncement = function(param) {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/inbox/announcement/" + param
+        }).then(function successCallback(response) {
+            var announcement = response;
+            defer.resolve(announcement);
+        });
+        return defer.promise;
+    }
+
+    this.updateAnnouncement = function(announcement) {
+        $http({
+            method: 'PUT',
+            url: this.baseUrl + "/inbox/announcement",
+            data: announcement
+        }).then(function successCallback(response) {
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
+
+    this.createAnnouncement = function(announcement) {
+        $http({
+            method: 'POST',
+            url: this.baseUrl + "/is/cms-push",
+            data: announcement
+        }).then(function successCallback(response) {
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
+
+    this.getNotification = function(param) {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/inbox/notification/" + param
+        }).then(function successCallback(response) {
+            var notification = response;
+            defer.resolve(notification);
         });
         return defer.promise;
     }

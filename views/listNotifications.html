@@ -1,0 +1,28 @@
+<div ng-include="'views/dashboard.html'"></div>
+<div class="container list-container" ng-controller='listNotificationsCtrl'>
+    <table class="announcement">
+        <thead>
+            <th class="announcement">Subject</th>
+            <th class="announcement">Type</th>
+            <th class="announcement">Valid From</th>
+            <th class="announcement">Valid Till</th>
+            <th class="announcement">Member ID</th>
+            <th class="announcement">Member Email</th>
+            <th class="announcement" colspan="2">Message</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="data in notifications.data" class="announcement">
+                <td class="announcement">{{data.shortTxt}}</td>
+                <td class="announcement">{{data.type}}</td>
+                <td class="announcement">{{data.validFrom | date:'yyyy-MM-dd HH:mm:ss a'}}</td>
+                <td class="announcement">{{data.validTill | date:'yyyy-MM-dd HH:mm:ss a'}}</td>
+                <td class="announcement">{{data.memberId}}</td>
+                <td class="announcement">{{data.memberEmail}}</td>
+                <td class="announcement">{{data.longTxt}}</td>
+                <td class="announcement">
+                    <a href="#/notification/{{data._id}}">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,3 +1,5 @@
+@import url('http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2.css');
+@import url('http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.8/select2-bootstrap.css');
 h1 {
   font-size: 35px;
 }
@@ -613,7 +615,12 @@ body {
   color: #536573;
 }
 #menu {
-  background: #1e2e41;
+  background: #1e2e41;  
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 51px;
+  bottom: 0;
 }
 /*-----------------------------------------------------------------------------------*/
 .Switch {
@@ -1179,3 +1186,26 @@ input.ct-time-picker__hr {
   fill: #04ad49;
 }
 /* END Device List Element ---------------------------------- */
+.modal-body {
+  padding: 0 15px 15px !important;
+}
+
+@media (min-width: 1200px) {
+    .announcement-container {
+    width: 800px !important;
+    margin-top: 50px;
+  }
+}
+
+
+.table > thead > tr > th {
+  border-bottom: none !important; 
+}
+
+@media (min-width: 1200px) {
+   .list-container{
+      width: 1000px !important;
+      margin-top: 50px !important;
+      margin-left: 194px !important;
+  } 
+}

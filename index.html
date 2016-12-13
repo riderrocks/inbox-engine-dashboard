@@ -5,20 +5,28 @@
     <title>Dashboard Inbox Engine</title>
     <link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css">
     <link rel="stylesheet" href="bower_components/please-wait/build/default.css">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/bootstrap.css">
-    <link rel="stylesheet" href="./css/wzrk.css">
-    <link rel="stylesheet" href="./css/common.css">
-    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/wzrk.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
+    <link rel="stylesheet" href="css/kendo.common.min.css" />
+    <link rel="stylesheet" href="css/kendo.default.min.css" />
 </head>
 
-<body >
+<body>
     <div ng-view></div>
     <script src="bower_components/please-wait/build/please-wait.js"></script>
     <script src="lib/loadingStart.js"></script>
+    <script src="lib/jquery.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
-    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.5.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.5.0/ui-bootstrap-tpls.js"></script>
+    <script src="node_modules/moment/moment.js"></script>
+    <script src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+    <script src="node_modules/angular-date-time-input/src/dateTimeInput.js"></script>
+    <script src="lib/kendo.all.min.js"></script>
     <script src="app.js"></script>
     <script src="controllers/dashboard.js"></script>
     <script src="controllers/header.js"></script>
@@ -26,6 +34,10 @@
     <script src="controllers/scheduled.js"></script>
     <script src="controllers/sent.js"></script>
     <script src="controllers/draft.js"></script>
+    <script src="controllers/listAnnouncementsCtrl.js"></script>
+    <script src="controllers/listNotificationsCtrl.js"></script>
+    <script src="controllers/announcement.js"></script>
+    <script src="controllers/notification.js"></script>
     <script src="services/userNotificationService.js"></script>
     <script src="lib/loadingStop.js"></script>
 </body>

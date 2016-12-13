@@ -1,8 +1,8 @@
 'use strict';
 
-var inboxUrl = 'https://backend-inboxenginenotification.fwd.wf/';
+var inboxUrl = 'http://172.16.66.81:6633';
 
-var app = angular.module('myApp', ['ngRoute','myApp.header', 'myApp.dashboard', 'myApp.new', 'myApp.scheduled', 'myApp.sent']).config(['$routeProvider', function($routeProvider) {
+var app = angular.module('myApp', ['ngRoute', 'myApp.header', 'myApp.dashboard', 'myApp.new', 'myApp.scheduled', 'myApp.sent','myApp.listAnnouncements', 'myApp.listNotifications', 'myApp.announcement', 'myApp.notification']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.otherwise({
         redirectTo: '/dashboard'
     });
