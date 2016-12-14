@@ -1,7 +1,7 @@
-var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function($q, $http, CONFIG, $filter) {
+var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function ($q, $http, CONFIG, $filter) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
-    this.getAllRegionCodes = function() {
+    this.getAllRegionCodes = function () {
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -13,7 +13,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         return defer.promise;
     }
 
-    this.getAllNotifications = function() {
+    this.getAllNotifications = function () {
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -25,7 +25,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         return defer.promise;
     }
 
-    this.getAllAnnouncements = function() {
+    this.getAllAnnouncements = function () {
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -37,7 +37,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         return defer.promise;
     }
 
-    this.getAnnouncement = function(param) {
+    this.getAnnouncement = function (param) {
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -49,7 +49,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         return defer.promise;
     }
 
-    this.updateAnnouncement = function(announcement) {
+    this.updateAnnouncement = function (announcement) {
         $http({
             method: 'PUT',
             url: this.baseUrl + "/inbox/announcement",
@@ -61,7 +61,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
     }
 
-    this.createAnnouncement = function(announcement) {
+    this.createAnnouncement = function (announcement) {
         $http({
             method: 'POST',
             url: this.baseUrl + "/is/cms-push",
@@ -73,7 +73,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
     }
 
-    this.getNotification = function(param) {
+    this.getNotification = function (param) {
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -81,6 +81,21 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         }).then(function successCallback(response) {
             var notification = response;
             defer.resolve(notification);
+        });
+        return defer.promise;
+    }
+
+    this.fetchMemberIdFromEmail = function (memberEmail) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/email',
+            data: {memberEmail: memberEmail}
+        }).then(function successCallback(response) {
+            var notification = response;
+            defer.resolve(notification);
+        }, function errorCallback(response) {
+            defer.reject();
         });
         return defer.promise;
     }
