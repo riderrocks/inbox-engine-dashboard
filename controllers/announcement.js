@@ -65,6 +65,7 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
         $scope.appCodefield = {};
         $scope.appCodefieldsAll = {};
         $scope.announcementData._id = announcement.data[0]._id;
+        $scope.announcementData.campaign = announcement.data[0].campaign;
         $scope.announcementData.shortTxt = announcement.data[0].shortTxt;
         $scope.announcementData.imgURL = announcement.data[0].imgURL;
         $scope.announcementData.longTxt = announcement.data[0].longTxt;

@@ -1209,3 +1209,11 @@ input.ct-time-picker__hr {
       margin-left: 194px !important;
   } 
 }
+
+.btn-success {
+  margin-bottom: 50px !important;
+}
+
+.btn-primary {
+  margin-bottom: 50px !important;
+}

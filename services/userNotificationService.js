@@ -84,4 +84,16 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+
+    this.updateNotification = function(notification) {
+        $http({
+            method: 'PUT',
+            url: this.baseUrl + "/inbox/notification",
+            data: notification
+        }).then(function successCallback(response) {
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
 }]);
