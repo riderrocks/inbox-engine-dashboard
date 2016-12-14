@@ -8,7 +8,7 @@
                         <label for="campaign">Campaign Name <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="30" class="form-control" ng-model='announcement.campaign' placeholder="Campaign Name">
+                        <input type="text" maxlength="30" class="form-control" ng-model='announcement.campaign' placeholder="Campaign Name" ng-change="checkCampaign_A()" required>
                     </td>
                 </tr>
                 <tr>
@@ -40,7 +40,7 @@
                         <label for="sequence">Sequence:</label>
                     </th>
                     <td>
-                        <input type="number" class="form-control" ng-model='announcement.sequence' placeholder="Sequence" maxlength="2" min="1" max="99" />
+                        <input type="number" class="form-control" placeholder="Sequence" ng-model='announcement.Sequence' ng-change="limmiter()" min="1" max="99" />
                     </td>
                 </tr>
                 <tr>
@@ -98,7 +98,7 @@
                         <div class="demo-section k-content">
                             <select kendo-multi-select k-options="selectOptions" k-ng-model="selectedIds" ng-model='announcement.regionCode' name="regionCode" required>
                             </select>
-                            <span ng-show="form.regionCode.$invalid && form.regionCode.$dirty || form.regionCode.$invalid && form.$submitted">Select Region Code</span>
+                            <!-- <span ng-show="form.regionCode.$invalid && form.regionCode.$dirty || form.regionCode.$invalid && form.$submitted">Select Region Code</span> -->
                         </div>
                     </td>
                 </tr>

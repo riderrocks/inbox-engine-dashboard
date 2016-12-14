@@ -1,6 +1,18 @@
 var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function($q, $http, CONFIG, $filter) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
+    this.checkUniqueCampaign = function(value) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/campaign_A',
+            data: { campaign: value }
+        }).success(function(response) {
+            defer.resolve(response);
+        });
+        return defer.promise;
+    }
+
     this.getAllRegionCodes = function() {
         var defer = $q.defer();
         $http({
