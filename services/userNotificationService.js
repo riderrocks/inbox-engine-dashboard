@@ -14,6 +14,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
     }
 
     this.getAllRegionCodes = function() {
+
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -93,6 +94,21 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         }).then(function successCallback(response) {
             var notification = response;
             defer.resolve(notification);
+        });
+        return defer.promise;
+    }
+
+    this.fetchMemberIdFromEmail = function(memberEmail) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/email',
+            data: { memberEmail: memberEmail }
+        }).then(function successCallback(response) {
+            var notification = response;
+            defer.resolve(notification);
+        }, function errorCallback(response) {
+            defer.reject();
         });
         return defer.promise;
     }
