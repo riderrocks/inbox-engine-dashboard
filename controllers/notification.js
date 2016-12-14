@@ -50,32 +50,34 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
         }
     }
 
-    $scope.update = function (notification) {
-        console.log(notification)
-        // $scope.notificationData = {};
-        // $scope.appCodes = [];
-        // $scope.callToAction = [];
-        // $scope.appCodefield = {};
-        // $scope.appCodefieldsAll = {};
-        // $scope.announcementData._id = announcement.data[0]._id;
-        // $scope.announcementData.shortTxt = announcement.data[0].shortTxt;
-        // $scope.announcementData.imgURL = announcement.data[0].imgURL;
-        // $scope.announcementData.longTxt = announcement.data[0].longTxt;
-        // $scope.announcementData.sequence = announcement.data[0].sequence;
-        // $scope.announcementData.type = announcement.data[0].type;
-        // $scope.announcementData.validFrom = $scope.dateRangeStart;
-        // $scope.announcementData.validTill = $scope.dateRangeEnd;
-        // $scope.announcementData.regionCode = announcement.data[0].regionCode;
-        // $scope.appCodefield.text = announcement.data[0].appCodes[0].callToAction[0].text;
-        // $scope.appCodefield.link = announcement.data[0].appCodes[0].callToAction[0].link;
-        // $scope.appCodefield.target = announcement.data[0].appCodes[0].callToAction[0].target;
-        // $scope.callToAction.push($scope.appCodefield);
-        // $scope.appCodefieldsAll.appCode = announcement.data[0].appCodes[0].appCode;
-        // $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-        // $scope.appCodes.push($scope.appCodefieldsAll);
-        // $scope.announcementData.appCodes = $scope.appCodes;
-        // UserNotificationService.updateAnnouncement($scope.notificationData);
+    $scope.update = function(notification) {
+        $scope.notificationData = {};
+        $scope.appCodes = [];
+        $scope.callToAction = [];
+        $scope.appCodefield = {};
+        $scope.appCodefieldsAll = {};
+        $scope.notificationData._id = notification.data[0]._id;
+        $scope.notificationData.shortTxt = notification.data[0].shortTxt;
+        $scope.notificationData.imgURL = notification.data[0].imgURL;
+        $scope.notificationData.longTxt = notification.data[0].longTxt;
+        $scope.notificationData.sequence = notification.data[0].sequence;
+        $scope.notificationData.type = notification.data[0].type;
+        $scope.notificationData.validFrom = $scope.dateRangeStart;
+        $scope.notificationData.validTill = $scope.dateRangeEnd;
+        $scope.notificationData.memberId = notification.data[0].memberId;
+        $scope.notificationData.memberEmail = notification.data[0].memberEmail;
+        $scope.appCodefield.text = notification.data[0].appCodes[0].callToAction[0].text;
+        $scope.appCodefield.link = notification.data[0].appCodes[0].callToAction[0].link;
+        $scope.appCodefield.target = notification.data[0].appCodes[0].callToAction[0].target;
+        $scope.callToAction.push($scope.appCodefield);
+        $scope.appCodefieldsAll.appCode = notification.data[0].appCodes[0].appCode;
+        $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+        $scope.appCodes.push($scope.appCodefieldsAll);
+        $scope.notificationData.flag = 'N';
+        $scope.notificationData.appCodes = $scope.appCodes;
+        UserNotificationService.updateNotification($scope.notificationData);
     }
+
     $scope.fetchMemberId = function () {
         var memberEmail = $scope.notification.data[0].memberEmail;
         UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function (res) {

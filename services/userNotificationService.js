@@ -90,7 +90,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         $http({
             method: 'POST',
             url: this.baseUrl + '/cms/fetch/email',
-            data: { memberEmail: memberEmail }
+            data: {memberEmail: memberEmail}
         }).then(function successCallback(response) {
             var notification = response;
             defer.resolve(notification);
@@ -98,5 +98,17 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             defer.reject();
         });
         return defer.promise;
+    }
+
+    this.updateNotification = function(notification) {
+        $http({
+            method: 'PUT',
+            url: this.baseUrl + "/inbox/notification",
+            data: notification
+        }).then(function successCallback(response) {
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
     }
 }]);
