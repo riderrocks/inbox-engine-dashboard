@@ -1,14 +1,23 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class='container announcement-container' ng-controller="NewCtrl">
-    <form name="form">
-        <table class="table">
+    <div class="row MT15">
+        <div class="col-md-3">
+            <input type="radio" id="announcement" ng-model="messageType.name" value="announcement" ng-click="toggleState(messageType)">
+            <label for="announcement"><span></span> Announcement </label>
+        </div>
+        <div class="col-md-3">
+            <input type="radio" id="notification" ng-model="messageType.name" value="notification" ng-click="toggleState(messageType)">
+            <label for="notification"><span></span> Notification </label>
+        </div>
+    </div>
+        <table class="table MT15">
             <thead>
                 <tr>
                     <th>
                         <label for="campaign">Campaign Name <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="30" class="form-control" ng-model='announcement.campaign' placeholder="Campaign Name">
+                        <input type="text" maxlength="30" class="form-control" ng-model='message.campaign' placeholder="Campaign Name">
                     </td>
                 </tr>
                 <tr>
@@ -16,7 +25,7 @@
                         <label for="shortTxt">Subject <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="30" class="form-control" ng-model='announcement.shortTxt' placeholder="Short Text" required>
+                        <input type="text" maxlength="30" class="form-control" ng-model='message.shortTxt' placeholder="Short Text" required>
                     </td>
                 </tr>
                 <tr>
@@ -24,7 +33,7 @@
                         <label for="imgURL">Image URL:</label>
                     </th>
                     <td>
-                        <input type="url" class="form-control" ng-model='announcement.imgURL' placeholder="Image Url" />
+                        <input type="url" class="form-control" ng-model='message.imgURL' placeholder="Image Url" />
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +41,7 @@
                         <label for="longTxt">Message <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="200" class="form-control" ng-model='announcement.longTxt' placeholder="Long Text" required/>
+                        <input type="text" maxlength="200" class="form-control" ng-model='message.longTxt' placeholder="Long Text" required/>
                     </td>
                 </tr>
                 <tr>
@@ -40,7 +49,7 @@
                         <label for="sequence">Sequence:</label>
                     </th>
                     <td>
-                        <input type="number" class="form-control" ng-model='announcement.sequence' placeholder="Sequence" maxlength="2" min="1" max="99" />
+                        <input type="number" class="form-control" ng-model='message.sequence' placeholder="Sequence" maxlength="2" min="1" max="99" />
                     </td>
                 </tr>
                 <tr>
@@ -48,9 +57,8 @@
                         <label for="type">Type:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model='announcement.type'>
+                        <select class="btn btn-default" ng-model='message.type'>
                             <option value="BACKOFFICE">BACKOFFICE</option>
-                            <option value="system">SYSTEM </option>
                         </select>
                     </td>
                 </tr>
@@ -90,16 +98,32 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-show="messageType.announcement">
                     <th>
                         <label for="regionCode">Region code <span id="red">*</span>:</label>
                     </th>
                     <td>
                         <div class="demo-section k-content">
-                            <select kendo-multi-select k-options="selectOptions" k-ng-model="selectedIds" ng-model='announcement.regionCode' name="regionCode" required>
+                            <select kendo-multi-select k-options="selectOptions" k-ng-model="selectedIds" ng-model='message.regionCode'>
                             </select>
-                            <span ng-show="form.regionCode.$invalid && form.regionCode.$dirty || form.regionCode.$invalid && form.$submitted">Select Region Code</span>
+                     <!--        <span ng-show="form.regionCode.$invalid && form.regionCode.$dirty || form.regionCode.$invalid && form.$submitted">Select Region Code</span> -->
                         </div>
+                    </td>
+                </tr>
+                <tr ng-show="messageType.notification">
+                    <th>
+                        <label for="memberEmail">Member Email <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" class="form-control" ng-model='message.memberEmail' placeholder="Member Email">
+                    </td>
+                </tr>
+                <tr ng-show="messageType.notification">
+                    <th>
+                        <label for="memberId">Member ID <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" class="form-control" ng-model='message.memberId' placeholder="Member ID">
                     </td>
                 </tr>
                 <tr>
@@ -142,7 +166,6 @@
                 </tr>
             </thead>
         </table>
-        <button type="submit" class="btn btn-primary" ng-click="create(announcement)">Create</button>
-    </form>
+        <button type="submit" class="btn btn-primary" ng-click="create(message)">Create</button>
 </div>
 </div>

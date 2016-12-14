@@ -13,6 +13,23 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         };
     });
 
+    $scope.messageType = {
+        name: 'announcement'
+    };
+
+    $scope.messageType.announcement = true;
+    $scope.messageType.notification = false;
+
+    $scope.toggleState = function(messageType) {
+        if (messageType.name == 'announcement') {
+            $scope.messageType.announcement = true;
+            $scope.messageType.notification = false;
+        } else if (messageType.name == 'notification') {
+            $scope.messageType.notification = true;
+            $scope.messageType.announcement = false;
+        }
+    }
+
     $scope.endDateBeforeRender = endDateBeforeRender;
     $scope.endDateOnSetTime = endDateOnSetTime;
     $scope.startDateBeforeRender = startDateBeforeRender;
@@ -49,7 +66,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         }
     }
 
-    $scope.create = function(announcement) { 
+    $scope.create = function(message) {     
         $scope.appCodes = [];
         $scope.callToAction = [];
         $scope.appCodefieldsAll = {};
@@ -57,12 +74,27 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         $scope.appCodefieldsAll.appCode = $scope.appCodefield.appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
         $scope.appCodes.push($scope.appCodefieldsAll);
-        announcement.flag = 'A';
-        announcement.from = 'cms';
-        announcement.validFrom = $scope.dateRangeStart;
-        announcement.validTill = $scope.dateRangeEnd;
-        announcement.appCodes = $scope.appCodes;
-        UserNotificationService.createAnnouncement(announcement); 
-    }
+        message.from = 'cms';
+        message.validFrom = $scope.dateRangeStart;
+        message.validTill = $scope.dateRangeEnd;
+        message.appCodes = $scope.appCodes;
 
+        if ($scope.messageType.name == 'announcement') {
+            message.flag = 'A';
+            delete message.memberId;
+            delete message.memberEmail;
+            console.log(message);
+        } else if ($scope.messageType.name == 'notification') {
+            message.flag = 'N';
+            delete message.regionCode;
+            console.log(message);
+        }
+        UserNotificationService.createAnnouncement(message);
+        $scope.message = {};
+        $scope.dateRangeStart = null;
+        $scope.dateRangeEnd = null;
+        $scope.selectedIds = null;
+        $scope.appCodefield = {};
+        swal("Done!", "Message created successfully", "success");
+    }
 }]);

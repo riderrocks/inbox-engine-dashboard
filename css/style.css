@@ -2394,3 +2394,34 @@ tr.announcement:nth-child(even) {
 #red {
   color: red;
 }
+
+input[type="checkbox"]:checked + label span {
+    background: url(../images/checkbox.svg) -28px top no-repeat;
+    background-size: cover;
+}
+
+input[type="checkbox"] + label span {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    vertical-align: bottom;
+    background: url(../images/checkbox.svg) 0 top no-repeat;
+    cursor: pointer;
+    background-size: cover;
+    margin-right: 5px;
+}
+
+input[type="radio"]:checked + label span {
+    background: url(../images/radio.svg) -28px top no-repeat;
+    background-size: cover;
+}
+input[type="radio"] + label span {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    margin: 1px 4px 0 0;
+    background: url(../images/radio.svg) 0 top no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    vertical-align: bottom;
+}
