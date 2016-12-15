@@ -69,6 +69,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
     }
 
 
+
     $scope.create = function(message) {
         $scope.appCodes = [];
         $scope.callToAction = [];
@@ -97,9 +98,12 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         $scope.dateRangeStart = null;
         $scope.dateRangeEnd = null;
         $scope.selectedIds = null;
-        $scope.appCodefield = {};
+        $scope.appCodefield.text = null;
+        $scope.appCodefield.link = null;
+
         swal("Done!", "Message created successfully", "success");
     }
+
     $scope.limmiter = function() {
         $scope.sequence = $scope.message.Sequence;
         if ($scope.sequence == undefined) {
@@ -114,8 +118,8 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
     }
 
     $scope.dateChecker = function() {
-        $scope.validFrom = new Date($scope.dateRangeStart.setHours(0, 0, 0, 0));
-        $scope.date = new Date().setHours(0, 0, 0, 0);
+        $scope.validFrom = new Date($scope.dateRangeStart);
+        $scope.date = new Date();
 
         if ($scope.validFrom < $scope.date) {
             $scope.dateRangeStart = null;
@@ -128,61 +132,58 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         }
     }
 
-    $scope.checkCampaign_A = function() {
-        var value = $scope.announcement.campaign;
-        console.log(value);
-        UserNotificationService.checkUniqueCampaign(value).then(function(response) {
-
-            if ($scope.announcement.campaign !== null) {
-                if (response !== null) {
-                    $scope.announcement.campaign = null;
-                    swal(
-                        'Oops...',
-                        'Campaign name already Exists. Choose a new name!',
-                        'warning'
-                    )
+    $scope.checkCampaign = function() {
+        var value = $scope.message.campaign;
+        if ($scope.messageType.name === "announcement") {
+            UserNotificationService.checkUniqueAnnouncementCampaign(value).then(function(response) {
+                if ($scope.message.campaign !== null) {
+                    if (response !== null) {
+                        $scope.message.campaign = null;
+                        swal(
+                            'Oops...',
+                            'Campaign name already Exists. Choose a new name!',
+                            'warning'
+                        )
+                    }
                 }
-            }
-        });
-    }
-
-    function checkCampaign() {
-        var campaign = document.getElementById("campaign").value;
-        $.http({
-            method: 'POST',
-            url: inboxBaseUrl + '/cms/fetch/campaign',
-            data: { campaign: campaign }
-        }).done(function(response) {
-            console.log(response);
-            if (document.getElementById("campaign").value !== null) {
-                if (response !== null) {
-                    document.getElementById("campaign").value = "";
-                    toastr.error("Campaign name already Exists. Choose a new name");
+            });
+        } else if ($scope.messageType.name == 'notification') {
+            UserNotificationService.checkUniqueNotificationCampaign(value).then(function(response) {
+                if ($scope.message.campaign !== null) {
+                    if (response !== null) {
+                        $scope.message.campaign = null;
+                        swal(
+                            'Oops...',
+                            'Campaign name already Exists. Choose a new name!',
+                            'warning'
+                        )
+                    }
                 }
-            }
-            console.log(response);
-        });
+            });
+
+        }
     }
 
 
-    function fetchMemberId() {
 
-        var memberEmail = document.getElementById("memberEmail").value;
-        $http({
-            method: 'POST',
-            url: inboxBaseUrl + '/cms/fetch/email',
-            data: { memberEmail: memberEmail }
-        }).done(function(response) {
+
+    $scope.fetchMemberId = function() {
+
+        var memberEmail = $scope.message.memberEmail;
+        UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
+
             console.log(response);
             if (response.error == "No data exist") {
-                document.getElementById("memberEmail").value = "";
-                document.getElementById("memberId").value = "";
-                toastr.error("No matching Email Id found.");
+                $scope.message.memberEmail = null;
+                $scope.message.memberId = null;
+                swal('Oops...', 'No matching Email Id found.', 'warning');
             } else {
-                document.getElementById("memberId").value = response.memberId;
+                $scope.message.memberId = response.memberId;
             }
         });
+
     }
+
 
 
 }]);

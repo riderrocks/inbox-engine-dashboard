@@ -1,7 +1,7 @@
 var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function($q, $http, CONFIG, $filter) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
-    this.checkUniqueCampaign = function(value) {
+    this.checkUniqueAnnouncementCampaign = function(value) {
         var defer = $q.defer();
         $http({
             method: 'POST',
@@ -12,7 +12,32 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+    this.checkUniqueNotificationCampaign = function(value) {
+        console.log(value);
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/campaign',
+            data: { campaign: value }
+        }).success(function(response) {
+            console.log(response);
+            defer.resolve(response);
+        });
+        return defer.promise;
+    }
+    this.fetchMemberIdFromEmailId = function(value) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/email',
+            data: { memberEmail: value }
+        }).success(function(response) {
+            console.log(response);
+            defer.resolve(response);
+        });
 
+        return defer.promise;
+    }
     this.getAllRegionCodes = function() {
 
         var defer = $q.defer();
