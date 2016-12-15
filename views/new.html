@@ -18,7 +18,7 @@
                         <label for="campaign">Campaign Name <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="30" class="form-control" ng-model='message.campaign' placeholder="Campaign Name" ng-change="checkCampaign()" required>
+                        <input type="text" maxlength="30" class="form-control" ng-model='message.campaign' placeholder="Campaign Name" ng-blur="checkCampaign()" required>
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +50,7 @@
                         <label for="sequence">Sequence:</label>
                     </th>
                     <td>
-                        <input type="number" class="form-control" placeholder="Sequence" ng-model='message.Sequence' ng-change="limmiter()" min="1" max="99" />
+                        <input type="number" class="form-control" placeholder="Sequence" ng-model='message.Sequence' ng-blur="limmiter()" min="1" max="99" />
                     </td>
                 </tr>
                 <tr>
@@ -115,7 +115,7 @@
                         <label for="memberEmail">Member Email <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" class="form-control" ng-model='message.memberEmail' ng-blur="fetchMemberId()" placeholder="Member Email">
+                        <input type="text" class="form-control" ng-model='message.memberEmail' ng-blur="fetchMemberId()" placeholder="Member Email" ng-required="messageType.name=='notification'">
                     </td>
                 </tr>
                 <tr ng-show="messageType.notification">
@@ -167,6 +167,13 @@
             </thead>
         </table>
         <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+    <form>
+        Name:
+        <input type="text" ng-required="messageType.name=='announcement'" />
+        <br/>
+        <button ng-click="toggle()">Required: {{messageType.name}}</button>
+        <button type="submit">Submit</button>
     </form>
 </div>
 </div>

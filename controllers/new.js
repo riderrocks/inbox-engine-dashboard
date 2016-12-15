@@ -183,7 +183,16 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         });
 
     }
+    $scope.check_A = function() {
+        console.log($scope.messageType.name);
 
-
+        if ($scope.messageType.name == announcement) {
+            return true;
+        }
+    }
+    $scope.isRequired = true;
+    $scope.toggle = function() {
+        $scope.isRequired = !$scope.isRequired;
+    }
 
 }]);
