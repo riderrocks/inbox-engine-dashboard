@@ -57,6 +57,7 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
         $scope.appCodefield = {};
         $scope.appCodefieldsAll = {};
         $scope.notificationData._id = notification.data[0]._id;
+        $scope.notificationData.campaign = notification.data[0].campaign;
         $scope.notificationData.shortTxt = notification.data[0].shortTxt;
         $scope.notificationData.imgURL = notification.data[0].imgURL;
         $scope.notificationData.longTxt = notification.data[0].longTxt;
@@ -76,13 +77,14 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
         $scope.notificationData.flag = 'N';
         $scope.notificationData.appCodes = $scope.appCodes;
         UserNotificationService.updateNotification($scope.notificationData);
+        swal("Done!", "Message updated successfully", "success");
     }
 
     $scope.fetchMemberId = function () {
         var memberEmail = $scope.notification.data[0].memberEmail;
         UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function (res) {
             if(res.data._id){
-                $scope.notification.data[0].memberId = res.data._id;
+                $scope.notification.data[0].memberId = res.data.memberId;
             }else{
                 $scope.notification.data[0].memberId = null;
             }

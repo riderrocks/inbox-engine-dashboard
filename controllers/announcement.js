@@ -83,5 +83,6 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
         $scope.appCodes.push($scope.appCodefieldsAll);
         $scope.announcementData.appCodes = $scope.appCodes;
         UserNotificationService.updateAnnouncement($scope.announcementData);
+        swal("Done!", "Message updated successfully", "success");
     }
 }]);

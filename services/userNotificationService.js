@@ -1,45 +1,7 @@
 var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function($q, $http, CONFIG, $filter) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
-    this.checkUniqueAnnouncementCampaign = function(value) {
-        var defer = $q.defer();
-        $http({
-            method: 'POST',
-            url: this.baseUrl + '/cms/fetch/campaign_A',
-            data: { campaign: value }
-        }).success(function(response) {
-            defer.resolve(response);
-        });
-        return defer.promise;
-    }
-    this.checkUniqueNotificationCampaign = function(value) {
-        console.log(value);
-        var defer = $q.defer();
-        $http({
-            method: 'POST',
-            url: this.baseUrl + '/cms/fetch/campaign',
-            data: { campaign: value }
-        }).success(function(response) {
-            console.log(response);
-            defer.resolve(response);
-        });
-        return defer.promise;
-    }
-    this.fetchMemberIdFromEmailId = function(value) {
-        var defer = $q.defer();
-        $http({
-            method: 'POST',
-            url: this.baseUrl + '/cms/fetch/email',
-            data: { memberEmail: value }
-        }).success(function(response) {
-            console.log(response);
-            defer.resolve(response);
-        });
-
-        return defer.promise;
-    }
     this.getAllRegionCodes = function() {
-
         var defer = $q.defer();
         $http({
             method: 'GET',
@@ -47,18 +9,6 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         }).then(function successCallback(response) {
             var regionCodes = response;
             defer.resolve(regionCodes);
-        });
-        return defer.promise;
-    }
-
-    this.getAllNotifications = function() {
-        var defer = $q.defer();
-        $http({
-            method: 'GET',
-            url: this.baseUrl + "/inbox/notifications"
-        }).then(function successCallback(response) {
-            var notifications = response;
-            defer.resolve(notifications);
         });
         return defer.promise;
     }
@@ -99,16 +49,16 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
     }
 
-    this.createAnnouncement = function(announcement) {
+    this.getAllNotifications = function() {
+        var defer = $q.defer();
         $http({
-            method: 'POST',
-            url: this.baseUrl + "/is/cms-push",
-            data: announcement
+            method: 'GET',
+            url: this.baseUrl + "/inbox/notifications"
         }).then(function successCallback(response) {
-            console.log(response);
-        }, function errorCallback(response) {
-            console.log(response);
+            var notifications = response;
+            defer.resolve(notifications);
         });
+        return defer.promise;
     }
 
     this.getNotification = function(param) {
@@ -123,21 +73,6 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         return defer.promise;
     }
 
-    this.fetchMemberIdFromEmail = function(memberEmail) {
-        var defer = $q.defer();
-        $http({
-            method: 'POST',
-            url: this.baseUrl + '/cms/fetch/email',
-            data: { memberEmail: memberEmail }
-        }).then(function successCallback(response) {
-            var notification = response;
-            defer.resolve(notification);
-        }, function errorCallback(response) {
-            defer.reject();
-        });
-        return defer.promise;
-    }
-
     this.updateNotification = function(notification) {
         $http({
             method: 'PUT',
@@ -148,5 +83,84 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         }, function errorCallback(response) {
             console.log(response);
         });
+    }
+
+    this.createMessage = function(message) {
+        var defer = $q.defer();
+        var messageResponse = '';
+        $http({
+            method: 'POST',
+            url: this.baseUrl + "/is/cms-push",
+            data: message
+        }).then(function successCallback(response) {
+            messageResponse = response;
+            defer.resolve(messageResponse);
+            console.log(response);
+        }, function errorCallback(response) {
+            messageResponse = response;
+            defer.resolve(messageResponse);
+            console.log(response);
+        });
+        return defer.promise;
+    }
+
+    this.checkUniqueAnnouncementCampaign = function(value) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/campaign_A',
+            data: {
+                campaign: value
+            }
+        }).success(function(response) {
+            defer.resolve(response);
+        });
+        return defer.promise;
+    }
+
+    this.checkUniqueNotificationCampaign = function(value) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/campaign',
+            data: {
+                campaign: value
+            }
+        }).success(function(response) {
+            defer.resolve(response);
+        });
+        return defer.promise;
+    }
+
+    this.fetchMemberIdFromEmailId = function(value) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/email',
+            data: {
+                memberEmail: value
+            }
+        }).success(function(response) {
+            defer.resolve(response);
+        });
+
+        return defer.promise;
+    }
+
+    this.fetchMemberIdFromEmail = function(memberEmail) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + '/cms/fetch/email',
+            data: {
+                memberEmail: memberEmail
+            }
+        }).then(function successCallback(response) {
+            var memberId = response;
+            defer.resolve(memberId);
+        }, function errorCallback(response) {
+            defer.reject();
+        });
+        return defer.promise;
     }
 }]);
