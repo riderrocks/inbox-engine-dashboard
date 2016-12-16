@@ -83,6 +83,19 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
 
+        $scope.validFrom = new Date($scope.dateRangeStart);
+        $scope.date = new Date();
+
+        if ($scope.validFrom < $scope.date) {
+            $scope.dateRangeStart = null;
+            swal(
+                'Oops...',
+                'Valid From cannot be less than Present Date!',
+                'warning'
+            )
+            return false;
+        }
+
         if ($scope.messageType.name == 'announcement') {
             message.flag = 'A';
             delete message.memberId;
