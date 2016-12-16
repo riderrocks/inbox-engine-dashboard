@@ -16,6 +16,15 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         name: 'announcement'
     };
 
+    $scope.selectType = {
+        "systemTypeValue": "BACKOFFICE",
+        "systemTypeValues": ["BACKOFFICE"],
+        "appCodeTypeValue": "WEBIN",
+        "appCodeTypeValues": ["WEBIN"],
+        "targetTypeValue": "New Window",
+        "targetTypeValues": ["New Window", "Same Window"]
+    };
+
     $scope.messageType.announcement = true;
     $scope.messageType.notification = false;
 
@@ -71,17 +80,20 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
 
 
     $scope.create = function(message) {
+        $scope.appCode = $scope.selectType.appCodeTypeValue;
+        $scope.appCodefield.target = $scope.selectType.targetTypeValue;
         $scope.appCodes = [];
         $scope.callToAction = [];
         $scope.appCodefieldsAll = {};
         $scope.callToAction.push($scope.appCodefield);
-        $scope.appCodefieldsAll.appCode = $scope.appCodefield.appCode;
+        $scope.appCodefieldsAll.appCode = $scope.appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
         $scope.appCodes.push($scope.appCodefieldsAll);
         message.from = 'cms';
         message.validFrom = $scope.dateRangeStart;
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
+        message.type = $scope.selectType.systemTypeValue;
 
         $scope.validFrom = new Date($scope.dateRangeStart);
         $scope.date = new Date();
@@ -101,19 +113,26 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
             delete message.memberId;
             delete message.memberEmail;
             console.log(message);
+            if ($scope.selectedIds == null) {
+                swal("Heyy!", "Need to specify the RegionCode", "error");
+                return false;
+            }
         } else if ($scope.messageType.name == 'notification') {
             message.flag = 'N';
             delete message.regionCode;
             console.log(message);
         }
-        UserNotificationService.createAnnouncement(message);
+
+        UserNotificationService.createMessage(message).then(function(res) {
+            $scope.res = res;
+            if ($scope.res.status == 200) {
+                $scope.appCodefield = {};
+            }
+        });
         $scope.message = {};
         $scope.dateRangeStart = null;
         $scope.dateRangeEnd = null;
         $scope.selectedIds = null;
-        $scope.appCodefield.text = null;
-        $scope.appCodefield.link = null;
-
         swal("Done!", "Message created successfully", "success");
     }
 
@@ -125,7 +144,16 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
             swal(
                 'Oops...',
                 'NOTE: 99 is largest permissible value!',
-                'error'
+                'warning'
+            )
+
+        }
+        if ($scope.sequence == 0) {
+            $scope.message.Sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: Your selection should be grater than zero',
+                'warning'
             )
 
         }
@@ -187,15 +215,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         }
     }
 
-
-
-
     $scope.fetchMemberId = function() {
-
         var memberEmail = $scope.message.memberEmail;
         UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
-
-            console.log(response);
             if (response.error == "No data exist") {
                 $scope.message.memberEmail = null;
                 $scope.message.memberId = null;
