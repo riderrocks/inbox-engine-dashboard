@@ -95,6 +95,19 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         message.appCodes = $scope.appCodes;
         message.type = $scope.selectType.systemTypeValue;
 
+        $scope.validFrom = new Date($scope.dateRangeStart);
+        $scope.date = new Date();
+
+        if ($scope.validFrom < $scope.date) {
+            $scope.dateRangeStart = null;
+            swal(
+                'Oops...',
+                'Valid From cannot be less than Present Date!',
+                'warning'
+            )
+            return false;
+        }
+
         if ($scope.messageType.name == 'announcement') {
             message.flag = 'A';
             delete message.memberId;
@@ -125,6 +138,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
 
     $scope.limmiter = function() {
         $scope.sequence = $scope.message.Sequence;
+        console.log($scope.sequence);
         if ($scope.sequence == undefined) {
             $scope.message.Sequence = null;
             swal(
@@ -140,6 +154,15 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
                 'Oops...',
                 'NOTE: Your selection should be grater than zero',
                 'warning'
+            )
+
+        }
+        if ($scope.sequence == 0) {
+            $scope.message.Sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: Your selection should be grater than zero',
+                'error'
             )
 
         }
@@ -203,5 +226,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
                 $scope.message.memberId = response.memberId;
             }
         });
+
     }
+
 }]);
