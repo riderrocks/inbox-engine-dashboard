@@ -81,6 +81,7 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
         $scope.appCodefieldsAll.appCode = announcement.data[0].appCodes[0].appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
         $scope.appCodes.push($scope.appCodefieldsAll);
+        $scope.announcementData.from = "dashboard";
         $scope.announcementData.appCodes = $scope.appCodes;
         UserNotificationService.updateAnnouncement($scope.announcementData);
         swal("Done!", "Message updated successfully", "success");

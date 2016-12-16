@@ -39,8 +39,8 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
 
     this.updateAnnouncement = function(announcement) {
         $http({
-            method: 'PUT',
-            url: this.baseUrl + "/inbox/announcement",
+            method: 'POST',
+            url: this.baseUrl + "/is/cms-push",
             data: announcement
         }).then(function successCallback(response) {
             console.log(response);
@@ -75,8 +75,8 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
 
     this.updateNotification = function(notification) {
         $http({
-            method: 'PUT',
-            url: this.baseUrl + "/inbox/notification",
+            method: 'POST',
+            url: this.baseUrl + "/is/cms-push",
             data: notification
         }).then(function successCallback(response) {
             console.log(response);
