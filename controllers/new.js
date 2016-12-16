@@ -106,11 +106,21 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
 
     $scope.limmiter = function() {
         $scope.sequence = $scope.message.Sequence;
+        console.log($scope.sequence);
         if ($scope.sequence == undefined) {
             $scope.message.Sequence = null;
             swal(
                 'Oops...',
                 'NOTE: 99 is largest permissible value!',
+                'error'
+            )
+
+        }
+        if ($scope.sequence == 0) {
+            $scope.message.Sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: Your selection should be grater than zero',
                 'error'
             )
 
@@ -182,17 +192,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
             }
         });
 
-    }
-    $scope.check_A = function() {
-        console.log($scope.messageType.name);
-
-        if ($scope.messageType.name == announcement) {
-            return true;
-        }
-    }
-    $scope.isRequired = true;
-    $scope.toggle = function() {
-        $scope.isRequired = !$scope.isRequired;
     }
 
 }]);
