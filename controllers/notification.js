@@ -75,6 +75,7 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
         $scope.appCodes.push($scope.appCodefieldsAll);
         $scope.notificationData.flag = 'N';
+        $scope.notificationData.from = "dashboard";
         $scope.notificationData.appCodes = $scope.appCodes;
         UserNotificationService.updateNotification($scope.notificationData);
         swal("Done!", "Message updated successfully", "success");
