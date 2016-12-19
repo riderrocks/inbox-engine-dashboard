@@ -47,7 +47,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         $scope.$broadcast('start-date-changed');
     }
     $scope.$on('start-date-changed', function(event, args) {
-        $scope.dateChecker();
+        $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
