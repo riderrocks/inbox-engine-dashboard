@@ -1,10 +1,15 @@
 <!--BEGIN HEADER-->
-<div id="header" class="header-scroll" role="banner" style="position:relative">
+<div id="header" class="header-scroll" ng-controller='DashboardCtrl' role="banner" style="position:relative">
     <a id="menu-link" class="head-button-link menu-hide" href="#"><span>Menu</span></a>
     <a href="#" class="logo"></a>
+    <div class="left">
+        <ul class="topNav tooltip-bottom">
+            <li class="mainLink" id="accountLists">{{routeName}}</li>
+        </ul>
+    </div>
     <div class="right">
         <ul class="topNav tooltip-bottom">
-            <li class="mainLink noBrd" id="acctTime">Fri, 12:08 PM</li>
+            <li class="mainLink noBrd" id="acctTime">{{ clock | date:'medium'}}</li>
             <li class="mainLink" id="accountLists">
                 <a href="#" class="accountName" data-toggle="dropdown">
                     <span class="profile-username ">
