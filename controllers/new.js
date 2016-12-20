@@ -208,7 +208,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
             $scope.dateRangeEnd = null;
             swal(
                 'Oops...',
-                'The minimum difference between Valid From & Valid Till must be 5hrs and 50 minutes',
+                'Valid Till cannot be less than ' + $scope.validDate,
                 'warning'
             )
 
