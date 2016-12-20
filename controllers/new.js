@@ -47,12 +47,16 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         $scope.$broadcast('start-date-changed');
     }
     $scope.$on('start-date-changed', function(event, args) {
-        $scope.dateChecker();
+        $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
         $scope.$broadcast('end-date-changed');
     }
+    $scope.$on('end-date-changed', function(event, args) {
+
+        $scope.dateChecker_validtill();
+    });
 
     function startDateBeforeRender($dates) {
         if ($scope.dateRangeEnd) {
@@ -168,15 +172,30 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         }
     }
 
-    $scope.dateChecker = function() {
+    $scope.dateChecker_validfrom = function() {
         $scope.validFrom = new Date($scope.dateRangeStart);
         $scope.date = new Date();
+
 
         if ($scope.validFrom < $scope.date) {
             $scope.dateRangeStart = null;
             swal(
                 'Oops...',
                 'Valid From cannot be less than Present Date!',
+                'warning'
+            )
+
+        }
+    }
+    $scope.dateChecker_validtill = function() {
+        $scope.validFrom = JSON.stringify(new Date($scope.dateRangeStart));
+
+        console.log($scope.validFrom);
+        if ($scope.validFrom == 'null') {
+            $scope.dateRangeEnd = null;
+            swal(
+                'Oops...',
+                'Fill Valid From Field First !',
                 'warning'
             )
 
