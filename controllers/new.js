@@ -176,7 +176,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
         $scope.validFrom = new Date($scope.dateRangeStart);
         $scope.date = new Date();
 
-
         if ($scope.validFrom < $scope.date) {
             $scope.dateRangeStart = null;
             swal(
@@ -186,16 +185,30 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
             )
 
         }
+
     }
     $scope.dateChecker_validtill = function() {
         $scope.validFrom = JSON.stringify(new Date($scope.dateRangeStart));
-
-        console.log($scope.validFrom);
+        $scope.date = new Date($scope.dateRangeStart);
         if ($scope.validFrom == 'null') {
             $scope.dateRangeEnd = null;
             swal(
                 'Oops...',
                 'Fill Valid From Field First !',
+                'warning'
+            )
+
+        }
+        $scope.date = new Date($scope.dateRangeStart);
+        $scope.validDate = new Date($scope.date.setMinutes($scope.date.getMinutes() + 350));
+        $scope.validTill = new Date($scope.dateRangeEnd);
+        console.log(new Date($scope.validDate));
+        console.log(new Date($scope.validTill));
+        if ($scope.validTill < $scope.validDate) {
+            $scope.dateRangeEnd = null;
+            swal(
+                'Oops...',
+                'The minimum difference between Valid From & Valid Till must be 5hrs and 50 minutes',
                 'warning'
             )
 
@@ -233,7 +246,10 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
 
         }
     }
-
+    $scope.show = false;
+    $scope.showWarning = function() {
+        $scope.show = true;
+    }
     $scope.fetchMemberId = function() {
         var memberEmail = $scope.message.memberEmail;
         UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
