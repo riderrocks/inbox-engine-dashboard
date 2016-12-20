@@ -161,15 +161,8 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap']).con
             )
 
         }
-        if ($scope.sequence == 0) {
-            $scope.message.Sequence = null;
-            swal(
-                'Oops...',
-                'NOTE: Your selection should be grater than zero',
-                'error'
-            )
 
-        }
+
     }
 
     $scope.dateChecker_validfrom = function() {
