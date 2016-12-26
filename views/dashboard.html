@@ -1,5 +1,6 @@
 <!--BEGIN HEADER-->
-<div id="header" class="header-scroll" ng-controller='DashboardCtrl' role="banner" style="position:relative">
+<div ng-controller='DashboardCtrl'>
+<div id="header" class="header-scroll" role="banner" style="position:relative">
     <a id="menu-link" class="head-button-link menu-hide" href="#"><span>Menu</span></a>
     <a href="#" class="logo"></a>
     <div class="left">
@@ -35,28 +36,19 @@
     <!--BEGIN SIDEBAR-->
     <div id="menu" role="navigation">
         <ul class="main-menu">
-            <li class="submenu      ">
+            <li class="submenu">
                 <i class="margin-right-10 fa fa-tachometer"></i><span>Dashboards</span></li>
             <ul class="submenu-option">
-                <li><a href="#/new" class=""><i class="fa fa-paper-plane"></i> New Notification</a></li>
-                <li><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li>
-                <li><a href="#/scheduled" class=""><i class="fa fa-hourglass-start"></i> Scheduled Notifications</a></li>
-                <li><a href="#/draft" class=""><i class="fa fa-file-text-o"></i> Notifications in draft</a></li>
+                <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-paper-plane"></i> View Campaigns</a></li>
+                <li ng-class="{active : isRouteActive('/new')}"><a href="#/new" class=""><i class="fa fa-paper-plane"></i> New Notification</a></li>
+                <li ng-class="{active : isRouteActive('/sent')}"><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li>
+             <!--    <li ng-class="{active : isRouteActive('/scheduled')}"><a href="#/scheduled" class=""><i class="fa fa-hourglass-start"></i> Scheduled Notifications</a></li>
+                <li ng-class="{active : isRouteActive('/draft')}"><a href="#/draft" class=""><i class="fa fa-file-text-o"></i> Notifications in draft</a></li> -->
             </ul>
-            <li class="submenu"><i class="margin-right-10 fa fa-users"></i>SEGMENTATION
+            <li class="submenu"><i class="margin-right-10 fa fa-users"></i>Manage Campaigns
             </li>
             <ul class="submenu-option tooltip-right">
-                <li class=""><a href="#">Find People</a></li>
-                <li class=""><a href="#">Segments</a></li>
-            </ul>
-            <li class="submenu"><i class="margin-right-10 fa fa-comment-o"></i>CAMPAIGNS
-            </li>
-            <ul class="submenu-option tooltip-right">
-                <li><a href="javascript:void(0)" class="linkTitle">Web</a></li>
-                <ul class="submenu-item">
-                    <li class="active"><a href="#">Push</a></li>
-                    <li class=""><a href="#">Pop Ups</a></li>
-                </ul>
+                <li class=""><a href="javascript:void(0)">Create Campaigns</a></li>
             </ul>
         </ul>
         <div class="clearfix"></div>
@@ -67,4 +59,5 @@
         </div> -->
     <!--END MAIN CONTENT-->
     <!--END WRAPPER-->
+</div>
 </div>
