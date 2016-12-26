@@ -360,10 +360,10 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             }
             $scope.emailList = removeDuplicates($scope.emailList);
             $scope.emailList = $scope.emailList.toString();
-            localStorage.setItem('allEmails', $scope.emailList);
-            //  = JSON.stringify(emails);
-            var allEmails = localStorage.getItem("allEmails");
-            return allEmails.split(/,+/g).map(function(state) {
+            // localStorage.setItem('allEmails', $scope.emailList);
+            // //  = JSON.stringify(emails);
+            // var allEmails = localStorage.getItem("allEmails");
+            return $scope.emailList.split(/,+/g).map(function(state) {
                 return {
                     value: state.toLowerCase(),
                     display: state
