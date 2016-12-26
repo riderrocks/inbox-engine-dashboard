@@ -2,10 +2,9 @@
 angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/dashboard', {
         templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl'
     });
 }]).controller('DashboardCtrl', ['$scope', '$location', '$timeout', function($scope, $location, $timeout) {
-    $scope.isRouteActive = function() {
+    $scope.isRouteActive = function(route) {
         var curRoute = $location.path();
         if (curRoute == '/dashboard') {
             $scope.routeName = 'Dashboard';
@@ -15,6 +14,8 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
             $scope.routeName = 'Sent Message';
         } else if (curRoute == '/scheduled') {
             $scope.routeName = 'Scheduled Message';
+        } else if (curRoute == '/viewCampaigns') {
+            $scope.routeName = 'View Campaigns';
         } else if (curRoute == '/listAnnouncements') {
             $scope.routeName = 'Listing Announcements';
         } else if (curRoute == '/listNotifications') {
@@ -24,6 +25,7 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
         } else if (curRoute.indexOf('/notification') > -1) {
             $scope.routeName = 'Edit Notification';
         }
+        return curRoute.match(route);
     }
 
     $scope.clock = "loading clock...";

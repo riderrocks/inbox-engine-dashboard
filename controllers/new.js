@@ -87,7 +87,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         $scope.$broadcast('start-date-changed');
     }
     $scope.$on('start-date-changed', function(event, args) {
-        $scope.dateChecker_validfrom();
+      //  $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
@@ -167,6 +167,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             )
             return false;
         }
+
         if ($scope.messageType.name == 'announcement') {
             message.flag = 'A';
             delete message.memberId;

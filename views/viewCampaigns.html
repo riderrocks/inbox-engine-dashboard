@@ -1,0 +1,59 @@
+<div ng-include="'views/dashboard.html'"></div>
+<div class="container announcement-container" ng-controller="ViewCampaignsCtrl">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-xs-3">
+                <label for="search">Campaign State:</label>{{campaigns.data.length}}
+                <br>
+                <select class="btn btn-default" ng-model="state.campaignState" ng-options="v for v in state.campaignStatus"></select>
+                <button type="submit" class="btn btn-primary" ng-click="getAllCampaigns(state.campaignState)">Go</button>
+            </div>
+            <div class="col-xs-3">
+                <label for="search">Search:</label>
+                <input ng-model="q" id="search" class="form-control" placeholder="Filter text">
+            </div>
+            <div class="col-xs-3">
+                <label for="search">items per page:</label>
+                <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+            </div>
+            <div class="col-xs-3">
+                <h3>Page: {{ currentPage }}</h3>
+            </div>
+        </div>
+    </div>
+    <table class="announcement MT15" style="width:131%">
+        <thead>
+            <th class="announcement">Message Id</th>
+            <th class="announcement">Campaign Name</th>
+            <th class="announcement">Message Type</th>
+            <th class="announcement">Valid From</th>
+            <th class="announcement">Valid Till</th>
+            <th class="announcement">AppCode</th>
+            <th class="announcement">User Region</th>
+            <th class="announcement">Created On</th>
+            <th class="announcement">Messages Sent</th>
+        </thead>
+        <tbody>
+            <tr dir-paginate="data in campaigns.data | filter:q | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
+                <td class="announcement">{{data._id}}</td>
+                <td class="announcement">{{data.campaign}}</td>
+                <td class="announcement">{{data.type}}</td>
+                <td class="announcement">{{data.validFrom | date:'dd-MM-yyyy HH:mm a'}}</td>
+                <td class="announcement">{{data.validTill | date:'dd-MM-yyyy HH:mm a'}}</td>
+                <td class="announcement">{{data.appCodes[0].appCode}}</td>
+                <td class="announcement"><span ng-repeat="data in data.regionCode">{{data}},</span></td>
+                <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
+                <td class="announcement">{{campaigns.data.length}}</td>
+                <td class="announcement" ng-hide="{{data.type=='system'}}" colspan="1">
+                    <a href="#/notification/{{data._id}}">Edit</a>
+                </td>
+                <td class="announcement" colspan="2"><button>Stop</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-controller="OtherController" class="other-controller">
+        <div class="text-center">
+            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
+        </div>
+    </div>
+</div>

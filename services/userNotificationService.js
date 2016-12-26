@@ -174,4 +174,17 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+
+    this.getAllCampaigns = function(state) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            data : {status: state},
+            url: this.baseUrl + "/inbox/messages"
+        }).then(function successCallback(response) {
+            var campaigns = response;
+            defer.resolve(campaigns);
+        });
+        return defer.promise;
+    }
 }]);
