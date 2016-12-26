@@ -1,15 +1,15 @@
 'use strict';
-angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function ($routeProvider) {
+angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/notification/:id', {
         templateUrl: 'views/notification.html',
     }).when('/notification', {
         templateUrl: 'views/notification.html',
     });
-}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function ($scope, $location, $routeParams, UserNotificationService) {
+}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
 
     var param = $routeParams.id;
     if (param) {
-        UserNotificationService.getNotification(param).then(function (notification) {
+        UserNotificationService.getNotification(param).then(function(notification) {
             $scope.notification = notification;
             $scope.dateRangeStart = $scope.notification.data[0].validFrom;
             $scope.dateRangeEnd = $scope.notification.data[0].validTill;
@@ -19,6 +19,7 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
     $scope.endDateOnSetTime = endDateOnSetTime;
     $scope.startDateBeforeRender = startDateBeforeRender;
     $scope.startDateOnSetTime = startDateOnSetTime;
+
     function startDateOnSetTime() {
         $scope.$broadcast('start-date-changed');
     }
@@ -30,9 +31,9 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
     function startDateBeforeRender($dates) {
         if ($scope.dateRangeEnd) {
             var activeDate = moment($scope.dateRangeEnd);
-            $dates.filter(function (date) {
+            $dates.filter(function(date) {
                 return date.localDateValue() >= activeDate.valueOf()
-            }).forEach(function (date) {
+            }).forEach(function(date) {
                 date.selectable = false;
             })
         }
@@ -42,9 +43,9 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
         if ($scope.dateRangeStart) {
             var activeDate = moment($scope.dateRangeStart).subtract(1, $view).add(1, 'minute');
 
-            $dates.filter(function (date) {
+            $dates.filter(function(date) {
                 return date.localDateValue() <= activeDate.valueOf()
-            }).forEach(function (date) {
+            }).forEach(function(date) {
                 date.selectable = false;
             })
         }
@@ -81,16 +82,42 @@ angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$
         swal("Done!", "Message updated successfully", "success");
     }
 
-    $scope.fetchMemberId = function () {
+    $scope.fetchMemberId = function() {
         var memberEmail = $scope.notification.data[0].memberEmail;
-        UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function (res) {
-            if(res.data._id){
+        UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function(res) {
+            if (res.data._id) {
                 $scope.notification.data[0].memberId = res.data.memberId;
-            }else{
+            } else {
                 $scope.notification.data[0].memberId = null;
             }
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.log(err);
         })
+    }
+    $scope.show = true;
+    $scope.showWarning = function() {
+        $scope.show = true;
+    }
+    $scope.limmiter = function() {
+        $scope.sequence = $scope.notification.data[0].sequence;
+        console.log($scope.sequence);
+        if ($scope.sequence == undefined) {
+            $scope.notification.data[0].sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: 99 is largest permissible value!',
+                'warning'
+            )
+
+        }
+        if ($scope.sequence == 0) {
+            $scope.notification.data[0].sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: Your selection should be grater than zero',
+                'warning'
+            )
+
+        }
     }
 }]);

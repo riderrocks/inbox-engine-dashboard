@@ -87,4 +87,61 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
         UserNotificationService.updateAnnouncement($scope.announcementData);
         swal("Done!", "Message updated successfully", "success");
     }
+    $scope.show = true;
+    $scope.showWarning = function() {
+        $scope.show = true;
+    }
+    $scope.limmiter = function() {
+        $scope.sequence = $scope.announcement.data[0].sequence;
+        console.log($scope.sequence);
+        if ($scope.sequence == undefined) {
+            $scope.announcement.data[0].sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: 99 is largest permissible value!',
+                'warning'
+            )
+
+        }
+        if ($scope.sequence == 0) {
+            $scope.announcement.data[0].sequence = null;
+            swal(
+                'Oops...',
+                'NOTE: Your selection should be grater than zero',
+                'warning'
+            )
+
+        }
+    }
+    $scope.checkCampaign = function() {
+        var value = $scope.message.campaign;
+        if ($scope.messageType.name === "announcement") {
+            UserNotificationService.checkUniqueAnnouncementCampaign(value).then(function(response) {
+                if ($scope.message.campaign !== null) {
+                    if (response !== null) {
+                        $scope.message.campaign = null;
+                        swal(
+                            'Oops...',
+                            'Campaign name already Exists. Choose a new name!',
+                            'warning'
+                        )
+                    }
+                }
+            });
+        } else if ($scope.messageType.name == 'notification') {
+            UserNotificationService.checkUniqueNotificationCampaign(value).then(function(response) {
+                if ($scope.message.campaign !== null) {
+                    if (response !== null) {
+                        $scope.message.campaign = null;
+                        swal(
+                            'Oops...',
+                            'Campaign name already Exists. Choose a new name!',
+                            'warning'
+                        )
+                    }
+                }
+            });
+
+        }
+    }
 }]);
