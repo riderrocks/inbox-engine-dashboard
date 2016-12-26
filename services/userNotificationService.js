@@ -18,6 +18,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             method: 'GET',
             url: this.baseUrl + "/inbox/emails"
         }).then(function(response) {
+            console.log(response);
             defer.resolve(response);
         });
         return defer.promise;

@@ -309,7 +309,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
 
     // list of `state` value/display objects
-    $scope.email = loadAll();
+    loadAll().then(function(emails) {
+        $scope.email = emails;
+    })
     $scope.selectedItem = null;
     $scope.searchText = null;
     $scope.querySearch = querySearch;
@@ -335,14 +337,11 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
      * Build `email` list of key/value pairs
      */
     function loadAll() {
-
-
-
-
-        UserNotificationService.getAllEmails().then(function(emails) {
+        return UserNotificationService.getAllEmails().then(function(emails) {
             for (var i = 0; i < emails.data.length; i++) {
                 $scope.emailList.push(emails.data[i].memberEmail);
             }
+            console.log($scope.emailList);
 
             function removeDuplicates(value) {
                 var x,
@@ -358,21 +357,18 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
                 }
                 return out;
             }
-
             $scope.emailList = removeDuplicates($scope.emailList);
             $scope.emailList = $scope.emailList.toString();
             localStorage.setItem('allEmails', $scope.emailList);
+            //  = JSON.stringify(emails);
+            var allEmails = localStorage.getItem("allEmails");
+            return allEmails.split(/,+/g).map(function(state) {
+                return {
+                    value: state.toLowerCase(),
+                    display: state
+                };
+            });
         });
-
-        //  = JSON.stringify(emails);
-        var allEmails = localStorage.getItem("allEmails");
-        return allEmails.split(/,+/g).map(function(state) {
-            return {
-                value: state.toLowerCase(),
-                display: state
-            };
-        });
-
     }
 
     /**
