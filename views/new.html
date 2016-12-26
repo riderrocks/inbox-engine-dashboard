@@ -51,7 +51,7 @@
                         <label for="type">CardType:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues" ng-click="messageCardType(selectType.messageCardTypeValue)"></select>
+                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues" ng-change="messageCardType(selectType.messageCardTypeValue)"></select>
                     </td>
                 </tr>
                 <tr>
