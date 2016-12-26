@@ -14,8 +14,8 @@
         <table class="table MT15">
             <thead>
                 <tr>
-                    <th>
-                        <label for="campaign">Campaign Name <span id="red">*</span>:</label>
+                    <th style="padding-right: 7%;">
+                        <label for="campaign">Campaign_Name <span id="red">*</span>:</label>
                     </th>
                     <td>
                         <input type="text" maxlength="30" class="form-control" ng-model='message.campaign' placeholder="Campaign Name" ng-blur="checkCampaign()" required>
@@ -48,10 +48,18 @@
                 </tr>
                 <tr>
                     <th>
+                        <label for="type">CardType:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues" ng-click="messageCardType(selectType.messageCardTypeValue)"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         <label for="sequence">Sequence:</label>
                     </th>
                     <td>
-                        <input type="number" class="form-control" placeholder="Sequence" ng-model='message.Sequence' ng-blur="limmiter()" min="0" max="99" />
+                        <input type="number" class="form-control" placeholder="Sequence" ng-model='message.Sequence' ng-blur="limmiter()" min="0" max="5" />
                     </td>
                 </tr>
                 <tr>
@@ -71,7 +79,7 @@
                         <div class="dropdown form-group">
                             <a class="dropdown-toggle" id="dropdownStart" role="button" data-toggle="dropdown" data-target="#" href="#">
                                 <div class="input-group date">
-                                    <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" ng-click="showWarning()" class="form-control" data-ng-model="dateRangeStart" placeholder="Valid From" readonly required>
+                                    <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" ng-click="showWarning()" class="form-control" data-ng-model="dateRangeStart" placeholder="Valid From" readonly required="true">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div>
                             </a>
@@ -112,10 +120,16 @@
                 </tr>
                 <tr ng-show="messageType.notification">
                     <th>
-                        <label for="memberEmail">Member Email <span id="red">*</span>:</label>
+                        <label for="memberEmail" style="margin-bottom: 30%;">Member Email <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" class="form-control" ng-model='message.memberEmail' ng-blur="fetchMemberId()" placeholder="Member Email" ng-required="messageType.name=='notification'">
+                        <div layout-gt-sm="row">
+                            <md-autocomplete flex="" ng-blur='fetchMemberId()' md-input-name="autocompleteField" md-input-minlength="2" md-input-maxlength="18" md-no-cache="noCache" md-selected-item="selectedItem" md-search-text="searchText" md-items="item in querySearch(searchText)" md-item-text="item.display" md-require-match="" md-floating-label="Email">
+                                <md-item-template>
+                                    <span md-highlight-text="searchText">{{item.display}}</span>
+                                </md-item-template>
+                            </md-autocomplete>
+                        </div>
                     </td>
                 </tr>
                 <tr ng-show="messageType.notification">
@@ -123,7 +137,7 @@
                         <label for="memberId">Member ID <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" class="form-control" ng-model='message.memberId' placeholder="Member ID" disabled>
+                        <div id="value1"></div>
                     </td>
                 </tr>
                 <tr>
@@ -134,7 +148,7 @@
                         <select class="btn btn-default" ng-model="selectType.appCodeTypeValue" ng-options="v for v in selectType.appCodeTypeValues"></select>
                     </td>
                 </tr>
-                <tr>
+                <tr id="text">
                     <th>
                         <label for="text">CallToActionText:</label>
                     </th>
@@ -142,7 +156,7 @@
                         <input type="text" Maxlength="10" class="form-control" ng-model='appCodefield.text' placeholder="Text" />
                     </td>
                 </tr>
-                <tr>
+                <tr id="link">
                     <th>
                         <label for="link">CallToActionLink:</label>
                     </th>
@@ -150,7 +164,7 @@
                         <input type="url" class="form-control" ng-model='appCodefield.link' class="link" placeholder="Link" />
                     </td>
                 </tr>
-                <tr>
+                <tr id="target">
                     <th>
                         <label for="target">Target:</label>
                     </th>
@@ -162,5 +176,4 @@
         </table>
         <button type="submit" class="btn btn-primary">Create</button>
     </form>
-</div>
 </div>

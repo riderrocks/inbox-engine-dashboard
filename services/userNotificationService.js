@@ -12,6 +12,16 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+    this.getAllEmails = function() {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/inbox/emails"
+        }).then(function(response) {
+            defer.resolve(response);
+        });
+        return defer.promise;
+    }
 
     this.getAllAnnouncements = function() {
         var defer = $q.defer();
