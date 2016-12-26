@@ -5,21 +5,21 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
-        var TopCities = regionCode.data.BookMyShow.TopCities;
-        var OtherCities = regionCode.data.BookMyShow.OtherCities;
-        var cities = TopCities.concat(OtherCities);
-        var city = {};
-        city.name = [];
-        city.code = [];
-        for (i = 0; i < cities.length; i++) {
-            city.name[i] = cities[i].RegionName;
-            city.code[i] = cities[i].RegionCode;
+        // var TopCities = regionCode.data.BookMyShow.TopCities;
+        // var OtherCities = regionCode.data.BookMyShow.OtherCities;
+        // var cities = TopCities.concat(OtherCities);
+        // var city = {};
+        // city.name = [];
+        // city.code = [];
+        // for (i = 0; i < cities.length; i++) {
+        //     city.name[i] = cities[i].RegionName;
+        //     city.code[i] = cities[i].RegionCode;
 
-        }
-        console.log(city);
+        // }
+        // console.log(city);
         $scope.selectOptions = {
             dataSource: {
-                data: city.name,
+                data: regionCode.data
             }
         };
 
@@ -87,7 +87,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         $scope.$broadcast('start-date-changed');
     }
     $scope.$on('start-date-changed', function(event, args) {
-      //  $scope.dateChecker_validfrom();
+        //  $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
