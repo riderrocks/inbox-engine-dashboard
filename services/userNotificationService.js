@@ -187,4 +187,17 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+
+    this.stopCampaign = function(campaign) {
+        console.log(campaign);
+        $http({
+            method: 'PUT',
+            url: this.baseUrl + "/inbox/stopCampaign",
+            data: campaign
+        }).then(function successCallback(response) {
+            console.log(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
 }]);
