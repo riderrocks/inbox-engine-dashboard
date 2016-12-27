@@ -1,9 +1,16 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class="container announcement-container" ng-controller="ViewCampaignsCtrl">
+<div class="tgt_states_buttons btn-group">
+            <!-- <button class="btn">All</button> -->
+            <a href="javascript:void(0);" ng-model="scheduled" ng-click="getAllCampaigns(state.campaignState)" class="btn">Scheduled <span ng-show="state.campaignState=='scheduled'">{{campaigns.data.length}}</span></a>
+            <a href="javascript:void(0);" ng-model="running" ng-click="getAllCampaigns(state.campaignState)" class="btn">Running <span ng-show="state.campaignState=='running'">{{campaigns.data.length}}</span></a>
+            <a href="javascript:void(0);" ng-model="completed" ng-click="getAllCampaigns(state.campaignState)" class="btn">Completed <span ng-show="state.campaignState=='completed'">{{campaigns.data.length}}</span></a>
+            <a href="javascript:void(0);" ng-model="stopped" ng-click="getAllCampaigns(state.campaignState)" class="btn active">Stopped <span ng-show="state.campaignState=='stopped'" >{{campaigns.data.length}}</span></a>
+        </div>
     <div class="col-lg-12">
         <div class="row">
             <div class="col-xs-3">
-                <label for="search">Campaign State:</label>{{campaigns.data.length}}
+                <label for="search">Campaign State:</label>
                 <br>
                 <select class="btn btn-default" ng-model="state.campaignState" ng-options="v for v in state.campaignStatus"></select>
                 <button type="submit" class="btn btn-primary" ng-click="getAllCampaigns(state.campaignState)">Go</button>
@@ -14,7 +21,8 @@
             </div>
             <div class="col-xs-3">
                 <label for="search">items per page:</label>
-                <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+                <!-- <input type="number" min="1" max="100" class="form-control" ng-model="pageSize"> -->
+                <h3>{{pageSize}}</h3>
             </div>
             <div class="col-xs-3">
                 <h3>Page: {{ currentPage }}</h3>
@@ -43,11 +51,11 @@
                 <td class="announcement">{{data.appCodes[0].appCode}}</td>
                 <td class="announcement"><span ng-repeat="data in data.regionCode">{{data}},</span></td>
                 <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
-                <td class="announcement">{{campaigns.data.length}}</td>
-                <td class="announcement" ng-hide="{{data.type=='system'}}" colspan="1">
+                <td class="announcement">{{data.count}}</td>
+                <td class="announcement" ng-hide="{{data.type=='system' || state.campaignState=='completed' || state.campaignState=='stopped'}}" colspan="1">
                     <a href="#/notification/{{data._id}}">Edit</a>
                 </td>
-                <td class="announcement" colspan="2"><button>Stop</button></td>
+                <td class="announcement" ng-hide="{{data.type=='system' || state.campaignState=='completed' || state.campaignState=='stopped'}}" colspan="2"><button>Stop</button></td>
             </tr>
         </tbody>
     </table>
