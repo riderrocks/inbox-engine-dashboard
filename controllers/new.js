@@ -5,27 +5,25 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
-        // var TopCities = regionCode.data.BookMyShow.TopCities;
-        // var OtherCities = regionCode.data.BookMyShow.OtherCities;
-        // var cities = TopCities.concat(OtherCities);
-        // var city = {};
-        // city.name = [];
-        // city.code = [];
-        // for (i = 0; i < cities.length; i++) {
-        //     city.name[i] = cities[i].RegionName;
-        //     city.code[i] = cities[i].RegionCode;
-
-        // }
-        // console.log(city);
+        var TopCities = regionCode.data.BookMyShow.TopCities;
+        var OtherCities = regionCode.data.BookMyShow.OtherCities;
+        var rawCities = TopCities.concat(OtherCities);
+        var cities = [];
+        for (i = 0; i < rawCities.length; i++) {
+            cities.push({ name: rawCities[i].RegionName, code: rawCities[i].RegionCode });
+        }
+        console.log(cities);
         $scope.selectOptions = {
+            placeholder: "Select RegionCode...",
+            dataTextField: cities.name,
+            dataValueField: cities.code,
+
             dataSource: {
-                data: regionCode.data
+                data: cities
             }
         };
 
     });
-
-
 
 
     $scope.messageType = {
@@ -39,7 +37,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         "appCodeTypeValue": "WEBIN",
         "appCodeTypeValues": ["WEBIN"],
         "targetTypeValue": "New Window",
-        "targetTypeValues": ["New Window", "Same Window"],
+        "targetTypeValues": [{ value: '_blank', name: "New Window" }, { value: '_self', name: "Same Window" }],
         "messageCardTypeValue": "PlainText",
         "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
     };
@@ -87,7 +85,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         $scope.$broadcast('start-date-changed');
     }
     $scope.$on('start-date-changed', function(event, args) {
-        //  $scope.dateChecker_validfrom();
+        $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
@@ -124,7 +122,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
 
     $scope.create = function(message) {
-        console.log($scope.selectType.messageCardTypeValue);
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
             message.cardType = 'PT';
             $scope.appCodes = [];
@@ -132,11 +129,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             $scope.appCodefieldsAll = {};
             $scope.appCodefield = {};
             $scope.appCodefield.target = "_self";
-            console.log($scope.appCodefield.target);
             $scope.callToAction.push($scope.appCodefield);
             $scope.appCodefieldsAll.callToAction = $scope.callToAction;
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
-
             $scope.appCodes.push($scope.appCodefieldsAll);
 
 
@@ -144,8 +139,8 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             message.cardType = 'CTA';
             $scope.appCodes = [];
             $scope.appCodefieldsAll = {};
-            $scope.appCodefield.target = $scope.selectType.targetTypeValue;
             $scope.callToAction = [];
+            $scope.appCodefield.target = $scope.selectType.targetTypeValue.value;
             $scope.callToAction.push($scope.appCodefield);
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
             $scope.appCodefieldsAll.callToAction = $scope.callToAction;
