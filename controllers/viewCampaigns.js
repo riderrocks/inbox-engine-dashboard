@@ -4,6 +4,10 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
         templateUrl: 'views/viewCampaigns.html',
     });
 }]).controller('ViewCampaignsCtrl', ['$scope', '$location', 'UserNotificationService', function($scope, $location, UserNotificationService) {
+
+    $scope.currentPage = 1;
+    $scope.pageSize = 10;
+
     $scope.state = {
         "campaignState": "all",
         "campaignStatus": ['all', 'scheduled', 'running', 'completed', 'stopped']
@@ -11,18 +15,22 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
 
     UserNotificationService.getAllCampaigns($scope.state.campaignState).then(function(campaign) {
         $scope.campaigns = campaign;
-        console.log($scope.campaigns);
     });
 
     $scope.getAllCampaigns = function(state) {
         UserNotificationService.getAllCampaigns(state).then(function(campaign) {
             $scope.campaigns = campaign;
-            console.log($scope.campaigns);
         });
     }
 
-    $scope.currentPage = 1;
-    $scope.pageSize = 10;
+    $scope.stopCampaign = function(campaign) {
+        if (campaign.masterId === '') {
+            campaign.flag = 'A';
+        } else if (campaign.memberEmail != null) {
+            campaign.flag = 'N';
+        }
+        UserNotificationService.stopCampaign(campaign);
+    }
 
 }]).controller('OtherController', ['$scope', function($scope) {
     $scope.pageChangeHandler = function(num) {

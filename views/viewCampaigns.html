@@ -31,7 +31,7 @@
             <th class="announcement">Region</th>
             <th class="announcement">Created On</th>
             <th class="announcement">Messages Sent</th>
-            <th class="announcement" colspan="2" ng-hide="state.campaignState=='completed' || state.campaignState=='stopped'">Action</th>
+            <th class="announcement" colspan="2" ng-show="state.campaignState=='all' || state.campaignState=='scheduled'">Action</th>
         </thead>
         <tbody>
             <tr dir-paginate="data in campaigns.data | filter:q | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
@@ -44,10 +44,10 @@
                 <td class="announcement"><span ng-repeat="data in data.regionCode">{{data}} </span></td>
                 <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
                 <td class="announcement">{{data.count}}</td>
-                <td class="announcement" ng-hide="{{data.type=='system' || state.campaignState=='completed' || state.campaignState=='stopped'}}">
+                <td class="announcement" ng-show="data.memberEmail == null && (state.campaignState=='all' || state.campaignState=='scheduled')">
                     <a href="#/announcement/{{data._id}}">Edit</a>
                 </td>
-                <td class="announcement" ng-hide="{{data.type=='system' || state.campaignState=='completed' || state.campaignState=='stopped'}}"><button>Stop</button></td>
+                <td class="announcement" ng-show="data.memberEmail == null && (state.campaignState=='all' || state.campaignState=='scheduled')"><button class="btn btn-info" ng-disabled="data.isStopped==true" ng-click="stopCampaign(data)">Stop</button></td>
             </tr>
         </tbody>
     </table>
