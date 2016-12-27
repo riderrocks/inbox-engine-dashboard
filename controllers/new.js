@@ -5,21 +5,25 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
-        var TopCities = regionCode.data.BookMyShow.TopCities;
-        var OtherCities = regionCode.data.BookMyShow.OtherCities;
-        var rawCities = TopCities.concat(OtherCities);
-        var cities = [];
-        for (i = 0; i < rawCities.length; i++) {
-            cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
-        }
+        // var TopCities = regionCode.data.BookMyShow.TopCities;
+        // var OtherCities = regionCode.data.BookMyShow.OtherCities;
+        // var rawCities = TopCities.concat(OtherCities);
+        // var cities = [];
+        // for (i = 0; i < rawCities.length; i++) {
+        //     cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
+        // }
+        // $scope.selectOptions = {
+        //     placeholder: "Select RegionCode...",
+        //     dataTextField: 'name_city',
+        //     dataValueField: 'code_city',
+        //     dataSource: cities
+
+        // };
         $scope.selectOptions = {
-            placeholder: "Select RegionCode...",
-            dataTextField: 'name_city',
-            dataValueField: 'code_city',
-            dataSource: cities
-
+            dataSource: {
+                data: regionCode.data
+            }
         };
-
     });
 
 
