@@ -114,6 +114,8 @@
                     <td>
                         <div class="demo-section k-content">
                             <select kendo-multi-select k-options="selectOptions" k-ng-model="selectedIds" ng-model='message.regionCode'>
+                                <!--  k-ng-model="selectedIds"
+ -->
                             </select>
                         </div>
                     </td>
@@ -139,7 +141,7 @@
                         <label for="target">Link Target:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v for v in selectType.targetTypeValues"></select>
+                        <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v.name for v in selectType.targetTypeValues"></select>
                     </td>
                 </tr>
                 <tr ng-show="messageType.notification">
