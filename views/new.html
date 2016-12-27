@@ -23,7 +23,15 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="shortTxt">Subject <span id="red">*</span>:</label>
+                        <label for="type">CardType:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues" ng-change="messageCardType(selectType.messageCardTypeValue)"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="shortTxt">Title <span id="red">*</span>:</label>
                     </th>
                     <td>
                         <input type="text" maxlength="30" class="form-control" ng-model='message.shortTxt' placeholder="Short Text" required>
@@ -44,14 +52,6 @@
                     <td>
                         <textarea "text" maxlength="200" class="form-control" ng-model='message.longTxt' placeholder="Long Text" required>
                         </textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="type">CardType:</label>
-                    </th>
-                    <td>
-                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues" ng-change="messageCardType(selectType.messageCardTypeValue)"></select>
                     </td>
                 </tr>
                 <tr>
@@ -132,22 +132,6 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-show="messageType.notification">
-                    <th>
-                        <label for="memberId">Member ID <span id="red">*</span>:</label>
-                    </th>
-                    <td>
-                        <div id="value1"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="appCode">Appcode:</label>
-                    </th>
-                    <td>
-                        <select class="btn btn-default" ng-model="selectType.appCodeTypeValue" ng-options="v for v in selectType.appCodeTypeValues"></select>
-                    </td>
-                </tr>
                 <tr id="text">
                     <th>
                         <label for="text">CallToActionText:</label>
@@ -170,6 +154,22 @@
                     </th>
                     <td>
                         <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v for v in selectType.targetTypeValues"></select>
+                    </td>
+                </tr>
+                <tr ng-show="messageType.notification">
+                    <th>
+                        <label for="memberId">Member ID <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <div id="value1"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="appCode">Appcode:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="selectType.appCodeTypeValue" ng-options="v for v in selectType.appCodeTypeValues"></select>
                     </td>
                 </tr>
             </thead>
