@@ -5,27 +5,22 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
-        // var TopCities = regionCode.data.BookMyShow.TopCities;
-        // var OtherCities = regionCode.data.BookMyShow.OtherCities;
-        // var cities = TopCities.concat(OtherCities);
-        // var city = {};
-        // city.name = [];
-        // city.code = [];
-        // for (i = 0; i < cities.length; i++) {
-        //     city.name[i] = cities[i].RegionName;
-        //     city.code[i] = cities[i].RegionCode;
-
-        // }
-        // console.log(city);
+        var TopCities = regionCode.data.BookMyShow.TopCities;
+        var OtherCities = regionCode.data.BookMyShow.OtherCities;
+        var rawCities = TopCities.concat(OtherCities);
+        var cities = [];
+        for (i = 0; i < rawCities.length; i++) {
+            cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
+        }
         $scope.selectOptions = {
-            dataSource: {
-                data: regionCode.data
-            }
+            placeholder: "Select RegionCode...",
+            dataTextField: 'name_city',
+            dataValueField: 'code_city',
+            dataSource: cities
+
         };
 
     });
-
-
 
 
     $scope.messageType = {
@@ -39,7 +34,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         "appCodeTypeValue": "WEBIN",
         "appCodeTypeValues": ["WEBIN"],
         "targetTypeValue": "New Window",
-        "targetTypeValues": ["New Window", "Same Window"],
+        "targetTypeValues": [{ value: '_blank', name: "New Window" }, { value: '_self', name: "Same Window" }],
         "messageCardTypeValue": "PlainText",
         "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
     };
@@ -124,7 +119,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
 
     $scope.create = function(message) {
-        console.log($scope.selectType.messageCardTypeValue);
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
             message.cardType = 'PT';
             $scope.appCodes = [];
@@ -132,20 +126,27 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             $scope.appCodefieldsAll = {};
             $scope.appCodefield = {};
             $scope.appCodefield.target = "_self";
-            console.log($scope.appCodefield.target);
             $scope.callToAction.push($scope.appCodefield);
             $scope.appCodefieldsAll.callToAction = $scope.callToAction;
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
-
             $scope.appCodes.push($scope.appCodefieldsAll);
 
 
         } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
             message.cardType = 'CTA';
+            if ($scope.appCodefield == null) {
+                swal(
+                    'Oops...',
+                    'Fill Primary CTA Link & Primary CTA Text fields before submission!',
+                    'warning'
+                )
+                return false;
+
+            }
             $scope.appCodes = [];
             $scope.appCodefieldsAll = {};
-            $scope.appCodefield.target = $scope.selectType.targetTypeValue;
             $scope.callToAction = [];
+            $scope.appCodefield.target = $scope.selectType.targetTypeValue.value;
             $scope.callToAction.push($scope.appCodefield);
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
             $scope.appCodefieldsAll.callToAction = $scope.callToAction;
@@ -158,11 +159,11 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
 
-        $scope.validFrom = new Date($scope.dateRangeStart);
-        if ($scope.validFrom == null) {
+        console.log(typeof $scope.dateRangeStart);
+        if ($scope.dateRangeStart == null) {
             swal(
                 'Oops...',
-                'Fill validFrom and ValidTill fields before submission!',
+                'Fill Valid From & Valid Till fields before submission!',
                 'warning'
             )
             return false;
@@ -202,7 +203,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
     $scope.limmiter = function() {
         $scope.sequence = $scope.message.Sequence;
-        console.log($scope.sequence);
         if ($scope.sequence == undefined) {
             $scope.message.Sequence = null;
             swal(
@@ -255,8 +255,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         $scope.date = new Date($scope.dateRangeStart);
         $scope.validDate = new Date($scope.date.setMinutes($scope.date.getMinutes() + 350));
         $scope.validTill = new Date($scope.dateRangeEnd);
-        console.log(new Date($scope.validDate));
-        console.log(new Date($scope.validTill));
         if ($scope.validTill < $scope.validDate) {
             $scope.dateRangeEnd = null;
             swal(

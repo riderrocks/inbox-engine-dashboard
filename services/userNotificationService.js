@@ -5,8 +5,8 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         var defer = $q.defer();
         $http({
             method: 'GET',
-            // url: "http://testde.bms.bz/dataengine/mobile/app/index.bms?cmd=DEREGIONLIST&f=json&et=MT&t=67x1xa33b4x422b361ba&ch=mobile"
-            url: this.baseUrl + "/inbox/regionCodes"
+            url: "https://testde.bms.bz/dataengine/mobile/app/index.bms?cmd=DEREGIONLIST&f=json&et=MT&t=67x1xa33b4x422b361ba&ch=mobile"
+                // url: this.baseUrl + "/inbox/regionCodes"
         }).then(function successCallback(response) {
             var regionCodes = response;
             defer.resolve(regionCodes);
