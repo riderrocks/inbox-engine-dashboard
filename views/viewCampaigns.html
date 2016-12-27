@@ -1,34 +1,25 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class="container announcement-container" ng-controller="ViewCampaignsCtrl">
-<div class="tgt_states_buttons btn-group">
-            <!-- <button class="btn">All</button> -->
+<!-- <div class="tgt_states_buttons btn-group">
+            <button class="btn">All</button>
             <a href="javascript:void(0);" ng-model="scheduled" ng-click="getAllCampaigns(state.campaignState)" class="btn">Scheduled <span ng-show="state.campaignState=='scheduled'">{{campaigns.data.length}}</span></a>
             <a href="javascript:void(0);" ng-model="running" ng-click="getAllCampaigns(state.campaignState)" class="btn">Running <span ng-show="state.campaignState=='running'">{{campaigns.data.length}}</span></a>
             <a href="javascript:void(0);" ng-model="completed" ng-click="getAllCampaigns(state.campaignState)" class="btn">Completed <span ng-show="state.campaignState=='completed'">{{campaigns.data.length}}</span></a>
             <a href="javascript:void(0);" ng-model="stopped" ng-click="getAllCampaigns(state.campaignState)" class="btn active">Stopped <span ng-show="state.campaignState=='stopped'" >{{campaigns.data.length}}</span></a>
-        </div>
-    <div class="col-lg-12">
+        </div> -->
         <div class="row">
-            <div class="col-xs-3">
+            <div class="col-xs-6">
                 <label for="search">Campaign State:</label>
                 <br>
                 <select class="btn btn-default" ng-model="state.campaignState" ng-options="v for v in state.campaignStatus"></select>
-                <button type="submit" class="btn btn-primary" ng-click="getAllCampaigns(state.campaignState)">Go</button>
+                <button type="submit" ng-click="getAllCampaigns(state.campaignState)">Go</button>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-6">
                 <label for="search">Search:</label>
                 <input ng-model="q" id="search" class="form-control" placeholder="Filter text">
             </div>
-            <div class="col-xs-3">
-                <label for="search">items per page:</label>
-                <!-- <input type="number" min="1" max="100" class="form-control" ng-model="pageSize"> -->
-                <h3>{{pageSize}}</h3>
-            </div>
-            <div class="col-xs-3">
-                <h3>Page: {{ currentPage }}</h3>
-            </div>
         </div>
-    </div>
+      
     <table class="announcement MT15" style="width:131%">
         <thead>
             <th class="announcement">Message Id</th>
@@ -40,6 +31,7 @@
             <th class="announcement">User Region</th>
             <th class="announcement">Created On</th>
             <th class="announcement">Messages Sent</th>
+            <th class="announcement" colspan="2" ng-hide="state.campaignState=='completed' || state.campaignState=='stopped'">Action</th>
         </thead>
         <tbody>
             <tr dir-paginate="data in campaigns.data | filter:q | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
@@ -59,7 +51,7 @@
             </tr>
         </tbody>
     </table>
-    <div ng-controller="OtherController" class="other-controller">
+    <div ng-controller="OtherController" >
         <div class="text-center">
             <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
         </div>

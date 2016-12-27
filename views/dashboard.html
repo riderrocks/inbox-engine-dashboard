@@ -40,15 +40,15 @@
                 <i class="margin-right-10 fa fa-tachometer"></i><span>Dashboards</span></li>
             <ul class="submenu-option">
                 <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-paper-plane"></i> View Campaigns</a></li>
-                <li ng-class="{active : isRouteActive('/new')}"><a href="#/new" class=""><i class="fa fa-paper-plane"></i> New Notification</a></li>
-                <li ng-class="{active : isRouteActive('/sent')}"><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li>
+               <!--  <li ng-class="{active : isRouteActive('/sent')}"><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li> -->
              <!--    <li ng-class="{active : isRouteActive('/scheduled')}"><a href="#/scheduled" class=""><i class="fa fa-hourglass-start"></i> Scheduled Notifications</a></li>
                 <li ng-class="{active : isRouteActive('/draft')}"><a href="#/draft" class=""><i class="fa fa-file-text-o"></i> Notifications in draft</a></li> -->
             </ul>
             <li class="submenu"><i class="margin-right-10 fa fa-users"></i>Manage Campaigns
             </li>
             <ul class="submenu-option tooltip-right">
-                <li class=""><a href="javascript:void(0)">Create Campaigns</a></li>
+                <!-- <li class=""><a href="javascript:void(0)">Create Campaigns</a></li> -->
+                <li ng-class="{active : isRouteActive('/new')}"><a href="#/new" class=""><i class="fa fa-paper-plane"></i> Create Campaigns</a></li>
             </ul>
         </ul>
         <div class="clearfix"></div>
