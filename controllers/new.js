@@ -5,12 +5,28 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+        // var TopCities = regionCode.data.BookMyShow.TopCities;
+        // var OtherCities = regionCode.data.BookMyShow.OtherCities;
+        // var cities = TopCities.concat(OtherCities);
+        // var city = {};
+        // city.name = [];
+        // city.code = [];
+        // for (i = 0; i < cities.length; i++) {
+        //     city.name[i] = cities[i].RegionName;
+        //     city.code[i] = cities[i].RegionCode;
+
+        // }
+        // console.log(city);
         $scope.selectOptions = {
             dataSource: {
                 data: regionCode.data
             }
         };
+
     });
+
+
+
 
     $scope.messageType = {
         name: 'announcement'
@@ -71,7 +87,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         $scope.$broadcast('start-date-changed');
     }
     $scope.$on('start-date-changed', function(event, args) {
-      //  $scope.dateChecker_validfrom();
+        //  $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
@@ -112,32 +128,28 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
             message.cardType = 'PT';
             $scope.appCodes = [];
+            $scope.callToAction = [];
             $scope.appCodefieldsAll = {};
+            $scope.appCodefield = {};
+            $scope.appCodefield.target = "_self";
+            console.log($scope.appCodefield.target);
+            $scope.callToAction.push($scope.appCodefield);
+            $scope.appCodefieldsAll.callToAction = $scope.callToAction;
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
+
             $scope.appCodes.push($scope.appCodefieldsAll);
 
 
         } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
             message.cardType = 'CTA';
             $scope.appCodes = [];
-            $scope.callToAction = [];
             $scope.appCodefieldsAll = {};
             $scope.appCodefield.target = $scope.selectType.targetTypeValue;
+            $scope.callToAction = [];
             $scope.callToAction.push($scope.appCodefield);
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
             $scope.appCodefieldsAll.callToAction = $scope.callToAction;
             $scope.appCodes.push($scope.appCodefieldsAll);
-
-
-            // $scope.appCode = $scope.selectType.appCodeTypeValue;
-            // $scope.appCodefield.target = $scope.selectType.targetTypeValue;
-            // $scope.appCodes = [];
-            // $scope.callToAction = [];
-            // $scope.appCodefieldsAll = {};
-            // $scope.callToAction.push($scope.appCodefield);
-            // $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-            // $scope.appCodes.push($scope.appCodefieldsAll);
-
         }
 
         message.from = 'cms';

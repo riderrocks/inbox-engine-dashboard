@@ -5,6 +5,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         var defer = $q.defer();
         $http({
             method: 'GET',
+            // url: "http://testde.bms.bz/dataengine/mobile/app/index.bms?cmd=DEREGIONLIST&f=json&et=MT&t=67x1xa33b4x422b361ba&ch=mobile"
             url: this.baseUrl + "/inbox/regionCodes"
         }).then(function successCallback(response) {
             var regionCodes = response;
@@ -18,7 +19,6 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             method: 'GET',
             url: this.baseUrl + "/inbox/emails"
         }).then(function(response) {
-            console.log(response);
             defer.resolve(response);
         });
         return defer.promise;
@@ -179,7 +179,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         var defer = $q.defer();
         $http({
             method: 'POST',
-            data : {status: state},
+            data: { status: state },
             url: this.baseUrl + "/inbox/messages"
         }).then(function successCallback(response) {
             var campaigns = response;
