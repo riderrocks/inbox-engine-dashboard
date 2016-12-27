@@ -39,7 +39,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="imgURL">Image URL:</label>
+                        <label for="imgURL">Icon URL:</label>
                     </th>
                     <td>
                         <input type="url" class="form-control" ng-model='message.imgURL' placeholder="Image Url" />
@@ -56,7 +56,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="sequence">Sequence:</label>
+                        <label for="sequence">Priority:</label>
                     </th>
                     <td>
                         <input type="number" class="form-control" placeholder="Sequence" ng-model='message.Sequence' ng-blur="limmiter()" min="0" max="5" />
@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="type">Type:</label>
+                        <label for="type">Sender:</label>
                     </th>
                     <td>
                         <select class="btn btn-default" ng-model="selectType.systemTypeValue" ng-options="v for v in selectType.systemTypeValues"></select>
@@ -118,9 +118,33 @@
                         </div>
                     </td>
                 </tr>
+                <tr id="text">
+                    <th>
+                        <label for="text">Primary CTA text:</label>
+                    </th>
+                    <td>
+                        <input type="text" Maxlength="10" class="form-control" ng-model='appCodefield.text' placeholder="Text" />
+                    </td>
+                </tr>
+                <tr id="link">
+                    <th>
+                        <label for="link">Primary CTA Link:</label>
+                    </th>
+                    <td>
+                        <input type="url" class="form-control" ng-model='appCodefield.link' class="link" placeholder="Link" />
+                    </td>
+                </tr>
+                <tr id="target">
+                    <th>
+                        <label for="target">Link Target:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v for v in selectType.targetTypeValues"></select>
+                    </td>
+                </tr>
                 <tr ng-show="messageType.notification">
                     <th>
-                        <label for="memberEmail" style="margin-bottom: 30%;">Member Email <span id="red">*</span>:</label>
+                        <label for="memberEmail" style="margin-bottom: 30%;">Email ID <span id="red">*</span>:</label>
                     </th>
                     <td>
                         <div layout-gt-sm="row">
@@ -130,30 +154,6 @@
                                 </md-item-template>
                             </md-autocomplete>
                         </div>
-                    </td>
-                </tr>
-                <tr id="text">
-                    <th>
-                        <label for="text">CallToActionText:</label>
-                    </th>
-                    <td>
-                        <input type="text" Maxlength="10" class="form-control" ng-model='appCodefield.text' placeholder="Text" />
-                    </td>
-                </tr>
-                <tr id="link">
-                    <th>
-                        <label for="link">CallToActionLink:</label>
-                    </th>
-                    <td>
-                        <input type="url" class="form-control" ng-model='appCodefield.link' class="link" placeholder="Link" />
-                    </td>
-                </tr>
-                <tr id="target">
-                    <th>
-                        <label for="target">Target:</label>
-                    </th>
-                    <td>
-                        <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v for v in selectType.targetTypeValues"></select>
                     </td>
                 </tr>
                 <tr ng-show="messageType.notification">
