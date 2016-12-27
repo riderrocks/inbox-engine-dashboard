@@ -5,24 +5,19 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
-        // var TopCities = regionCode.data.BookMyShow.TopCities;
-        // var OtherCities = regionCode.data.BookMyShow.OtherCities;
-        // var rawCities = TopCities.concat(OtherCities);
-        // var cities = [];
-        // for (i = 0; i < rawCities.length; i++) {
-        //     cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
-        // }
-        // $scope.selectOptions = {
-        //     placeholder: "Select RegionCode...",
-        //     dataTextField: 'name_city',
-        //     dataValueField: 'code_city',
-        //     dataSource: cities
-
-        // };
+        var TopCities = regionCode.BookMyShow.TopCities;
+        var OtherCities = regionCode.BookMyShow.OtherCities;
+        var rawCities = TopCities.concat(OtherCities);
+        var cities = [];
+        for (i = 0; i < rawCities.length; i++) {
+            cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
+        }
         $scope.selectOptions = {
-            dataSource: {
-                data: regionCode.data
-            }
+            placeholder: "Select RegionCode...",
+            dataTextField: 'name_city',
+            dataValueField: 'code_city',
+            dataSource: cities
+
         };
     });
 
@@ -356,7 +351,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             for (var i = 0; i < emails.data.length; i++) {
                 $scope.emailList.push(emails.data[i].memberEmail);
             }
-            console.log($scope.emailList);
 
             function removeDuplicates(value) {
                 var x,

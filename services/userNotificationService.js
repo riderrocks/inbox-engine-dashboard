@@ -8,7 +8,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             // url: "https://testde.bms.bz/dataengine/mobile/app/index.bms?cmd=DEREGIONLIST&f=json&et=MT&t=67x1xa33b4x422b361ba&ch=mobile"
             url: this.baseUrl + "/inbox/regionCodes"
         }).then(function successCallback(response) {
-            var regionCodes = response;
+            var regionCodes = JSON.parse(response.data.body);
             defer.resolve(regionCodes);
         });
         return defer.promise;
