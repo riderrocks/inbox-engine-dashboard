@@ -9,7 +9,7 @@
         </div> -->
         <div class="row">
             <div class="col-xs-6">
-                <label for="search">Campaign State:</label>
+                <label for="search">Filter Campaign:</label>
                 <br>
                 <select class="btn btn-default" ng-model="state.campaignState" ng-options="v for v in state.campaignStatus"></select>
                 <button type="submit" ng-click="getAllCampaigns(state.campaignState)">Go</button>
@@ -44,8 +44,8 @@
                 <td class="announcement"><span ng-repeat="data in data.regionCode">{{data}} </span></td>
                 <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
                 <td class="announcement">{{data.count}}</td>
-                <td class="announcement" ng-show="data.memberEmail == null && (state.campaignState=='all' || state.campaignState=='scheduled')">
-                    <a href="#/announcement/{{data._id}}">Edit</a>
+                <td class="announcement">
+                    <a ng-show="data.memberEmail == null && (state.campaignState=='all' || state.campaignState=='scheduled') && !data.isStopped" href="#/announcement/{{data._id}}">Edit</a>&nbsp;
                 </td>
                 <td class="announcement" ng-show="data.memberEmail == null && (state.campaignState=='all' || state.campaignState=='scheduled')"><button class="btn btn-info" ng-disabled="data.isStopped==true" ng-click="stopCampaign(data)">Stop</button></td>
             </tr>

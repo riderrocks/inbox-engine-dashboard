@@ -189,6 +189,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             $scope.res = res;
             if ($scope.res.status == 200) {
                 $scope.appCodefield = {};
+                swal("Done!", "Message sent to queue successfully", "success");
             }
         });
         $scope.message = {};
@@ -197,7 +198,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         $scope.dateRangeStart = null;
         $scope.dateRangeEnd = null;
         $scope.selectedIds = null;
-        swal("Done!", "Message created successfully", "success");
     }
 
     $scope.limmiter = function() {

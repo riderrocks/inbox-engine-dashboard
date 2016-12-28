@@ -1,11 +1,10 @@
-var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', 'CONFIG', '$filter', function($q, $http, CONFIG, $filter) {
+var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', '$window', 'CONFIG', '$filter', function($q, $http, $window, CONFIG, $filter) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
     this.getAllRegionCodes = function() {
         var defer = $q.defer();
         $http({
             method: 'GET',
-            // url: "https://testde.bms.bz/dataengine/mobile/app/index.bms?cmd=DEREGIONLIST&f=json&et=MT&t=67x1xa33b4x422b361ba&ch=mobile"
             url: this.baseUrl + "/inbox/regionCodes"
         }).then(function successCallback(response) {
             var regionCodes = JSON.parse(response.data.body);
@@ -189,13 +188,16 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
     }
 
     this.stopCampaign = function(campaign) {
-        console.log(campaign);
         $http({
             method: 'PUT',
             url: this.baseUrl + "/inbox/stopCampaign",
             data: campaign
         }).then(function successCallback(response) {
-            console.log(response);
+            if (response.status == 200 && response.data.success == 'success') {
+                swal({title: "Done!", text: "Campaign stopped successfully", type: "success"}, function() {
+                    $window.location.reload();
+                });
+            }
         }, function errorCallback(response) {
             console.log(response);
         });
