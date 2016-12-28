@@ -4,6 +4,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         templateUrl: 'views/new.html',
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
+
+
+
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
@@ -21,7 +24,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         };
     });
 
-
     $scope.messageType = {
         name: 'announcement'
     };
@@ -31,7 +33,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         "systemTypeValue": "BACKOFFICE",
         "systemTypeValues": ["BACKOFFICE"],
         "appCodeTypeValue": "WEBIN",
-        "appCodeTypeValues": ["WEBIN"],
+        "appCodeTypeValues": ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
         "targetTypeValue": "New Window",
         "targetTypeValues": [{ value: '_blank', name: "New Window" }, { value: '_self', name: "Same Window" }],
         "messageCardTypeValue": "PlainText",
@@ -201,6 +203,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     }
 
     $scope.limmiter = function() {
+
         $scope.sequence = $scope.message.Sequence;
         if ($scope.sequence == undefined) {
             $scope.message.Sequence = null;
@@ -313,6 +316,8 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         });
 
     }
+
+
 
     // searchable email
 

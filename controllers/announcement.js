@@ -8,13 +8,21 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
     var param = $routeParams.id;
 
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+        var TopCities = regionCode.BookMyShow.TopCities;
+        var OtherCities = regionCode.BookMyShow.OtherCities;
+        var rawCities = TopCities.concat(OtherCities);
+        var cities = [];
+        for (i = 0; i < rawCities.length; i++) {
+            cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
+        }
         $scope.selectOptions = {
-            dataSource: {
-                data: regionCode.data
-            }
+            placeholder: "Select RegionCode...",
+            dataTextField: 'name_city',
+            dataValueField: 'code_city',
+            dataSource: cities
+
         };
     });
-
     UserNotificationService.getAnnouncement(param).then(function(announcement) {
         $scope.announcement = announcement;
         $scope.selectedIds = $scope.announcement.data[0].regionCode;
