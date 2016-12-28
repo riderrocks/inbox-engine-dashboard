@@ -8,11 +8,11 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
     var param = $routeParams.id;
 
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+        var cities = [];
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
         var rawCities = TopCities.concat(OtherCities);
-        var cities = [];
-        for (i = 0; i < rawCities.length; i++) {
+        for (var i = 0; i < rawCities.length; i++) {
             cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
         }
         $scope.selectOptions = {
@@ -22,13 +22,34 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
             dataSource: cities
 
         };
+
+        function getObjects(obj, key, val) {
+
+            var objects = [];
+            for (var i in obj) {
+                if (!obj.hasOwnProperty(i)) continue;
+                if (typeof obj[i] == 'object') {
+                    objects = objects.concat(getObjects(obj[i], key, val));
+                } else if (i == key && obj[key] == val) {
+                    objects.push(obj);
+                }
+            }
+            return objects;
+        }
+        UserNotificationService.getAnnouncement(param).then(function(announcement) {
+            $scope.announcement = announcement;
+            for (var i = 0; i < $scope.announcement.data[0].regionCode.length; i++) {
+                var val = $scope.announcement.data[0].regionCode[i]
+                getObjects(cities, 'code_city', val);
+            }
+            $scope.selectedIds = $scope.announcement.data[0].regionCode;
+            $scope.dateRangeStart = $scope.announcement.data[0].validFrom;
+            $scope.dateRangeEnd = $scope.announcement.data[0].validTill;
+        });
     });
-    UserNotificationService.getAnnouncement(param).then(function(announcement) {
-        $scope.announcement = announcement;
-        $scope.selectedIds = $scope.announcement.data[0].regionCode;
-        $scope.dateRangeStart = $scope.announcement.data[0].validFrom;
-        $scope.dateRangeEnd = $scope.announcement.data[0].validTill;
-    });
+
+
+
 
     $scope.endDateBeforeRender = endDateBeforeRender;
     $scope.endDateOnSetTime = endDateOnSetTime;
