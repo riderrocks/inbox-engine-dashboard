@@ -7,6 +7,7 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
 
     $scope.currentPage = 1;
     $scope.pageSize = 10;
+    $scope.currentTime = new Date().toISOString();
 
     $scope.state = {
         "campaignState": "all",
@@ -31,7 +32,6 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
         }
         UserNotificationService.stopCampaign(campaign);
     }
-
 }]).controller('OtherController', ['$scope', function($scope) {
     $scope.pageChangeHandler = function(num) {
         console.log('going to page ' + num);
