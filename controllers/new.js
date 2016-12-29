@@ -121,7 +121,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
     $scope.create = function(message) {
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
-            message.cardType = 'PlainText';
+            message.cardType = 'PT';
             $scope.appCodes = [];
             $scope.callToAction = [];
             $scope.appCodefieldsAll = {};
@@ -134,7 +134,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
 
         } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
-            message.cardType = 'PlainText with CTA';
+            message.cardType = 'PT_CTA';
             if ($scope.appCodefield == null) {
                 swal('Oops...', 'Fill Primary CTA Link & Primary CTA Text fields before submission!', 'warning');
                 return false;
