@@ -53,7 +53,9 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             url: this.baseUrl + "/is/cms-push",
             data: announcement
         }).then(function successCallback(response) {
-            console.log(response);
+            if (response.status == 200 && response.data.msg == 'Success') {
+                swal("Done!", "Message updated successfully", "success");
+            }
         }, function errorCallback(response) {
             console.log(response);
         });

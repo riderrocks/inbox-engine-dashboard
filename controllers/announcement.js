@@ -13,7 +13,10 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
         var OtherCities = regionCode.BookMyShow.OtherCities;
         var rawCities = TopCities.concat(OtherCities);
         for (var i = 0; i < rawCities.length; i++) {
-            cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
+            cities.push({
+                name_city: rawCities[i].RegionName,
+                code_city: rawCities[i].RegionCode
+            });
         }
         $scope.selectOptions = {
             placeholder: "Select RegionCode...",
@@ -37,19 +40,27 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
             return objects;
         }
         UserNotificationService.getAnnouncement(param).then(function(announcement) {
-            $scope.announcement = announcement;
-            for (var i = 0; i < $scope.announcement.data[0].regionCode.length; i++) {
-                var val = $scope.announcement.data[0].regionCode[i]
+            $scope.announcement = announcement.data[0];
+            for (var i = 0; i < $scope.announcement.regionCode.length; i++) {
+                var val = $scope.announcement.regionCode[i]
                 getObjects(cities, 'code_city', val);
             }
-            $scope.selectedIds = $scope.announcement.data[0].regionCode;
-            $scope.dateRangeStart = $scope.announcement.data[0].validFrom;
-            $scope.dateRangeEnd = $scope.announcement.data[0].validTill;
+            $scope.selectedIds = $scope.announcement.regionCode;
+            $scope.dateRangeStart = $scope.announcement.validFrom;
+            $scope.dateRangeEnd = $scope.announcement.validTill;
         });
     });
 
-
-
+    $scope.selectType = {
+        "systemTypeValue": "CMS announcement",
+        "systemTypeValues": ['CMS announcement', 'CMS Notification'],
+        "appCodeTypeValue": "WEBIN",
+        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
+        "targetTypeValue": "New Window",
+        "targetTypeValues": ['New Window', 'Same Window'],
+        "messageCardTypeValue": "PlainText",
+        "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
+    };
 
     $scope.endDateBeforeRender = endDateBeforeRender;
     $scope.endDateOnSetTime = endDateOnSetTime;
@@ -87,90 +98,55 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
         }
     }
 
+    $scope.showWarning = function() {
+        $scope.show = true;
+    }
+
+    $scope.limmiter = function() {
+        $scope.sequence = $scope.announcement.sequence;
+        if ($scope.sequence == undefined) {
+            $scope.announcement.sequence = null;
+            swal('Oops...', 'NOTE: 5 is largest permissible value!', 'warning');
+        }
+        if ($scope.sequence == 0) {
+            $scope.announcement.sequence = null;
+            swal('Oops...', 'NOTE: Your selection should be greater than zero', 'warning');
+        }
+    }
+
     $scope.update = function(announcement) {
         $scope.announcementData = {};
         $scope.appCodes = [];
         $scope.callToAction = [];
         $scope.appCodefield = {};
         $scope.appCodefieldsAll = {};
-        $scope.announcementData._id = announcement.data[0]._id;
-        $scope.announcementData.campaign = announcement.data[0].campaign;
-        $scope.announcementData.shortTxt = announcement.data[0].shortTxt;
-        $scope.announcementData.imgURL = announcement.data[0].imgURL;
-        $scope.announcementData.longTxt = announcement.data[0].longTxt;
-        $scope.announcementData.sequence = announcement.data[0].sequence;
-        $scope.announcementData.type = announcement.data[0].type;
+
+        if (announcement.appCodes[0].callToAction[0].target == 'Same Window') {
+            $scope.appCodefield.target = '_self';
+        } else {
+            $scope.appCodefield.target = '_blank';
+        }
+
+        $scope.announcementData._id = announcement._id;
+        $scope.announcementData.campaign = announcement.campaign;
+        $scope.announcementData.shortTxt = announcement.shortTxt;
+        $scope.announcementData.imgURL = announcement.imgURL;
+        $scope.announcementData.longTxt = announcement.longTxt;
+        $scope.announcementData.sequence = announcement.sequence;
+        $scope.announcementData.cardType = announcement.cardType;
+        $scope.announcementData.type = announcement.type;
         $scope.announcementData.validFrom = $scope.dateRangeStart;
         $scope.announcementData.validTill = $scope.dateRangeEnd;
-        $scope.announcementData.regionCode = announcement.data[0].regionCode;
-        $scope.appCodefield.text = announcement.data[0].appCodes[0].callToAction[0].text;
-        $scope.appCodefield.link = announcement.data[0].appCodes[0].callToAction[0].link;
-        $scope.appCodefield.target = announcement.data[0].appCodes[0].callToAction[0].target;
+        $scope.announcementData.regionCode = announcement.regionCode;
+        $scope.appCodefield.text = announcement.appCodes[0].callToAction[0].text;
+        $scope.appCodefield.link = announcement.appCodes[0].callToAction[0].link;
         $scope.callToAction.push($scope.appCodefield);
-        $scope.appCodefieldsAll.appCode = announcement.data[0].appCodes[0].appCode;
+        $scope.appCodefieldsAll.appCode = announcement.appCodes[0].appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
         $scope.appCodes.push($scope.appCodefieldsAll);
         $scope.announcementData.from = "dashboard";
         $scope.announcementData.flag = 'A';
         $scope.announcementData.appCodes = $scope.appCodes;
         UserNotificationService.updateAnnouncement($scope.announcementData);
-        swal("Done!", "Message updated successfully", "success");
-    }
-    $scope.show = true;
-    $scope.showWarning = function() {
-        $scope.show = true;
-    }
-    $scope.limmiter = function() {
-        $scope.sequence = $scope.announcement.data[0].sequence;
-        console.log($scope.sequence);
-        if ($scope.sequence == undefined) {
-            $scope.announcement.data[0].sequence = null;
-            swal(
-                'Oops...',
-                'NOTE: 99 is largest permissible value!',
-                'warning'
-            )
-
-        }
-        if ($scope.sequence == 0) {
-            $scope.announcement.data[0].sequence = null;
-            swal(
-                'Oops...',
-                'NOTE: Your selection should be grater than zero',
-                'warning'
-            )
-
-        }
-    }
-    $scope.checkCampaign = function() {
-        var value = $scope.message.campaign;
-        if ($scope.messageType.name === "announcement") {
-            UserNotificationService.checkUniqueAnnouncementCampaign(value).then(function(response) {
-                if ($scope.message.campaign !== null) {
-                    if (response !== null) {
-                        $scope.message.campaign = null;
-                        swal(
-                            'Oops...',
-                            'Campaign name already Exists. Choose a new name!',
-                            'warning'
-                        )
-                    }
-                }
-            });
-        } else if ($scope.messageType.name == 'notification') {
-            UserNotificationService.checkUniqueNotificationCampaign(value).then(function(response) {
-                if ($scope.message.campaign !== null) {
-                    if (response !== null) {
-                        $scope.message.campaign = null;
-                        swal(
-                            'Oops...',
-                            'Campaign name already Exists. Choose a new name!',
-                            'warning'
-                        )
-                    }
-                }
-            });
-
-        }
     }
 }]);

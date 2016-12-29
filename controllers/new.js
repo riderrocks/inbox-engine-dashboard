@@ -1,19 +1,19 @@
-// 'use strict';
+'use strict';
 angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngMaterial']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/new', {
         templateUrl: 'views/new.html',
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
-
-
-
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
         var rawCities = TopCities.concat(OtherCities);
         var cities = [];
-        for (i = 0; i < rawCities.length; i++) {
-            cities.push({ name_city: rawCities[i].RegionName, code_city: rawCities[i].RegionCode });
+        for (var i = 0; i < rawCities.length; i++) {
+            cities.push({
+                name_city: rawCities[i].RegionName,
+                code_city: rawCities[i].RegionCode
+            });
         }
         $scope.selectOptions = {
             placeholder: "Select RegionCode...",
@@ -28,14 +28,19 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         name: 'announcement'
     };
 
-
     $scope.selectType = {
-        "systemTypeValue": "BACKOFFICE",
-        "systemTypeValues": ["BACKOFFICE"],
+        "systemTypeValue": "CMS announcement",
+        "systemTypeValues": ["CMS announcement", "CMS Notification"],
         "appCodeTypeValue": "WEBIN",
         "appCodeTypeValues": ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
         "targetTypeValue": "New Window",
-        "targetTypeValues": [{ value: '_blank', name: "New Window" }, { value: '_self', name: "Same Window" }],
+        "targetTypeValues": [{
+            value: '_blank',
+            name: "New Window"
+        }, {
+            value: '_self',
+            name: "Same Window"
+        }],
         "messageCardTypeValue": "PlainText",
         "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
     };
@@ -58,21 +63,17 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     document.getElementById("link").style.display = "none";
     document.getElementById("target").style.display = 'none';
 
-
     $scope.messageCardType = function(messageCardType) {
         if (messageCardType == 'PlainText') {
             document.getElementById("text").style.display = "none";
             document.getElementById("link").style.display = "none";
             document.getElementById("target").style.display = 'none';
-
         } else if (messageCardType == "PlainText with CTA") {
             document.getElementById("text").style.display = '';
             document.getElementById("link").style.display = '';
             document.getElementById("target").style.display = '';
-
         }
     }
-
 
     $scope.endDateBeforeRender = endDateBeforeRender;
     $scope.endDateOnSetTime = endDateOnSetTime;
@@ -82,6 +83,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     function startDateOnSetTime() {
         $scope.$broadcast('start-date-changed');
     }
+
     $scope.$on('start-date-changed', function(event, args) {
         $scope.dateChecker_validfrom();
     });
@@ -89,8 +91,8 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     function endDateOnSetTime() {
         $scope.$broadcast('end-date-changed');
     }
-    $scope.$on('end-date-changed', function(event, args) {
 
+    $scope.$on('end-date-changed', function(event, args) {
         $scope.dateChecker_validtill();
     });
 
@@ -117,11 +119,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         }
     }
 
-
-
     $scope.create = function(message) {
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
-            message.cardType = 'PT';
+            message.cardType = 'PlainText';
             $scope.appCodes = [];
             $scope.callToAction = [];
             $scope.appCodefieldsAll = {};
@@ -134,15 +134,10 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
 
         } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
-            message.cardType = 'CTA';
+            message.cardType = 'PlainText with CTA';
             if ($scope.appCodefield == null) {
-                swal(
-                    'Oops...',
-                    'Fill Primary CTA Link & Primary CTA Text fields before submission!',
-                    'warning'
-                )
+                swal('Oops...', 'Fill Primary CTA Link & Primary CTA Text fields before submission!', 'warning');
                 return false;
-
             }
             $scope.appCodes = [];
             $scope.appCodefieldsAll = {};
@@ -162,11 +157,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
 
         console.log(typeof $scope.dateRangeStart);
         if ($scope.dateRangeStart == null) {
-            swal(
-                'Oops...',
-                'Fill Valid From & Valid Till fields before submission!',
-                'warning'
-            )
+            swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
             return false;
         }
 
@@ -203,68 +194,42 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     }
 
     $scope.limmiter = function() {
-
         $scope.sequence = $scope.message.Sequence;
         if ($scope.sequence == undefined) {
             $scope.message.Sequence = null;
-            swal(
-                'Oops...',
-                'NOTE: 5 is largest permissible value!',
-                'warning'
-            )
-
+            swal('Oops...', 'NOTE: 5 is largest permissible value!', 'warning');
         }
         if ($scope.sequence == 0) {
             $scope.message.Sequence = null;
-            swal(
-                'Oops...',
-                'NOTE: Your selection should be grater than zero',
-                'warning'
-            )
-
+            swal('Oops...', 'NOTE: Your selection should be greater than zero', 'warning');
         }
-
-
     }
 
     $scope.dateChecker_validfrom = function() {
         $scope.validFrom = new Date($scope.dateRangeStart);
         $scope.date = new Date();
-
         if ($scope.validFrom < $scope.date) {
             $scope.dateRangeStart = null;
-            swal(
-                'Oops...',
-                'Valid From cannot be less than Present Date!',
-                'warning'
-            )
-
+            swal('Oops...', 'Valid From cannot be less than Present Date!', 'warning');
         }
-
     }
+
     $scope.dateChecker_validtill = function() {
         $scope.validFrom = JSON.stringify(new Date($scope.dateRangeStart));
         $scope.date = new Date($scope.dateRangeStart);
+
         if ($scope.validFrom == 'null') {
             $scope.dateRangeEnd = null;
-            swal(
-                'Oops...',
-                'Fill Valid From Field First !',
-                'warning'
-            )
-
+            swal('Oops...', 'Fill Valid From Field First !', 'warning');
         }
+
         $scope.date = new Date($scope.dateRangeStart);
         $scope.validDate = new Date($scope.date.setMinutes($scope.date.getMinutes() + 350));
         $scope.validTill = new Date($scope.dateRangeEnd);
+
         if ($scope.validTill < $scope.validDate) {
             $scope.dateRangeEnd = null;
-            swal(
-                'Oops...',
-                'Valid Till cannot be less than ' + $scope.validDate,
-                'warning'
-            )
-
+            swal('Oops...', 'Valid Till cannot be less than ' + $scope.validDate, 'warning');
         }
     }
 
@@ -275,11 +240,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
                 if ($scope.message.campaign !== null) {
                     if (response !== null) {
                         $scope.message.campaign = null;
-                        swal(
-                            'Oops...',
-                            'Campaign name already Exists. Choose a new name!',
-                            'warning'
-                        )
+                        swal('Oops...', 'Campaign name already Exists. Choose a new name!', 'warning');
                     }
                 }
             });
@@ -288,40 +249,32 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
                 if ($scope.message.campaign !== null) {
                     if (response !== null) {
                         $scope.message.campaign = null;
-                        swal(
-                            'Oops...',
-                            'Campaign name already Exists. Choose a new name!',
-                            'warning'
-                        )
+                        swal('Oops...', 'Campaign name already Exists. Choose a new name!', 'warning');
                     }
                 }
             });
-
         }
     }
+
     $scope.show = false;
+
     $scope.showWarning = function() {
         $scope.show = true;
     }
+
     $scope.fetchMemberId = function() {
         var memberEmail = $scope.searchText;
         UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
             if (response.error == "No data exist") {
-
                 swal('Oops...', 'No matching Email Id found.', 'warning');
             } else {
                 document.getElementById('value1').innerHTML = response.memberId;
                 console.log(document.getElementById('value1').innerHTML);
             }
         });
-
     }
 
-
-
     // searchable email
-
-
 
     // list of `state` value/display objects
     loadAll().then(function(emails) {
@@ -344,7 +297,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     function querySearch(query) {
         var results = query ? $scope.email.filter(createFilterFor(query)) : $scope.email;
         var deferred = $q.defer();
-        $timeout(function() { deferred.resolve(results); }, Math.random() * 1000, false);
+        $timeout(function() {
+            deferred.resolve(results);
+        }, Math.random() * 1000, false);
         return deferred.promise;
     }
 
