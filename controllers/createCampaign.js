@@ -1,7 +1,7 @@
 'use strict';
-angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngMaterial']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/new', {
-        templateUrl: 'views/new.html',
+angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngMaterial']).config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/createCampaign', {
+        templateUrl: 'views/createCampaign.html',
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
@@ -72,7 +72,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     }
 
     $scope.$on('start-date-changed', function(event, args) {
-        $scope.dateChecker_validfrom();
+        //$scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
@@ -80,7 +80,7 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
     }
 
     $scope.$on('end-date-changed', function(event, args) {
-        $scope.dateChecker_validtill();
+       // $scope.dateChecker_validtill();
     });
 
     function startDateBeforeRender($dates) {
@@ -166,7 +166,9 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             $scope.res = res;
             if ($scope.res.status == 200) {
                 $scope.appCodefield = {};
-                swal("Done!", "Message sent to queue successfully", "success");
+                swal({title: "Done!", text: "Message sent to queue successfully", type: "success"}, function() {
+                    $location.path('/viewCampaigns');
+                });
             }
         });
         $scope.message = {};

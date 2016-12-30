@@ -8,7 +8,7 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
         var curRoute = $location.path();
         if (curRoute == '/dashboard') {
             $scope.routeName = 'Dashboard';
-        } else if (curRoute == '/new') {
+        } else if (curRoute == '/createCampaign') {
             $scope.routeName = 'New Message';
         } else if (curRoute == '/sent') {
             $scope.routeName = 'Sent Message';

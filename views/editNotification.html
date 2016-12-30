@@ -1,6 +1,6 @@
 <div ng-include="'views/dashboard.html'"></div>
-<div class='container announcement-container' ng-controller='AnnouncementCtrl'>
-    <form ng-submit="update(announcement)">
+<div class='container announcement-container' ng-controller='NotificationCtrl'>
+    <form ng-submit="update(notification)">
         <table class="table MT15">
             <thead>
                 <tr>
@@ -8,7 +8,7 @@
                         <label for="campaign">CampaignName<span id="red"> *</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="30" class="form-control" ng-model='announcement.campaign' placeholder="Campaign Name" readonly required>
+                        <input type="text" maxlength="30" class="form-control" ng-model='notification.campaign' placeholder="Campaign Name" ng-disabled="true" required>
                     </td>
                 </tr>
                 <tr>
@@ -16,7 +16,7 @@
                         <label for="type">CardType:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="announcement.cardType" ng-options="v for v in selectType.messageCardTypeValues"></select>
+                        <select class="btn btn-default" ng-model="notification.cardType" ng-options="v for v in selectType.messageCardTypeValues"></select>{{notification.cardType}}
                     </td>
                 </tr>
                 <tr>
@@ -24,7 +24,7 @@
                         <label for="shortTxt">Title <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <input type="text" maxlength="30" class="form-control" ng-model='announcement.shortTxt' placeholder="Short Text" required>
+                        <input type="text" maxlength="30" class="form-control" ng-model='notification.shortTxt' placeholder="Short Text" required>
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +32,7 @@
                         <label for="imgURL">Icon URL:</label>
                     </th>
                     <td>
-                        <input type="url" class="form-control" ng-model='announcement.imgURL' placeholder="Image Url" />
+                        <input type="url" class="form-control" ng-model='notification.imgURL' placeholder="Image Url" />
                     </td>
                 </tr>
                 <tr>
@@ -40,7 +40,7 @@
                         <label for="longTxt">Message <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <textarea "text" maxlength="200" class="form-control" ng-model='announcement.longTxt' placeholder="Long Text" required>
+                        <textarea "text" maxlength="200" class="form-control" ng-model='notification.longTxt' placeholder="Long Text" required>
                         </textarea>
                     </td>
                 </tr>
@@ -49,7 +49,7 @@
                         <label for="sequence">Priority:</label>
                     </th>
                     <td>
-                        <input type="number" class="form-control" placeholder="sequence" ng-model='announcement.sequence' ng-blur="limmiter()" min="0" max="5" />
+                        <input type="number" class="form-control" placeholder="sequence" ng-model='notification.sequence' ng-blur="limmiter()" min="0" max="5" />
                     </td>
                 </tr>
                 <tr>
@@ -57,7 +57,9 @@
                         <label for="type">Sender:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="announcement.type" ng-options="v for v in selectType.systemTypeValues"></select>
+                        <select class="btn btn-default" ng-model="notification.type">
+                            <option ng-value="notification.type" selected>{{notification.type}}</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -69,7 +71,7 @@
                         <div class="dropdown form-group">
                             <a class="dropdown-toggle" id="dropdownStart" role="button" data-toggle="dropdown" data-target="#" href="#">
                                 <div class="input-group date">
-                                    <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" ng-click="showWarning()" class="form-control" data-ng-model="dateRangeStart" placeholder="Valid From" required="true" readonly> 
+                                    <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" ng-click="showWarning()" class="form-control" data-ng-model="dateRangeStart" placeholder="Valid From" readonly required="true">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div>
                             </a>
@@ -99,37 +101,42 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="regionCode">Region code <span id="red">*</span>:</label>
+                        <label for="memberEmail">Member Email <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <div class="demo-section k-content">
-                            <select kendo-multi-select k-options="selectOptions" k-ng-model="selectedIds" ng-model='announcement.regionCode'>
-                            </select>
-                        </div>
+                        <input type="text" class="form-control" ng-model='notification.memberEmail' placeholder="Member Email" ng-blur="fetchMemberId()">
                     </td>
                 </tr>
-                <tr ng-show="announcement.cardType == 'PlainText with CTA'">
+                <tr>
+                    <th>
+                        <label for="memberId">Member ID <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" class="form-control" ng-model='notification.memberId' placeholder="Member ID" ng-disabled="true">
+                    </td>
+                </tr>
+                <tr ng-show="notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="text">Primary CTA text:</label>
                     </th>
                     <td>
-                        <input type="text" Maxlength="10" class="form-control" ng-model='announcement.appCodes[0].callToAction[0].text' placeholder="Text" />
+                        <input type="text" Maxlength="10" class="form-control" ng-model='notification.appCodes[0].callToAction[0].text' placeholder="Text" />
                     </td>
                 </tr>
-                <tr ng-show="announcement.cardType == 'PlainText with CTA'">
+                <tr ng-show="notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="link">Primary CTA Link:</label>
                     </th>
                     <td>
-                        <input type="url" class="form-control" ng-model='announcement.appCodes[0].callToAction[0].link' class="link" placeholder="Link" />
+                        <input type="url" class="form-control" ng-model='notification.appCodes[0].callToAction[0].link' class="link" placeholder="Link" />
                     </td>
                 </tr>
-                <tr ng-show="announcement.cardType == 'PlainText with CTA'">
+                <tr ng-show="notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="target">Link Target:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="announcement.appCodes[0].callToAction[0].target" ng-options="v for v in selectType.targetTypeValues"></select>
+                        <select class="btn btn-default" ng-model="notification.appCodes[0].callToAction[0].target" ng-options="v for v in selectType.targetTypeValues"></select>{{notification.appCodes[0].callToAction[0].target}}
                     </td>
                 </tr>
                 <tr>
@@ -137,21 +144,21 @@
                         <label for="appCode">Appcode:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="announcement.appCodes[0].appCode" ng-options="v for v in selectType.appCodeTypeValues"></select>
+                        <select class="btn btn-default" ng-model="notification.appCodes[0].appCode" ng-options="v for v in selectType.appCodeTypeValues"></select>
                     </td>
                 </tr>
             </thead>
         </table>
         <button type="submit" class="btn btn-success">Update</button>
     </form>
-    <!--     <table class="table">
+    <!--  <table class="table">
         <thead>
             <tr>
                 <th>
                     <label for="campaign">Campaign Name <span id="red">*</span>:</label>
                 </th>
                 <td>
-                    <input type="text" maxlength="30" class="form-control" ng-model='announcement.campaign' placeholder="Campaign Name">
+                    <input type="text" maxlength="30" class="form-control" ng-model='notification.data[0].campaign' placeholder="Campaign Name">
                 </td>
             </tr>
             <tr>
@@ -159,7 +166,7 @@
                     <label for="shortTxt">Subject <span id="red">*</span>:</label>
                 </th>
                 <td>
-                    <input type="text" maxlength="30" class="form-control" ng-model='announcement.shortTxt' placeholder="Short Text">
+                    <input type="text" maxlength="30" class="form-control" ng-model='notification.data[0].shortTxt' placeholder="Short Text">
                 </td>
             </tr>
             <tr>
@@ -167,7 +174,7 @@
                     <label for="imgURL">Image URL:</label>
                 </th>
                 <td>
-                    <input type="url" class="form-control" ng-model='announcement.imgURL' placeholder="Image Url" />
+                    <input type="url" class="form-control" ng-model='notification.data[0].imgURL' placeholder="Image Url" />
                 </td>
             </tr>
             <tr>
@@ -175,7 +182,7 @@
                     <label for="longTxt">Message <span id="red">*</span>:</label>
                 </th>
                 <td>
-                    <textarea maxlength="200" class="form-control" ng-model='announcement.longTxt' placeholder="Long Text">
+                    <textarea maxlength="200" class="form-control" ng-model='notification.data[0].longTxt' placeholder="Long Text">
                     </textarea>
                 </td>
             </tr>
@@ -184,7 +191,7 @@
                     <label for="sequence">Sequence:</label>
                 </th>
                 <td>
-                    <input type="number" class="form-control" ng-model='announcement.sequence' ng-blur="limmiter()" placeholder="sequence" min="0" max="99" />
+                    <input type="number" class="form-control" ng-model='notification.data[0].sequence' ng-blur="limmiter()" placeholder="sequence" min="0" max="99" />
                 </td>
             </tr>
             <tr>
@@ -192,7 +199,7 @@
                     <label for="type">Type:</label>
                 </th>
                 <td>
-                    <select class="btn btn-default" ng-model='announcement.type'>
+                    <select class="btn btn-default" ng-model='notification.data[0].type'>
                         <option value="BACKOFFICE">BACKOFFICE</option>
                         <option value="system">SYSTEM </option>
                     </select>
@@ -237,13 +244,18 @@
             </tr>
             <tr>
                 <th>
-                    <label for="regionCode">Region code <span id="red">*</span>:</label>
+                    <label for="memberEmail">Member Email <span id="red">*</span>:</label>
                 </th>
                 <td>
-                    <div class="demo-section k-content">
-                        <select kendo-multi-select k-options="selectOptions" k-ng-model="selectedIds" ng-model='announcement.regionCode'>
-                        </select>
-                    </div>
+                    <input type="text" class="form-control" ng-model='notification.data[0].memberEmail' placeholder="Member Email" ng-blur="fetchMemberId()">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="memberId">Member ID <span id="red">*</span>:</label>
+                </th>
+                <td>
+                    <input type="text" class="form-control" ng-model='notification.data[0].memberId' placeholder="Member ID">
                 </td>
             </tr>
             <tr>
@@ -251,7 +263,7 @@
                     <label for="appCode">Appcode:</label>
                 </th>
                 <td>
-                    <select class="btn btn-default" ng-model='announcement.appCodes[0].appCode'>
+                    <select class="btn btn-default" ng-model='notification.data[0].appCodes[0].appCode'>
                         <option value="WEBIN">WEBIN</option>
                         <option value="MOBAND2">MOBAND2</option>
                         <option value="WEB">WEB</option>
@@ -266,7 +278,7 @@
                     <label for="text">CallToActionText:</label>
                 </th>
                 <td>
-                    <input type="text" maxlength="10" class="form-control" ng-model='announcement.appCodes[0].callToAction[0].text' placeholder="text" />
+                    <input type="text" maxlength="10" class="form-control" ng-model='notification.data[0].appCodes[0].callToAction[0].text' placeholder="text" />
                 </td>
             </tr>
             <tr>
@@ -274,7 +286,7 @@
                     <label for="link">CallToActionLink:</label>
                 </th>
                 <td>
-                    <input type="text" class="form-control" ng-model='announcement.appCodes[0].callToAction[0].link' class="link" placeholder="link" />
+                    <input type="text" class="form-control" ng-model='notification.data[0].appCodes[0].callToAction[0].link' class="link" placeholder="link" />
                 </td>
             </tr>
             <tr>
@@ -282,13 +294,13 @@
                     <label for="target">Target:</label>
                 </th>
                 <td>
-                    <select class="btn btn-default" ng-model='announcement.appCodes[0].callToAction[0].target'>
+                    <select class="btn btn-default" ng-model='notification.data[0].appCodes[0].callToAction[0].target'>
                         <option value="_blank">New Window </option>
                         <option value="_self">Same Window</option>
                     </select>
                 </td>
             </tr>
         </thead>
-    </table>
-    <button type="button" class="btn btn-success" ng-click="update(announcement)">Update</button> -->
+    </table> -->
+    <!-- <button type="button" class="btn btn-success" ng-click="update(notification)">Update</button> -->
 </div>

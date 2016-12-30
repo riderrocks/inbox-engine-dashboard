@@ -101,23 +101,22 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
     }
 
     this.createMessage = function(message) {
-        console.log(message);
-        // var defer = $q.defer();
-        // var messageResponse = '';
-        // $http({
-        //     method: 'POST',
-        //     url: this.baseUrl + "/is/cms-push",
-        //     data: message
-        // }).then(function successCallback(response) {
-        //     messageResponse = response;
-        //     defer.resolve(messageResponse);
-        //     console.log(response);
-        // }, function errorCallback(response) {
-        //     messageResponse = response;
-        //     defer.resolve(messageResponse);
-        //     console.log(response);
-        // });
-        // return defer.promise;
+        var defer = $q.defer();
+        var messageResponse = '';
+        $http({
+            method: 'POST',
+            url: this.baseUrl + "/is/cms-push",
+            data: message
+        }).then(function successCallback(response) {
+            messageResponse = response;
+            defer.resolve(messageResponse);
+            console.log(response);
+        }, function errorCallback(response) {
+            messageResponse = response;
+            defer.resolve(messageResponse);
+            console.log(response);
+        });
+        return defer.promise;
     }
 
     this.checkUniqueAnnouncementCampaign = function(value) {

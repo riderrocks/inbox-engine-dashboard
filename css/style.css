@@ -2354,7 +2354,7 @@ table.announcement {
     font-family: 'montserratlight'
 }
 
-td {
+.table td {
   width: 80%;
 }
 

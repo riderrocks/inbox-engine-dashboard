@@ -1,13 +1,12 @@
 'use strict';
-angular.module('myApp.notification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
+angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/notification/:id', {
-        templateUrl: 'views/notification.html',
-    }).when('/notification', {
-        templateUrl: 'views/notification.html',
+        templateUrl: 'views/editNotification.html',
     });
 }]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
 
     var param = $routeParams.id;
+    
     if (param) {
         UserNotificationService.getNotification(param).then(function(notification) {
             $scope.notification = notification.data[0];

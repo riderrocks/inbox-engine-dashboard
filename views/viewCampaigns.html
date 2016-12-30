@@ -14,9 +14,9 @@
     </div>
     <table class="announcement MT15" style="width:131%">
         <thead>
-            <th class="announcement">Message Id</th>
             <th class="announcement">Campaign Name</th>
             <th class="announcement">Sender</th>
+            <th class="announcement">User</th>
             <th class="announcement">Valid From</th>
             <th class="announcement">Valid Till</th>
             <th class="announcement">AppCode</th>
@@ -27,22 +27,21 @@
         </thead>
         <tbody>
             <tr dir-paginate="data in campaigns.data | filter:q | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
-                <td class="announcement">{{data._id}}</td>
                 <td class="announcement">{{data.campaign}}</td>
                 <td class="announcement">{{data.type}}</td>
+                <td class="announcement">{{data.memberEmail ? data.memberEmail : 'All Users'}}</td>
                 <td class="announcement">{{data.validFrom | date:'dd-MM-yyyy HH:mm a'}}</td>
                 <td class="announcement">{{data.validTill | date:'dd-MM-yyyy HH:mm a'}}</td>
                 <td class="announcement">{{data.appCodes[0].appCode}}</td>
                 <td class="announcement"><span ng-repeat="data in data.regionCode"> {{data}} </span></td>
                 <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
-                <td class="announcement">{{data.count}}</td>
+                <td class="announcement">{{data.count ? data.count : '1'}}</td>
                 <td class="announcement">
                     <a ng-show="!data.isStopped && data.validTill > currentTime" href="#/{{data.memberId ? 'notification' : 'announcement'}}/{{data._id}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
                 <td class="announcement">
                     <button class="btn btn-info" ng-disabled="data.isStopped==true || data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill < currentTime ? 'Stopped' : 'Stop'}}</button>
                 </td>
-                <!-- <td class="announcement">{{data.validTill > currentTime}}</td> -->
             </tr>
         </tbody>
     </table>

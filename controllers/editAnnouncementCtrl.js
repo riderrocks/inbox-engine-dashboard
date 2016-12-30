@@ -1,7 +1,7 @@
 'use strict';
-angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
+angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/announcement/:id', {
-        templateUrl: 'views/announcement.html',
+        templateUrl: 'views/editAnnouncement.html',
     });
 }]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
 
