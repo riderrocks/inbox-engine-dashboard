@@ -34,6 +34,6 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
     }
 }]).controller('OtherController', ['$scope', function($scope) {
     $scope.pageChangeHandler = function(num) {
-        console.log('going to page ' + num);
+        // console.log('going to page ' + num);
     }
 }]);

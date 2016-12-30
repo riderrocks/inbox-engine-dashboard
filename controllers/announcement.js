@@ -127,6 +127,11 @@ angular.module('myApp.announcement', ['ngRoute', 'kendo.directives', 'ui.dateTim
             $scope.appCodefield.target = '_blank';
         }
 
+        if ($scope.announcement.regionCode == null || $scope.dateRangeStart == null || $scope.dateRangeEnd == null || $scope.announcement.shortTxt == null || $scope.announcement.longTxt == null) {
+            swal("Ah ah!", "Fill all mandatory fields please", "error");
+            return false;
+        }
+
         $scope.announcementData._id = announcement._id;
         $scope.announcementData.campaign = announcement.campaign;
         $scope.announcementData.shortTxt = announcement.shortTxt;

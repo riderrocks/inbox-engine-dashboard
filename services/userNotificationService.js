@@ -12,6 +12,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+    
     this.getAllEmails = function() {
         var defer = $q.defer();
         $http({
@@ -91,29 +92,32 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             url: this.baseUrl + "/is/cms-push",
             data: notification
         }).then(function successCallback(response) {
-            console.log(response);
+            if (response.status == 200 && response.data.msg == 'Success') {
+                swal("Done!", "Message updated successfully", "success");
+            }
         }, function errorCallback(response) {
             console.log(response);
         });
     }
 
     this.createMessage = function(message) {
-        var defer = $q.defer();
-        var messageResponse = '';
-        $http({
-            method: 'POST',
-            url: this.baseUrl + "/is/cms-push",
-            data: message
-        }).then(function successCallback(response) {
-            messageResponse = response;
-            defer.resolve(messageResponse);
-            console.log(response);
-        }, function errorCallback(response) {
-            messageResponse = response;
-            defer.resolve(messageResponse);
-            console.log(response);
-        });
-        return defer.promise;
+        console.log(message);
+        // var defer = $q.defer();
+        // var messageResponse = '';
+        // $http({
+        //     method: 'POST',
+        //     url: this.baseUrl + "/is/cms-push",
+        //     data: message
+        // }).then(function successCallback(response) {
+        //     messageResponse = response;
+        //     defer.resolve(messageResponse);
+        //     console.log(response);
+        // }, function errorCallback(response) {
+        //     messageResponse = response;
+        //     defer.resolve(messageResponse);
+        //     console.log(response);
+        // });
+        // return defer.promise;
     }
 
     this.checkUniqueAnnouncementCampaign = function(value) {

@@ -1,6 +1,155 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class='container announcement-container' ng-controller='NotificationCtrl'>
-    <table class="table">
+    <form ng-submit="update(notification)">
+        <table class="table MT15">
+            <thead>
+                <tr>
+                    <th>
+                        <label for="campaign">CampaignName<span id="red"> *</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" maxlength="30" class="form-control" ng-model='notification.campaign' placeholder="Campaign Name" ng-disabled="true" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="type">CardType:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="notification.cardType" ng-options="v for v in selectType.messageCardTypeValues"></select>{{notification.cardType}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="shortTxt">Title <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" maxlength="30" class="form-control" ng-model='notification.shortTxt' placeholder="Short Text" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="imgURL">Icon URL:</label>
+                    </th>
+                    <td>
+                        <input type="url" class="form-control" ng-model='notification.imgURL' placeholder="Image Url" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="longTxt">Message <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <textarea "text" maxlength="200" class="form-control" ng-model='notification.longTxt' placeholder="Long Text" required>
+                        </textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="sequence">Priority:</label>
+                    </th>
+                    <td>
+                        <input type="number" class="form-control" placeholder="sequence" ng-model='notification.sequence' ng-blur="limmiter()" min="0" max="5" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="type">Sender:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="notification.type" ng-options="v for v in selectType.systemTypeValues"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="validFrom" style='margin-bottom: 20%;'>Valid From <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <p id='red' ng-show="show">The minimum difference between Valid From & Valid Till must be 5hrs and 50 minutes</p>
+                        <div class="dropdown form-group">
+                            <a class="dropdown-toggle" id="dropdownStart" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                <div class="input-group date">
+                                    <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" ng-click="showWarning()" class="form-control" data-ng-model="dateRangeStart" placeholder="Valid From" readonly required="true">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <datetimepicker data-ng-model="dateRangeStart" data-datetimepicker-config="{ dropdownSelector: '#dropdownStart', renderOn: 'end-date-changed' }" data-on-set-time="startDateOnSetTime()" data-before-render="startDateBeforeRender($dates)"></datetimepicker>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label style='margin-bottom: 16%;' for="validTill">Valid Till <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <div class="dropdown form-group">
+                            <a class="dropdown-toggle" id="dropdownEnd" role="button" data-toggle="dropdown" data-target="#" href="#">
+                                <div class="input-group date">
+                                    <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" class="form-control" data-ng-model="dateRangeEnd" placeholder="Valid Till" readonly>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <datetimepicker data-ng-model="dateRangeEnd" data-datetimepicker-config="{ dropdownSelector: '#dropdownEnd', renderOn: 'start-date-changed' }" data-on-set-time="endDateOnSetTime()" data-before-render="endDateBeforeRender($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="memberEmail">Member Email <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" class="form-control" ng-model='notification.memberEmail' placeholder="Member Email" ng-blur="fetchMemberId()">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="memberId">Member ID <span id="red">*</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" class="form-control" ng-model='notification.memberId' placeholder="Member ID" ng-disabled="true">
+                    </td>
+                </tr>
+                <tr ng-show="notification.cardType == 'PlainText with CTA'">
+                    <th>
+                        <label for="text">Primary CTA text:</label>
+                    </th>
+                    <td>
+                        <input type="text" Maxlength="10" class="form-control" ng-model='notification.appCodes[0].callToAction[0].text' placeholder="Text" />
+                    </td>
+                </tr>
+                <tr ng-show="notification.cardType == 'PlainText with CTA'">
+                    <th>
+                        <label for="link">Primary CTA Link:</label>
+                    </th>
+                    <td>
+                        <input type="url" class="form-control" ng-model='notification.appCodes[0].callToAction[0].link' class="link" placeholder="Link" />
+                    </td>
+                </tr>
+                <tr ng-show="notification.cardType == 'PlainText with CTA'">
+                    <th>
+                        <label for="target">Link Target:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="notification.appCodes[0].callToAction[0].target" ng-options="v for v in selectType.targetTypeValues"></select>{{notification.appCodes[0].callToAction[0].target}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="appCode">Appcode:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="notification.appCodes[0].appCode" ng-options="v for v in selectType.appCodeTypeValues"></select>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <button type="submit" class="btn btn-success">Update</button>
+    </form>
+    <!--  <table class="table">
         <thead>
             <tr>
                 <th>
@@ -150,6 +299,6 @@
                 </td>
             </tr>
         </thead>
-    </table>
-    <button type="button" class="btn btn-success" ng-click="update(notification)">Update</button>
+    </table> -->
+    <!-- <button type="button" class="btn btn-success" ng-click="update(notification)">Update</button> -->
 </div>

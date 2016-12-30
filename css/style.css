@@ -2354,6 +2354,10 @@ table.announcement {
     font-family: 'montserratlight'
 }
 
+td {
+  width: 80%;
+}
+
 td.announcement {
     font-size: 12px;
 }

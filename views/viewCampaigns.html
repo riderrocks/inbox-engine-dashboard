@@ -32,17 +32,17 @@
                 <td class="announcement">{{data.type}}</td>
                 <td class="announcement">{{data.validFrom | date:'dd-MM-yyyy HH:mm a'}}</td>
                 <td class="announcement">{{data.validTill | date:'dd-MM-yyyy HH:mm a'}}</td>
-                <!-- <td class="announcement">{{data.validTill > currentTime}}</td> -->
                 <td class="announcement">{{data.appCodes[0].appCode}}</td>
-                <td class="announcement"><span ng-repeat="data in data.regionCode">{{data}} </span></td>
+                <td class="announcement"><span ng-repeat="data in data.regionCode"> {{data}} </span></td>
                 <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
                 <td class="announcement">{{data.count}}</td>
                 <td class="announcement">
-                    <a ng-show="data.memberEmail == null && !data.isStopped && data.validTill > currentTime" href="#/announcement/{{data._id}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a ng-show="!data.isStopped && data.validTill > currentTime" href="#/{{data.memberId ? 'notification' : 'announcement'}}/{{data._id}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
-                <td class="announcement" ng-show="data.memberEmail == null">
-                    <button class="btn btn-info" ng-disabled="data.isStopped==true || data.validTill < currentTime" ng-click="stopCampaign(data)">Stop</button>
+                <td class="announcement">
+                    <button class="btn btn-info" ng-disabled="data.isStopped==true || data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill < currentTime ? 'Stopped' : 'Stop'}}</button>
                 </td>
+                <!-- <td class="announcement">{{data.validTill > currentTime}}</td> -->
             </tr>
         </tbody>
     </table>

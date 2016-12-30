@@ -28,9 +28,11 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         name: 'announcement'
     };
 
+    $scope.systemTypeValue = {
+        name : 'CMS Announcement'
+    };
+
     $scope.selectType = {
-        "systemTypeValue": "CMS announcement",
-        "systemTypeValues": ["CMS announcement", "CMS Notification"],
         "appCodeTypeValue": "WEBIN",
         "appCodeTypeValues": ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
         "targetTypeValue": "New Window",
@@ -52,26 +54,11 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         if (messageType.name == 'announcement') {
             $scope.messageType.announcement = true;
             $scope.messageType.notification = false;
+            $scope.systemTypeValue.name = 'CMS Announcement';
         } else if (messageType.name == 'notification') {
             $scope.messageType.notification = true;
             $scope.messageType.announcement = false;
-        }
-    }
-
-    //to hide and show CTA
-    document.getElementById("text").style.display = "none";
-    document.getElementById("link").style.display = "none";
-    document.getElementById("target").style.display = 'none';
-
-    $scope.messageCardType = function(messageCardType) {
-        if (messageCardType == 'PlainText') {
-            document.getElementById("text").style.display = "none";
-            document.getElementById("link").style.display = "none";
-            document.getElementById("target").style.display = 'none';
-        } else if (messageCardType == "PlainText with CTA") {
-            document.getElementById("text").style.display = '';
-            document.getElementById("link").style.display = '';
-            document.getElementById("target").style.display = '';
+            $scope.systemTypeValue.name = 'CMS Notification';
         }
     }
 
@@ -150,12 +137,11 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
         }
 
         message.from = 'cms';
-        message.type = $scope.selectType.systemTypeValue;
+        message.type = $scope.systemTypeValue.name;
         message.validFrom = $scope.dateRangeStart;
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
 
-        console.log(typeof $scope.dateRangeStart);
         if ($scope.dateRangeStart == null) {
             swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
             return false;
@@ -165,7 +151,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             message.flag = 'A';
             delete message.memberId;
             delete message.memberEmail;
-            console.log(message);
             if ($scope.selectedIds == null) {
                 swal("Heyy!", "Need to specify the RegionCode", "error");
                 return false;
@@ -175,7 +160,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             message.memberId = document.getElementById('value1').innerHTML;
             message.memberEmail = $scope.searchText;
             delete message.regionCode;
-            console.log(message);
         }
 
         UserNotificationService.createMessage(message).then(function(res) {
@@ -255,8 +239,6 @@ angular.module('myApp.new', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngM
             });
         }
     }
-
-    $scope.show = false;
 
     $scope.showWarning = function() {
         $scope.show = true;
