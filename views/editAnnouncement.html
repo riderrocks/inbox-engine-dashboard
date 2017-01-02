@@ -1,6 +1,9 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class='container announcement-container' ng-controller='AnnouncementCtrl'>
-    <form ng-submit="update(announcement)" novalidate>
+    <div ng-if="!selectedIds">
+        <img src="images/gears-anime.gif">
+    </div>
+    <form ng-if="selectedIds" ng-submit="update(announcement)" novalidate>
         <table class="table MT15">
             <thead>
                 <tr>
