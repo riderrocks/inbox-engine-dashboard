@@ -29,20 +29,14 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     };
 
     $scope.systemTypeValue = {
-        name : 'CMS Announcement'
+        name: 'CMS Announcement'
     };
 
     $scope.selectType = {
         "appCodeTypeValue": "WEBIN",
         "appCodeTypeValues": ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
         "targetTypeValue": "New Window",
-        "targetTypeValues": [{
-            value: '_blank',
-            name: "New Window"
-        }, {
-            value: '_self',
-            name: "Same Window"
-        }],
+        "targetTypeValues": ['New Window', 'Same Window'],
         "messageCardTypeValue": "PlainText",
         "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
     };
@@ -80,7 +74,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     }
 
     $scope.$on('end-date-changed', function(event, args) {
-       // $scope.dateChecker_validtill();
+        // $scope.dateChecker_validtill();
     });
 
     function startDateBeforeRender($dates) {
@@ -126,10 +120,14 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
                 swal('Oops...', 'Fill Primary CTA Link & Primary CTA Text fields before submission!', 'warning');
                 return false;
             }
+            if ($scope.selectType.targetTypeValue == 'New Window') {
+                $scope.appCodefield.target = '_blank';
+            } else if ($scope.selectType.targetTypeValue == 'Same Window') {
+                $scope.appCodefield.target = '_self';
+            }
             $scope.appCodes = [];
             $scope.appCodefieldsAll = {};
             $scope.callToAction = [];
-            $scope.appCodefield.target = $scope.selectType.targetTypeValue.value;
             $scope.callToAction.push($scope.appCodefield);
             $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
             $scope.appCodefieldsAll.callToAction = $scope.callToAction;
@@ -166,7 +164,11 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
             $scope.res = res;
             if ($scope.res.status == 200) {
                 $scope.appCodefield = {};
-                swal({title: "Done!", text: "Message sent to queue successfully", type: "success"}, function() {
+                swal({
+                    title: "Done!",
+                    text: "Message sent to queue successfully",
+                    type: "success"
+                }, function() {
                     $location.path('/viewCampaigns');
                 });
             }
@@ -180,13 +182,13 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     }
 
     $scope.limmiter = function() {
-        $scope.sequence = $scope.message.Sequence;
+        $scope.sequence = $scope.message.sequence;
         if ($scope.sequence == undefined) {
-            $scope.message.Sequence = null;
+            $scope.message.sequence = null;
             swal('Oops...', 'NOTE: 5 is largest permissible value!', 'warning');
         }
         if ($scope.sequence == 0) {
-            $scope.message.Sequence = null;
+            $scope.message.sequence = null;
             swal('Oops...', 'NOTE: Your selection should be greater than zero', 'warning');
         }
     }

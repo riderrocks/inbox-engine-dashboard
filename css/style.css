@@ -2348,14 +2348,20 @@ background: -webkit-linear-gradient(top, rgba(246,246,246,1) 0%,rgba(234,234,234
 .account-head h3{line-height: inherit;}
 
 /* announcement table */
+
+.viewCampaignsTable {
+  min-height: 80vh;
+}
+
 table.announcement {
     width: 100%;
     border-collapse: collapse;
     font-family: 'montserratlight'
 }
 
-.table td {
-  width: 80%;
+
+.table.MT15 > thead > tr > td { 
+  width: 80% 
 }
 
 td.announcement {

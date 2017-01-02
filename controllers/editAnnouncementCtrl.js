@@ -55,11 +55,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         "systemTypeValue": "CMS announcement",
         "systemTypeValues": ['CMS announcement', 'CMS Notification'],
         "appCodeTypeValue": "WEBIN",
-        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
-        "targetTypeValue": "New Window",
-        "targetTypeValues": ['New Window', 'Same Window'],
-        "messageCardTypeValue": "PlainText",
-        "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
+        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10']
     };
 
     $scope.endDateBeforeRender = endDateBeforeRender;
@@ -121,9 +117,18 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         $scope.appCodefield = {};
         $scope.appCodefieldsAll = {};
 
+        if (announcement.cardType == 'PlainText with CTA' || announcement.cardType == 'PT_CTA') {
+            $scope.announcementData.cardType = 'PT_CTA';
+            $scope.appCodefield.text = announcement.appCodes[0].callToAction[0].text;
+            $scope.appCodefield.link = announcement.appCodes[0].callToAction[0].link;
+            $scope.appCodefield.target = announcement.appCodes[0].callToAction[0].target;
+        } else if (announcement.cardType == 'PlainText' || announcement.cardType == 'PT') {
+            $scope.announcementData.cardType = 'PT';
+        }
+
         if (announcement.appCodes[0].callToAction[0].target == 'Same Window') {
             $scope.appCodefield.target = '_self';
-        } else {
+        } else if (announcement.appCodes[0].callToAction[0].target == 'New Window') {
             $scope.appCodefield.target = '_blank';
         }
 
@@ -138,13 +143,10 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         $scope.announcementData.imgURL = announcement.imgURL;
         $scope.announcementData.longTxt = announcement.longTxt;
         $scope.announcementData.sequence = announcement.sequence;
-        $scope.announcementData.cardType = announcement.cardType;
         $scope.announcementData.type = announcement.type;
         $scope.announcementData.validFrom = $scope.dateRangeStart;
         $scope.announcementData.validTill = $scope.dateRangeEnd;
         $scope.announcementData.regionCode = announcement.regionCode;
-        $scope.appCodefield.text = announcement.appCodes[0].callToAction[0].text;
-        $scope.appCodefield.link = announcement.appCodes[0].callToAction[0].link;
         $scope.callToAction.push($scope.appCodefield);
         $scope.appCodefieldsAll.appCode = announcement.appCodes[0].appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;

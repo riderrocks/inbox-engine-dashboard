@@ -1,6 +1,6 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class='container announcement-container' ng-controller='NotificationCtrl'>
-    <form ng-submit="update(notification)">
+    <form ng-submit="update(notification)" novalidate>
         <table class="table MT15">
             <thead>
                 <tr>
@@ -16,7 +16,10 @@
                         <label for="type">CardType:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="notification.cardType" ng-options="v for v in selectType.messageCardTypeValues"></select>{{notification.cardType}}
+                        <select class="btn btn-default" ng-model="notification.cardType">
+                            <option ng-selected="notification.cardType == 'PT'">PlainText</option>
+                            <option ng-selected="notification.cardType == 'PT_CTA'">PlainText with CTA</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +35,7 @@
                         <label for="imgURL">Icon URL:</label>
                     </th>
                     <td>
-                        <input type="url" class="form-control" ng-model='notification.imgURL' placeholder="Image Url" />
+                        <input type="url" class="form-control" ng-model='notification.imgURL' placeholder="Image Url"/>
                     </td>
                 </tr>
                 <tr>
@@ -115,7 +118,7 @@
                         <input type="text" class="form-control" ng-model='notification.memberId' placeholder="Member ID" ng-disabled="true">
                     </td>
                 </tr>
-                <tr ng-show="notification.cardType == 'PlainText with CTA'">
+                <tr ng-show="notification.cardType == 'PT_CTA' || notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="text">Primary CTA text:</label>
                     </th>
@@ -123,7 +126,7 @@
                         <input type="text" Maxlength="10" class="form-control" ng-model='notification.appCodes[0].callToAction[0].text' placeholder="Text" />
                     </td>
                 </tr>
-                <tr ng-show="notification.cardType == 'PlainText with CTA'">
+                <tr ng-show="notification.cardType == 'PT_CTA' || notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="link">Primary CTA Link:</label>
                     </th>
@@ -131,12 +134,15 @@
                         <input type="url" class="form-control" ng-model='notification.appCodes[0].callToAction[0].link' class="link" placeholder="Link" />
                     </td>
                 </tr>
-                <tr ng-show="notification.cardType == 'PlainText with CTA'">
+                <tr ng-show="notification.cardType == 'PT_CTA' || notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="target">Link Target:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="notification.appCodes[0].callToAction[0].target" ng-options="v for v in selectType.targetTypeValues"></select>{{notification.appCodes[0].callToAction[0].target}}
+                        <select class="btn btn-default" ng-model="notification.appCodes[0].callToAction[0].target">
+                            <option ng-selected="notification.appCodes[0].callToAction[0].target == '_blank'">New Window</option>
+                            <option ng-selected="notification.appCodes[0].callToAction[0].target == '_self'">Same Window</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -151,156 +157,4 @@
         </table>
         <button type="submit" class="btn btn-success">Update</button>
     </form>
-    <!--  <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    <label for="campaign">Campaign Name <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <input type="text" maxlength="30" class="form-control" ng-model='notification.data[0].campaign' placeholder="Campaign Name">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="shortTxt">Subject <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <input type="text" maxlength="30" class="form-control" ng-model='notification.data[0].shortTxt' placeholder="Short Text">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="imgURL">Image URL:</label>
-                </th>
-                <td>
-                    <input type="url" class="form-control" ng-model='notification.data[0].imgURL' placeholder="Image Url" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="longTxt">Message <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <textarea maxlength="200" class="form-control" ng-model='notification.data[0].longTxt' placeholder="Long Text">
-                    </textarea>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="sequence">Sequence:</label>
-                </th>
-                <td>
-                    <input type="number" class="form-control" ng-model='notification.data[0].sequence' ng-blur="limmiter()" placeholder="sequence" min="0" max="99" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="type">Type:</label>
-                </th>
-                <td>
-                    <select class="btn btn-default" ng-model='notification.data[0].type'>
-                        <option value="BACKOFFICE">BACKOFFICE</option>
-                        <option value="system">SYSTEM </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="validFrom" style='margin-bottom: 20%;'>Valid From <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <p id='red' ng-show="show">The minimum difference between Valid From & Valid Till must be 5hrs and 50 minutes</p>
-                    <div class="dropdown form-group">
-                        <a class="dropdown-toggle" id="dropdownStart" role="button" data-toggle="dropdown" data-target="#" href="#">
-                            <div class="input-group date">
-                                <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" ng-click="showWarning()" type="text" class="form-control" data-ng-model="dateRangeStart" name="validFrom" required>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <datetimepicker data-ng-model="dateRangeStart" data-datetimepicker-config="{ dropdownSelector: '#dropdownStart', renderOn: 'end-date-changed' }" data-on-set-time="startDateOnSetTime()" data-before-render="startDateBeforeRender($dates)"></datetimepicker>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label style='margin-bottom: 16%;' for="validTill">Valid Till <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <div class="dropdown form-group">
-                        <a class="dropdown-toggle" id="dropdownEnd" role="button" data-toggle="dropdown" data-target="#" href="#">
-                            <div class="input-group date">
-                                <input data-date-time-input="YYYY-MMM-DD hh:mm:ss a" type="text" class="form-control" data-ng-model="dateRangeEnd" name="validTill" required>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <datetimepicker data-ng-model="dateRangeEnd" data-datetimepicker-config="{ dropdownSelector: '#dropdownEnd', renderOn: 'start-date-changed' }" data-on-set-time="endDateOnSetTime()" data-before-render="endDateBeforeRender($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="memberEmail">Member Email <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control" ng-model='notification.data[0].memberEmail' placeholder="Member Email" ng-blur="fetchMemberId()">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="memberId">Member ID <span id="red">*</span>:</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control" ng-model='notification.data[0].memberId' placeholder="Member ID">
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="appCode">Appcode:</label>
-                </th>
-                <td>
-                    <select class="btn btn-default" ng-model='notification.data[0].appCodes[0].appCode'>
-                        <option value="WEBIN">WEBIN</option>
-                        <option value="MOBAND2">MOBAND2</option>
-                        <option value="WEB">WEB</option>
-                        <option value="WEBTOUCH">WEBTOUCH</option>
-                        <option value="MOBIOS3">MOBIOS3</option>
-                        <option value="MOBWIN10">MOBWIN10</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="text">CallToActionText:</label>
-                </th>
-                <td>
-                    <input type="text" maxlength="10" class="form-control" ng-model='notification.data[0].appCodes[0].callToAction[0].text' placeholder="text" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="link">CallToActionLink:</label>
-                </th>
-                <td>
-                    <input type="text" class="form-control" ng-model='notification.data[0].appCodes[0].callToAction[0].link' class="link" placeholder="link" />
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="target">Target:</label>
-                </th>
-                <td>
-                    <select class="btn btn-default" ng-model='notification.data[0].appCodes[0].callToAction[0].target'>
-                        <option value="_blank">New Window </option>
-                        <option value="_self">Same Window</option>
-                    </select>
-                </td>
-            </tr>
-        </thead>
-    </table> -->
-    <!-- <button type="button" class="btn btn-success" ng-click="update(notification)">Update</button> -->
 </div>

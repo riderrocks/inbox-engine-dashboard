@@ -6,7 +6,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
 }]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
 
     var param = $routeParams.id;
-    
+
     if (param) {
         UserNotificationService.getNotification(param).then(function(notification) {
             $scope.notification = notification.data[0];
@@ -19,11 +19,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         "systemTypeValue": "CMS Announcement",
         "systemTypeValues": ['CMS Announcement', 'CMS Notification'],
         "appCodeTypeValue": "WEBIN",
-        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
-        "targetTypeValue": "New Window",
-        "targetTypeValues": ['New Window', 'Same Window'],
-        "messageCardTypeValue": "PlainText",
-        "messageCardTypeValues": ["PlainText", "PlainText with CTA"]
+        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10']
     };
 
     $scope.endDateBeforeRender = endDateBeforeRender;
@@ -98,10 +94,24 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         $scope.appCodefield = {};
         $scope.appCodefieldsAll = {};
 
+        if (notification.cardType == 'PlainText with CTA' || notification.cardType == 'PT_CTA') {
+            $scope.notificationData.cardType = 'PT_CTA';
+            $scope.appCodefield.text = notification.appCodes[0].callToAction[0].text;
+            $scope.appCodefield.link = notification.appCodes[0].callToAction[0].link;
+            $scope.appCodefield.target = notification.appCodes[0].callToAction[0].target;
+        } else if (notification.cardType == 'PlainText' || notification.cardType == 'PT') {
+            $scope.notificationData.cardType = 'PT';
+        }
+
         if (notification.appCodes[0].callToAction[0].target == 'Same Window') {
             $scope.appCodefield.target = '_self';
-        } else {
+        } else if (notification.appCodes[0].callToAction[0].target == 'New Window') {
             $scope.appCodefield.target = '_blank';
+        }
+
+        if ($scope.notification.memberId == null || $scope.dateRangeStart == null || $scope.dateRangeEnd == null || $scope.notification.shortTxt == null || $scope.notification.longTxt == null) {
+            swal("Ah ah!", "Fill all mandatory fields please", "error");
+            return false;
         }
 
         $scope.notificationData._id = notification._id;
@@ -115,9 +125,6 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         $scope.notificationData.validTill = $scope.dateRangeEnd;
         $scope.notificationData.memberId = notification.memberId;
         $scope.notificationData.memberEmail = notification.memberEmail;
-        $scope.appCodefield.text = notification.appCodes[0].callToAction[0].text;
-        $scope.appCodefield.link = notification.appCodes[0].callToAction[0].link;
-        $scope.appCodefield.target = notification.appCodes[0].callToAction[0].target;
         $scope.callToAction.push($scope.appCodefield);
         $scope.appCodefieldsAll.appCode = notification.appCodes[0].appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;

@@ -26,7 +26,7 @@
                         <label for="type">CardType:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues" ng-change="messageCardType(selectType.messageCardTypeValue)"></select>
+                        <select class="btn btn-default" ng-model="selectType.messageCardTypeValue" ng-options="v for v in selectType.messageCardTypeValues"></select> 
                     </td>
                 </tr>
                 <tr>
@@ -59,7 +59,7 @@
                         <label for="sequence">Priority:</label>
                     </th>
                     <td>
-                        <input type="number" class="form-control" placeholder="Sequence" ng-model='message.Sequence' ng-blur="limmiter()" min="0" max="5" />
+                        <input type="number" class="form-control" placeholder="Sequence" ng-model='message.sequence' ng-blur="limmiter()" min="0" max="5" value="5" />
                     </td>
                 </tr>
                 <tr>
@@ -141,7 +141,7 @@
                         <label for="target">Link Target:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v.name for v in selectType.targetTypeValues"></select>
+                        <select class="btn btn-default" ng-model="selectType.targetTypeValue" ng-options="v for v in selectType.targetTypeValues"></select>
                     </td>
                 </tr>
                 <tr ng-show="messageType.notification">
