@@ -9,7 +9,7 @@
         </div>
         <div class="col-xs-6">
             <label for="search">Search:</label>
-            <input ng-model="q" id="search" class="form-control" placeholder="Filter text">
+            <input ng-model="q.campaign" id="search" class="form-control" placeholder="Search Campaign Name">
         </div>
     </div>
     <div class="viewCampaignsTable">
@@ -27,7 +27,7 @@
                 <th class="announcement" colspan="2">Action</th>
             </thead>
             <tbody>
-                <tr dir-paginate="data in campaigns.data | filter:q | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
+                <tr dir-paginate="data in campaigns.data | filter:q:strict | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
                     <td class="announcement">{{data.campaign}}</td>
                     <td class="announcement">{{data.type}}</td>
                     <td class="announcement">{{data.memberEmail ? data.memberEmail : 'All Users'}}</td>
