@@ -1,14 +1,14 @@
 'use strict';
-angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
+angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/notification/:id', {
         templateUrl: 'views/editNotification.html',
     });
-}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
+}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function ($scope, $location, $routeParams, UserNotificationService) {
 
     var param = $routeParams.id;
 
     if (param) {
-        UserNotificationService.getNotification(param).then(function(notification) {
+        UserNotificationService.getNotification(param).then(function (notification) {
             $scope.notification = notification.data[0];
             $scope.dateRangeStart = $scope.notification.validFrom;
             $scope.dateRangeEnd = $scope.notification.validTill;
@@ -44,9 +44,9 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
     function startDateBeforeRender($dates) {
         if ($scope.dateRangeEnd) {
             var activeDate = moment($scope.dateRangeEnd);
-            $dates.filter(function(date) {
+            $dates.filter(function (date) {
                 return date.localDateValue() >= activeDate.valueOf()
-            }).forEach(function(date) {
+            }).forEach(function (date) {
                 date.selectable = false;
             })
         }
@@ -56,15 +56,15 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         if ($scope.dateRangeStart) {
             var activeDate = moment($scope.dateRangeStart).subtract(1, $view).add(1, 'minute');
 
-            $dates.filter(function(date) {
+            $dates.filter(function (date) {
                 return date.localDateValue() <= activeDate.valueOf()
-            }).forEach(function(date) {
+            }).forEach(function (date) {
                 date.selectable = false;
             })
         }
     }
 
-    $scope.limmiter = function() {
+    $scope.limmiter = function () {
         $scope.sequence = $scope.notification.sequence;
         if ($scope.sequence == undefined) {
             $scope.notification.sequence = null;
@@ -76,20 +76,20 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         }
     }
 
-    $scope.fetchMemberId = function() {
+    $scope.fetchMemberId = function () {
         var memberEmail = $scope.notification.memberEmail;
-        UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function(res) {
+        UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function (res) {
             if (res.data._id) {
                 $scope.notification.memberId = res.data.memberId;
             } else {
                 $scope.notification.memberId = null;
             }
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.log(err);
         })
     }
 
-    $scope.update = function(notification) {
+    $scope.update = function (notification) {
         if (notification.cardType == 'PlainText with CTA' || notification.cardType == 'PT_CTA') {
             $scope.notificationData.cardType = 'PT_CTA';
             $scope.appCodefield.text = notification.appCodes[0].callToAction[0].text;
@@ -121,10 +121,10 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         $scope.notificationData.validTill = $scope.dateRangeEnd;
         $scope.notificationData.memberId = notification.memberId;
         $scope.notificationData.memberEmail = notification.memberEmail;
-        $scope.callToAction.push($scope.appCodefield);
+        $scope.callToAction[0] = $scope.appCodefield;
         $scope.appCodefieldsAll.appCode = notification.appCodes[0].appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-        $scope.appCodes.push($scope.appCodefieldsAll);
+        $scope.appCodes[0] = $scope.appCodefieldsAll;
         $scope.notificationData.flag = 'N';
         $scope.notificationData.from = "dashboard";
         $scope.notificationData.appCodes = $scope.appCodes;
