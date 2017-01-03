@@ -58,6 +58,12 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10']
     };
 
+    $scope.announcementData = {};
+    $scope.appCodes = [];
+    $scope.callToAction = [];
+    $scope.appCodefield = {};
+    $scope.appCodefieldsAll = {};
+
     $scope.endDateBeforeRender = endDateBeforeRender;
     $scope.endDateOnSetTime = endDateOnSetTime;
     $scope.startDateBeforeRender = startDateBeforeRender;
@@ -94,10 +100,6 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         }
     }
 
-    $scope.showWarning = function() {
-        $scope.show = true;
-    }
-
     $scope.limmiter = function() {
         $scope.sequence = $scope.announcement.sequence;
         if ($scope.sequence == undefined) {
@@ -111,12 +113,6 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
     }
 
     $scope.update = function(announcement) {
-        $scope.announcementData = {};
-        $scope.appCodes = [];
-        $scope.callToAction = [];
-        $scope.appCodefield = {};
-        $scope.appCodefieldsAll = {};
-
         if (announcement.cardType == 'PlainText with CTA' || announcement.cardType == 'PT_CTA') {
             $scope.announcementData.cardType = 'PT_CTA';
             $scope.appCodefield.text = announcement.appCodes[0].callToAction[0].text;

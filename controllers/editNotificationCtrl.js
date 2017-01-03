@@ -22,6 +22,12 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10']
     };
 
+    $scope.notificationData = {};
+    $scope.appCodes = [];
+    $scope.callToAction = [];
+    $scope.appCodefield = {};
+    $scope.appCodefieldsAll = {};
+
     $scope.endDateBeforeRender = endDateBeforeRender;
     $scope.endDateOnSetTime = endDateOnSetTime;
     $scope.startDateBeforeRender = startDateBeforeRender;
@@ -58,10 +64,6 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         }
     }
 
-    $scope.showWarning = function() {
-        $scope.show = true;
-    }
-
     $scope.limmiter = function() {
         $scope.sequence = $scope.notification.sequence;
         if ($scope.sequence == undefined) {
@@ -88,12 +90,6 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
     }
 
     $scope.update = function(notification) {
-        $scope.notificationData = {};
-        $scope.appCodes = [];
-        $scope.callToAction = [];
-        $scope.appCodefield = {};
-        $scope.appCodefieldsAll = {};
-
         if (notification.cardType == 'PlainText with CTA' || notification.cardType == 'PT_CTA') {
             $scope.notificationData.cardType = 'PT_CTA';
             $scope.appCodefield.text = notification.appCodes[0].callToAction[0].text;
