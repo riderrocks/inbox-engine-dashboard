@@ -1,6 +1,9 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class='container announcement-container' ng-controller="NewCtrl">
-    <div class="row MT15">
+    <div ng-show="!selectOptions">
+        <img src="images/gears-anime.gif">
+    </div>
+    <div ng-show="selectOptions" class="row MT15">
         <div class="col-md-3">
             <input type="radio" id="announcement" ng-model="messageType.name" value="announcement" ng-change="toggleState(messageType)">
             <label for="announcement"><span></span> Announcement </label>
@@ -10,7 +13,7 @@
             <label for="notification"><span></span> Notification </label>
         </div>
     </div>
-    <form ng-submit="create(message)">
+    <div ng-show="selectOptions">
         <table class="table MT15">
             <thead>
                 <tr>
@@ -176,6 +179,6 @@
                 </tr>
             </thead>
         </table>
-        <button type="submit" class="btn btn-primary">Create</button>
-    </form>
+        <button type="submit" class="btn btn-primary" ng-click="create(message)">Create</button>
+    </div>
 </div>
