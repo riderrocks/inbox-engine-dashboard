@@ -1,13 +1,13 @@
 'use strict';
-angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
+angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/announcement/:id', {
         templateUrl: 'views/editAnnouncement.html',
     });
-}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
+}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function ($scope, $location, $routeParams, UserNotificationService) {
 
     var param = $routeParams.id;
 
-    UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+    UserNotificationService.getAllRegionCodes().then(function (regionCode) {
         var cities = [];
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
@@ -39,7 +39,8 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             }
             return objects;
         }
-        UserNotificationService.getAnnouncement(param).then(function(announcement) {
+
+        UserNotificationService.getAnnouncement(param).then(function (announcement) {
             $scope.announcement = announcement.data[0];
             for (var i = 0; i < $scope.announcement.regionCode.length; i++) {
                 var val = $scope.announcement.regionCode[i]
@@ -80,9 +81,9 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
     function startDateBeforeRender($dates) {
         if ($scope.dateRangeEnd) {
             var activeDate = moment($scope.dateRangeEnd);
-            $dates.filter(function(date) {
+            $dates.filter(function (date) {
                 return date.localDateValue() >= activeDate.valueOf()
-            }).forEach(function(date) {
+            }).forEach(function (date) {
                 date.selectable = false;
             })
         }
@@ -92,15 +93,15 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         if ($scope.dateRangeStart) {
             var activeDate = moment($scope.dateRangeStart).subtract(1, $view).add(1, 'minute');
 
-            $dates.filter(function(date) {
+            $dates.filter(function (date) {
                 return date.localDateValue() <= activeDate.valueOf()
-            }).forEach(function(date) {
+            }).forEach(function (date) {
                 date.selectable = false;
             })
         }
     }
 
-    $scope.limmiter = function() {
+    $scope.limmiter = function () {
         $scope.sequence = $scope.announcement.sequence;
         if ($scope.sequence == undefined) {
             $scope.announcement.sequence = null;
@@ -112,7 +113,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         }
     }
 
-    $scope.update = function(announcement) {
+    $scope.update = function (announcement) {
         if (announcement.cardType == 'PlainText with CTA' || announcement.cardType == 'PT_CTA') {
             $scope.announcementData.cardType = 'PT_CTA';
             $scope.appCodefield.text = announcement.appCodes[0].callToAction[0].text;
@@ -143,10 +144,10 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         $scope.announcementData.validFrom = $scope.dateRangeStart;
         $scope.announcementData.validTill = $scope.dateRangeEnd;
         $scope.announcementData.regionCode = announcement.regionCode;
-        $scope.callToAction.push($scope.appCodefield);
+        $scope.callToAction[0] = $scope.appCodefield;
         $scope.appCodefieldsAll.appCode = announcement.appCodes[0].appCode;
         $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-        $scope.appCodes.push($scope.appCodefieldsAll);
+        $scope.appCodes[0] = $scope.appCodefieldsAll;
         $scope.announcementData.from = "dashboard";
         $scope.announcementData.flag = 'A';
         $scope.announcementData.appCodes = $scope.appCodes;
