@@ -23,7 +23,8 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
         };
     });
-
+    $scope.message = {};
+    $scope.message.sequence = 5;
     $scope.messageType = {
         name: 'announcement'
     };
@@ -43,6 +44,18 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     $scope.messageType.announcement = true;
     $scope.messageType.notification = false;
+
+    $scope.fetchMemberId = function() {
+        var memberEmail = $scope.searchText;
+        UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
+            if (response.error == "No data exist") {
+                swal('Oops...', 'No matching Email Id found.', 'warning');
+            } else {
+                $scope.message.memberId = response.memberId;
+            }
+        });
+    }
+
 
     $scope.toggleState = function(messageType) {
         if (messageType.name == 'announcement') {
@@ -101,6 +114,26 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     }
 
     $scope.create = function(message) {
+
+        if ($scope.dateRangeStart == null) {
+            swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
+            return false;
+        }
+
+        if ($scope.messageType.name == 'announcement') {
+            message.flag = 'A';
+            delete message.memberId;
+            delete message.memberEmail;
+            if ($scope.selectedIds == null) {
+                swal("Heyy!", "Need to specify the RegionCode", "error");
+                return false;
+            }
+        } else if ($scope.messageType.name == 'notification') {
+            message.flag = 'N';
+            message.memberEmail = $scope.searchText;
+            delete message.regionCode;
+        }
+
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
             message.cardType = 'PT';
             $scope.appCodes = [];
@@ -140,25 +173,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
 
-        if ($scope.dateRangeStart == null) {
-            swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
-            return false;
-        }
 
-        if ($scope.messageType.name == 'announcement') {
-            message.flag = 'A';
-            delete message.memberId;
-            delete message.memberEmail;
-            if ($scope.selectedIds == null) {
-                swal("Heyy!", "Need to specify the RegionCode", "error");
-                return false;
-            }
-        } else if ($scope.messageType.name == 'notification') {
-            message.flag = 'N';
-            message.memberId = document.getElementById('value1').innerHTML;
-            message.memberEmail = $scope.searchText;
-            delete message.regionCode;
-        }
 
         UserNotificationService.createMessage(message).then(function(res) {
             $scope.res = res;
@@ -174,7 +189,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
             }
         });
         $scope.message = {};
-        document.getElementById('value1').innerHTML = '';
         $scope.searchText = null;
         $scope.dateRangeStart = null;
         $scope.dateRangeEnd = null;
@@ -248,21 +262,9 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         $scope.show = true;
     }
 
-    $scope.fetchMemberId = function() {
-        var memberEmail = $scope.searchText;
-        UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
-            if (response.error == "No data exist") {
-                swal('Oops...', 'No matching Email Id found.', 'warning');
-            } else {
-                document.getElementById('value1').innerHTML = response.memberId;
-                console.log(document.getElementById('value1').innerHTML);
-            }
-        });
-    }
-
     // searchable email
 
-    // list of `state` value/display objects
+
     loadAll().then(function(emails) {
         $scope.email = emails;
     })
@@ -271,15 +273,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     $scope.querySearch = querySearch;
     $scope.emailList = [];
 
-    // ******************************
-    // Internal methods
-    // ******************************
-
-    /**
-     * Search for Emails
-... use $timeout to simulate
-     * remote dataservice call.
-     */
     function querySearch(query) {
         var results = query ? $scope.email.filter(createFilterFor(query)) : $scope.email;
         var deferred = $q.defer();
@@ -289,9 +282,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         return deferred.promise;
     }
 
-    /**
-     * Build `email` list of key/value pairs
-     */
     function loadAll() {
         return UserNotificationService.getAllEmails().then(function(emails) {
             for (var i = 0; i < emails.data.length; i++) {
@@ -314,9 +304,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
             }
             $scope.emailList = removeDuplicates($scope.emailList);
             $scope.emailList = $scope.emailList.toString();
-            // localStorage.setItem('allEmails', $scope.emailList);
-            // //  = JSON.stringify(emails);
-            // var allEmails = localStorage.getItem("allEmails");
             return $scope.emailList.split(/,+/g).map(function(state) {
                 return {
                     value: state.toLowerCase(),
@@ -326,9 +313,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         });
     }
 
-    /**
-     * Create filter function for a query string
-     */
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
 
@@ -337,7 +321,5 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         };
 
     }
-    $scope.test = function() {
-        console.log($scope.searchText);
-    }
+
 }]);
