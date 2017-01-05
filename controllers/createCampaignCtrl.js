@@ -29,6 +29,19 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         name: 'announcement'
     };
 
+    $scope.keyValue = {
+
+    };
+
+    $scope.makejson = function() {
+        $scope.local = {};
+        $scope.local = "{" + $scope.model.name + ':' + $scope.model.value + "}";
+        $scope.new = [];
+        $scope.new.push($scope.local);
+        $scope.new.push($scope.local);
+        console.log(JSON.stringify($scope.new));
+    }
+
     $scope.systemTypeValue = {
         name: 'CMS Announcement'
     };
@@ -44,6 +57,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     $scope.messageType.announcement = true;
     $scope.messageType.notification = false;
+    $scope.showKeyValue = true;
 
     $scope.fetchMemberId = function() {
         var memberEmail = $scope.searchText;
@@ -56,17 +70,19 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         });
     }
 
-
-    $scope.toggleState = function(messageType) {
+    $scope.changeState = function(messageType) {
+        $scope.showKeyValue = false;
         if (messageType.name == 'announcement') {
             $scope.messageType.announcement = true;
             $scope.messageType.notification = false;
             $scope.systemTypeValue.name = 'CMS Announcement';
+            $scope.showKeyValue = true;
         } else if (messageType.name == 'notification') {
             $scope.messageType.notification = true;
             $scope.messageType.announcement = false;
             $scope.systemTypeValue.name = 'CMS Notification';
-        }
+            $scope.showKeyValue = true;
+        } 
     }
 
     $scope.endDateBeforeRender = endDateBeforeRender;
@@ -321,5 +337,4 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         };
 
     }
-
 }]);

@@ -5,11 +5,11 @@
     </div>
     <div ng-show="selectOptions" class="row MT15">
         <div class="col-md-3">
-            <input type="radio" id="announcement" ng-model="messageType.name" value="announcement" ng-change="toggleState(messageType)">
+            <input type="radio" id="announcement" ng-model="messageType.name" value="announcement" ng-change="changeState(messageType)">
             <label for="announcement"><span></span> Announcement </label>
         </div>
         <div class="col-md-3">
-            <input type="radio" id="notification" ng-model="messageType.name" value="notification" ng-change="toggleState(messageType)">
+            <input type="radio" id="notification" ng-model="messageType.name" value="notification" ng-change="changeState(messageType)">
             <label for="notification"><span></span> Notification </label>
         </div>
     </div>
@@ -180,6 +180,20 @@
                 </tr>
             </thead>
         </table>
+        <div class="PB20">
+            <input type="checkbox" id="advanced" ng-model="advanced">
+            <label for="advanced"><span></span> Advanced </label>
+            <span class="graySmallText">( Custom key-value pairs, Deep link )</span>
+        </div>
+        <div class="grid push-form" ng-show="advanced">
+            <div ng-model="showKeyValue" ng-show="showKeyValue">
+                <key-value></key-value>
+            </div>
+        </div>
+        <input type="text" placeholder="Key" ng-model="model.name">
+        <input style="margin-left: 2px;" type="text" placeholder="Value" ng-model="model.value">
+        <button ng-click="makejson()"></button>
+        {{keyValue}}
         <button type="submit" class="btn btn-primary" ng-click="create(message)">Create</button>
     </div>
 </div>
