@@ -174,10 +174,6 @@
                         <label for="appCode">Appcode:</label>
                     </th>
                     <td>
-                        <!-- <div class="demo-section k-content">
-                            <select kendo-multi-select k-options="selectAppcodes" k-ng-model='appCodeTypeValue'>
-                            </select>
-                        </div> -->
                         <div class="md-padding demo checkboxdemoSelectAll">
                             <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
                                 <span ng-if="isChecked()">Un-</span>Select All Appcodes
@@ -190,7 +186,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-show='showDiv'>
+                <tr ng-show="showDiv">
                     <th>
                         tEST
                     </th>
@@ -200,20 +196,21 @@
                 </tr>
             </thead>
         </table>
-        <div class="PB20">
-            <input type="checkbox" id="advanced" ng-model="advanced">
-            <label for="advanced"><span></span> Advanced </label>
-            <span class="graySmallText">( Custom key-value pairs, Deep link )</span>
-        </div>
-        <div class="grid push-form" ng-show="advanced">
-            <div ng-model="showKeyValue" ng-show="showKeyValue">
-                <key-value></key-value>
-            </div>
-        </div>
-        <input type="text" placeholder="Key" ng-model="model.name">
-        <input style="margin-left: 2px;" type="text" placeholder="Value" ng-model="model.value">
-        <button ng-click="makejson()"></button>
-        {{keyValue}}
+        <!-- <div class="PB20">
+    <input type="checkbox" id="advanced" ng-model="advanced">
+    <label for="advanced"><span></span> Advanced </label>
+    <span class="graySmallText">( Custom key-value pairs, Deep link )</span>
+</div>
+<div class="grid push-form" ng-show="advanced">
+    <div ng-model="showKeyValue" ng-show="showKeyValue">
+        <key-value></key-value>
+    </div>
+</div>
+<input type="text" placeholder="Key" ng-model="model.name">
+<input style="margin-left: 2px;" type="text" placeholder="Value" ng-model="model.value">
+<button ng-click="makejson()"></button>
+{{keyValue}}
+ -->
         <button type="submit" class="btn btn-primary" ng-click="create(message)">Create</button>
     </div>
 </div>

@@ -130,7 +130,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     //for new appcode checkboxex
     $scope.items = appCodeTypeValues;
-    $scope.selected = appCodeTypeValues;
+    $scope.selected = [];
 
     function show() {
         if ($scope.selected.length == 0) {
@@ -156,8 +156,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
         }
     }
-    show();
-
     $scope.toggle = function(item, list) {
         var idx = list.indexOf(item);
         if (idx > -1) {
@@ -189,7 +187,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         }
         show();
     };
-
     //for new appcode checkboxex
 
     $scope.create = function(message) {
