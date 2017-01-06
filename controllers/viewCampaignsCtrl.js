@@ -8,7 +8,6 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
     $scope.currentPage = 1;
     $scope.pageSize = 10;
     $scope.currentTime = new Date().toISOString();
-
     $scope.state = {
         "campaignState": "all",
         "campaignStatus": ['all', 'scheduled', 'running', 'completed', 'stopped']
@@ -16,6 +15,9 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
 
     UserNotificationService.getAllCampaigns($scope.state.campaignState).then(function(campaign) {
         $scope.campaigns = campaign;
+        console.log($scope.campaigns.data[0].appCodes);
+        console.log($scope.campaigns.data[0].regionCode);
+
     });
 
     $scope.getAllCampaigns = function(state) {
@@ -30,7 +32,17 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
         } else if (campaign.memberEmail != null) {
             campaign.flag = 'N';
         }
-        UserNotificationService.stopCampaign(campaign);
+        swal({
+            title: "Are you sure?",
+            text: "You will not be able to reverse this back!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, stop it!",
+            closeOnConfirm: false
+        }, function() {
+            UserNotificationService.stopCampaign(campaign);
+        });
     }
 }]).controller('OtherController', ['$scope', function($scope) {
     $scope.pageChangeHandler = function(num) {

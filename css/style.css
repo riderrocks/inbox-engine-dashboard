@@ -849,12 +849,23 @@ div.profile-box {
 /* 5 Basic (Grids) */
 
 .grid {
+<<<<<<< HEAD
     background: #fff;
     margin-top: 40px;
     border: 1px solid #d2d5d8;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+=======
+  background:#fff;
+  border:1px solid #d2d5d8;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: 0 0 26px 0;
+  padding: 20px 20px 20px 20px;
+  width: 425px;
+>>>>>>> 9aa0410338236ecfbeb2a9e49e652e0e886a90f4
 }
 
 .grid-transparent {

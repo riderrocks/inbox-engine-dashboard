@@ -195,6 +195,16 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         $scope.notificationData.flag = 'N';
         $scope.notificationData.from = "dashboard";
         $scope.notificationData.appCodes = $scope.appCodes;
-        UserNotificationService.updateNotification($scope.notificationData);
+        swal({
+            title: "Are you sure?",
+            text: "Please confirm do you want to update this campaign!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, update it!",
+            closeOnConfirm: false
+        }, function() {
+            UserNotificationService.updateNotification($scope.notificationData);
+        });
     }
 }]);

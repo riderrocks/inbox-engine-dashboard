@@ -7,7 +7,6 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
 
     var param = $routeParams.id;
 
-
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
         var cities = [];
         var TopCities = regionCode.BookMyShow.TopCities;
@@ -201,7 +200,16 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         $scope.announcementData.from = "dashboard";
         $scope.announcementData.flag = 'A';
         $scope.announcementData.appCodes = $scope.appCodes;
-        console.log($scope.announcementData);
-        UserNotificationService.updateAnnouncement($scope.announcementData);
+        swal({
+            title: "Are you sure?",
+            text: "Please confirm do you want to update this campaign!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, update it!",
+            closeOnConfirm: false
+        }, function() {
+            UserNotificationService.updateAnnouncement($scope.announcementData);
+        });
     }
 }]);
