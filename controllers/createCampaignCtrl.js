@@ -1,5 +1,5 @@
 'use strict';
-angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngMaterial']).config(['$routeProvider', function($routeProvider) {
+angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngMaterial', 'ngMessages', 'material.svgAssetsCache']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/createCampaign', {
         templateUrl: 'views/createCampaign.html',
     });
@@ -33,9 +33,8 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         name: 'CMS Announcement'
     };
 
+    var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
     $scope.selectType = {
-        "appCodeTypeValue": "WEBIN",
-        "appCodeTypeValues": ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'],
         "targetTypeValue": "New Window",
         "targetTypeValues": ['New Window', 'Same Window'],
         "messageCardTypeValue": "PlainText",
@@ -113,6 +112,70 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         }
     }
 
+    //for new appcode checkboxex
+    $scope.items = appCodeTypeValues;
+    $scope.selected = appCodeTypeValues;
+
+    function show() {
+        if ($scope.selected.length == 0) {
+            $scope.showDiv = false;
+            console.log("hidden");
+
+        } else {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i] == "MOBAND2") {
+                    $scope.showDiv = true;
+                    break;
+                } else {
+                    $scope.showDiv = false;
+
+                }
+            }
+            if ($scope.showDiv == true) {
+                console.log("visible");
+            } else {
+                $scope.showDiv = false;
+                console.log("hidden");
+            }
+
+        }
+    }
+    show();
+
+    $scope.toggle = function(item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+            list.splice(idx, 1);
+        } else {
+            list.push(item);
+        }
+        show();
+    };
+
+    $scope.exists = function(item, list) {
+        return list.indexOf(item) > -1;
+    };
+
+    $scope.isIndeterminate = function() {
+        return ($scope.selected.length !== 0 &&
+            $scope.selected.length !== $scope.items.length);
+    };
+
+    $scope.isChecked = function() {
+        return $scope.selected.length === $scope.items.length;
+    };
+
+    $scope.toggleAll = function() {
+        if ($scope.selected.length === $scope.items.length) {
+            $scope.selected = [];
+        } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+            $scope.selected = $scope.items.slice(0);
+        }
+        show();
+    };
+
+    //for new appcode checkboxex
+
     $scope.create = function(message) {
 
         if ($scope.dateRangeStart == null) {
@@ -136,15 +199,32 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
             message.cardType = 'PT';
-            $scope.appCodes = [];
-            $scope.callToAction = [];
-            $scope.appCodefieldsAll = {};
-            $scope.appCodefield = {};
-            $scope.appCodefield.target = "_self";
-            $scope.callToAction.push($scope.appCodefield);
-            $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-            $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
-            $scope.appCodes.push($scope.appCodefieldsAll);
+
+            if ($scope.selected.length > 1) {
+                $scope.appCodes = [];
+                $scope.appCodefieldsAll = {};
+                $scope.appCodefield = {};
+                $scope.callToAction = [];
+                for (var i = 0; i < $scope.selected.length; i++) {
+                    $scope.appCodefield.target = "_self";
+                    $scope.callToAction.push($scope.appCodefield);
+                    $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+                    $scope.appCodefieldsAll.appCode = $scope.selected[i];
+                    $scope.appCodes.push($scope.appCodefieldsAll);
+                    $scope.callToAction = [];
+                    $scope.appCodefieldsAll = {};
+                }
+            } else {
+                $scope.appCodes = [];
+                $scope.callToAction = [];
+                $scope.appCodefieldsAll = {};
+                $scope.appCodefield = {};
+                $scope.appCodefield.target = "_self";
+                $scope.callToAction.push($scope.appCodefield);
+                $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+                $scope.appCodefieldsAll.appCode = $scope.selected;
+                $scope.appCodes.push($scope.appCodefieldsAll);
+            }
 
 
         } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
@@ -158,13 +238,28 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
             } else if ($scope.selectType.targetTypeValue == 'Same Window') {
                 $scope.appCodefield.target = '_self';
             }
-            $scope.appCodes = [];
-            $scope.appCodefieldsAll = {};
-            $scope.callToAction = [];
-            $scope.callToAction.push($scope.appCodefield);
-            $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
-            $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-            $scope.appCodes.push($scope.appCodefieldsAll);
+            if ($scope.selected.length > 1) {
+                $scope.appCodes = [];
+                $scope.appCodefieldsAll = {};
+                $scope.callToAction = [];
+                for (var i = 0; i < $scope.selected.length; i++) {
+                    $scope.appCodefield.target = "_self";
+                    $scope.callToAction.push($scope.appCodefield);
+                    $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+                    $scope.appCodefieldsAll.appCode = $scope.selected[i];
+                    $scope.appCodes.push($scope.appCodefieldsAll);
+                    $scope.callToAction = [];
+                    $scope.appCodefieldsAll = {};
+                }
+            } else {
+                $scope.appCodes = [];
+                $scope.appCodefieldsAll = {};
+                $scope.callToAction = [];
+                $scope.callToAction.push($scope.appCodefield);
+                $scope.appCodefieldsAll.appCode = $scope.selected;
+                $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+                $scope.appCodes.push($scope.appCodefieldsAll);
+            }
         }
 
         message.from = 'cms';
@@ -321,5 +416,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         };
 
     }
+
 
 }]);

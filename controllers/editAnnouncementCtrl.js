@@ -1,13 +1,14 @@
 'use strict';
-angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function ($routeProvider) {
+angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/announcement/:id', {
         templateUrl: 'views/editAnnouncement.html',
     });
-}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function ($scope, $location, $routeParams, UserNotificationService) {
+}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
 
     var param = $routeParams.id;
 
-    UserNotificationService.getAllRegionCodes().then(function (regionCode) {
+
+    UserNotificationService.getAllRegionCodes().then(function(regionCode) {
         var cities = [];
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
@@ -25,38 +26,83 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             dataSource: cities
 
         };
+        var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
+        //for new appcode checkboxex
+        $scope.items = appCodeTypeValues;
+        $scope.selected = [];
 
-        function getObjects(obj, key, val) {
+        function show() {
+            if ($scope.selected.length == 0) {
+                $scope.showDiv = false;
+                console.log("hidden");
 
-            var objects = [];
-            for (var i in obj) {
-                if (!obj.hasOwnProperty(i)) continue;
-                if (typeof obj[i] == 'object') {
-                    objects = objects.concat(getObjects(obj[i], key, val));
-                } else if (i == key && obj[key] == val) {
-                    objects.push(obj);
+            } else {
+                for (var i = 0; i < $scope.selected.length; i++) {
+                    if ($scope.selected[i] == "MOBAND2") {
+                        $scope.showDiv = true;
+                        break;
+                    } else {
+                        $scope.showDiv = false;
+
+                    }
                 }
-            }
-            return objects;
-        }
+                if ($scope.showDiv == true) {
+                    console.log("visible");
+                } else {
+                    $scope.showDiv = false;
+                    console.log("hidden");
+                }
 
-        UserNotificationService.getAnnouncement(param).then(function (announcement) {
-            $scope.announcement = announcement.data[0];
-            for (var i = 0; i < $scope.announcement.regionCode.length; i++) {
-                var val = $scope.announcement.regionCode[i]
-                getObjects(cities, 'code_city', val);
             }
+        }
+        $scope.toggle = function(item, list) {
+            var idx = list.indexOf(item);
+            if (idx > -1) {
+                list.splice(idx, 1);
+            } else {
+                list.push(item);
+            }
+            show();
+        };
+
+        $scope.exists = function(item, list) {
+            return list.indexOf(item) > -1;
+        };
+
+        $scope.isIndeterminate = function() {
+            return ($scope.selected.length !== 0 &&
+                $scope.selected.length !== $scope.items.length);
+        };
+
+        $scope.isChecked = function() {
+            return $scope.selected.length === $scope.items.length;
+        };
+
+        $scope.toggleAll = function() {
+            if ($scope.selected.length === $scope.items.length) {
+                $scope.selected = [];
+            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+                $scope.selected = $scope.items.slice(0);
+            }
+            show();
+        };
+        UserNotificationService.getAnnouncement(param).then(function(announcement) {
+            var val = [];
+            $scope.announcement = announcement.data[0];
+            $scope.selected = val;
             $scope.selectedIds = $scope.announcement.regionCode;
             $scope.dateRangeStart = $scope.announcement.validFrom;
             $scope.dateRangeEnd = $scope.announcement.validTill;
+            for (var i = 0; i < $scope.announcement.appCodes.length; i++) {
+                val[i] = $scope.announcement.appCodes[i].appCode;
+            }
+            show();
         });
     });
 
     $scope.selectType = {
         "systemTypeValue": "CMS announcement",
-        "systemTypeValues": ['CMS announcement', 'CMS Notification'],
-        "appCodeTypeValue": "WEBIN",
-        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10']
+        "systemTypeValues": ['CMS announcement', 'CMS Notification']
     };
 
     $scope.announcementData = {};
@@ -81,9 +127,9 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
     function startDateBeforeRender($dates) {
         if ($scope.dateRangeEnd) {
             var activeDate = moment($scope.dateRangeEnd);
-            $dates.filter(function (date) {
+            $dates.filter(function(date) {
                 return date.localDateValue() >= activeDate.valueOf()
-            }).forEach(function (date) {
+            }).forEach(function(date) {
                 date.selectable = false;
             })
         }
@@ -93,15 +139,15 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         if ($scope.dateRangeStart) {
             var activeDate = moment($scope.dateRangeStart).subtract(1, $view).add(1, 'minute');
 
-            $dates.filter(function (date) {
+            $dates.filter(function(date) {
                 return date.localDateValue() <= activeDate.valueOf()
-            }).forEach(function (date) {
+            }).forEach(function(date) {
                 date.selectable = false;
             })
         }
     }
 
-    $scope.limmiter = function () {
+    $scope.limmiter = function() {
         $scope.sequence = $scope.announcement.sequence;
         if ($scope.sequence == undefined) {
             $scope.announcement.sequence = null;
@@ -113,7 +159,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         }
     }
 
-    $scope.update = function (announcement) {
+    $scope.update = function(announcement) {
         if (announcement.cardType == 'PlainText with CTA' || announcement.cardType == 'PT_CTA') {
             $scope.announcementData.cardType = 'PT_CTA';
             $scope.appCodefield.text = announcement.appCodes[0].callToAction[0].text;
@@ -134,6 +180,14 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             return false;
         }
 
+        var appCodesAllFields = [];
+        for (var i = 0; i < $scope.selected.length; i++) {
+            $scope.callToAction[0] = $scope.appCodefield;
+            $scope.appCodes.push({
+                appCode: $scope.selected[i],
+                callToAction: $scope.callToAction
+            })
+        }
         $scope.announcementData._id = announcement._id;
         $scope.announcementData.campaign = announcement.campaign;
         $scope.announcementData.shortTxt = announcement.shortTxt;
@@ -144,13 +198,10 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         $scope.announcementData.validFrom = $scope.dateRangeStart;
         $scope.announcementData.validTill = $scope.dateRangeEnd;
         $scope.announcementData.regionCode = announcement.regionCode;
-        $scope.callToAction[0] = $scope.appCodefield;
-        $scope.appCodefieldsAll.appCode = announcement.appCodes[0].appCode;
-        $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-        $scope.appCodes[0] = $scope.appCodefieldsAll;
         $scope.announcementData.from = "dashboard";
         $scope.announcementData.flag = 'A';
         $scope.announcementData.appCodes = $scope.appCodes;
+        console.log($scope.announcementData);
         UserNotificationService.updateAnnouncement($scope.announcementData);
     }
 }]);
