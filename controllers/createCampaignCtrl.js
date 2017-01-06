@@ -3,7 +3,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     $routeProvider.when('/createCampaign', {
         templateUrl: 'views/createCampaign.html',
     });
-}]).controller('NewCtrl', ['$scope', '$window', '$location', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, UserNotificationService, $timeout, $q) {
+}]).controller('NewCtrl', ['$scope', '$window', '$location', '$element', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, $element, UserNotificationService, $timeout, $q) {
     UserNotificationService.getAllRegionCodes().then(function(regionCode) {
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
@@ -29,18 +29,16 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         name: 'announcement'
     };
 
-    $scope.keyValue = {
-
-    };
-
-    $scope.makejson = function() {
-        $scope.local = {};
-        $scope.local = "{" + $scope.model.name + ':' + $scope.model.value + "}";
-        $scope.new = [];
-        $scope.new.push($scope.local);
-        $scope.new.push($scope.local);
-        console.log(JSON.stringify($scope.new));
-    }
+    $scope.local = 'createCampaign';
+    $scope.something = [];
+    
+    // $scope.makejson = function(key, value) {
+    //     $scope.local[key] = value;
+    //     $scope.something.push($scope.local);
+    //     $scope.local = {};
+    //     $scope.model = {};
+    //     console.log($scope.something);
+    // }
 
     $scope.systemTypeValue = {
         name: 'CMS Announcement'
@@ -82,7 +80,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
             $scope.messageType.announcement = false;
             $scope.systemTypeValue.name = 'CMS Notification';
             $scope.showKeyValue = true;
-        } 
+        }
     }
 
     $scope.endDateBeforeRender = endDateBeforeRender;
@@ -131,84 +129,88 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     $scope.create = function(message) {
 
-        if ($scope.dateRangeStart == null) {
-            swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
-            return false;
-        }
+        // $scope.local[$scope.model.name] = $scope.model.value;
+        $scope.something.push($scope.local);
+        // $scope.local = {};
+        $scope.model = {};
+        console.log($scope.something);
+        console.log($scope.model);
+        // if ($scope.dateRangeStart == null) {
+        //     swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
+        //     return false;
+        // }
 
-        if ($scope.messageType.name == 'announcement') {
-            message.flag = 'A';
-            delete message.memberId;
-            delete message.memberEmail;
-            if ($scope.selectedIds == null) {
-                swal("Heyy!", "Need to specify the RegionCode", "error");
-                return false;
-            }
-        } else if ($scope.messageType.name == 'notification') {
-            message.flag = 'N';
-            message.memberEmail = $scope.searchText;
-            delete message.regionCode;
-        }
+        // if ($scope.messageType.name == 'announcement') {
+        //     message.flag = 'A';
+        //     delete message.memberId;
+        //     delete message.memberEmail;
+        //     if ($scope.selectedIds == null) {
+        //         swal("Heyy!", "Need to specify the RegionCode", "error");
+        //         return false;
+        //     }
+        // } else if ($scope.messageType.name == 'notification') {
+        //     message.flag = 'N';
+        //     message.memberEmail = $scope.searchText;
+        //     delete message.regionCode;
+        // }
 
-        if ($scope.selectType.messageCardTypeValue == 'PlainText') {
-            message.cardType = 'PT';
-            $scope.appCodes = [];
-            $scope.callToAction = [];
-            $scope.appCodefieldsAll = {};
-            $scope.appCodefield = {};
-            $scope.appCodefield.target = "_self";
-            $scope.callToAction.push($scope.appCodefield);
-            $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-            $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
-            $scope.appCodes.push($scope.appCodefieldsAll);
-
-
-        } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
-            message.cardType = 'PT_CTA';
-            if ($scope.appCodefield == null) {
-                swal('Oops...', 'Fill Primary CTA Link & Primary CTA Text fields before submission!', 'warning');
-                return false;
-            }
-            if ($scope.selectType.targetTypeValue == 'New Window') {
-                $scope.appCodefield.target = '_blank';
-            } else if ($scope.selectType.targetTypeValue == 'Same Window') {
-                $scope.appCodefield.target = '_self';
-            }
-            $scope.appCodes = [];
-            $scope.appCodefieldsAll = {};
-            $scope.callToAction = [];
-            $scope.callToAction.push($scope.appCodefield);
-            $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
-            $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-            $scope.appCodes.push($scope.appCodefieldsAll);
-        }
-
-        message.from = 'cms';
-        message.type = $scope.systemTypeValue.name;
-        message.validFrom = $scope.dateRangeStart;
-        message.validTill = $scope.dateRangeEnd;
-        message.appCodes = $scope.appCodes;
+        // if ($scope.selectType.messageCardTypeValue == 'PlainText') {
+        //     message.cardType = 'PT';
+        //     $scope.appCodes = [];
+        //     $scope.callToAction = [];
+        //     $scope.appCodefieldsAll = {};
+        //     $scope.appCodefield = {};
+        //     $scope.appCodefield.target = "_self";
+        //     $scope.callToAction.push($scope.appCodefield);
+        //     $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+        //     $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
+        //     $scope.appCodes.push($scope.appCodefieldsAll);
 
 
+        // } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
+        //     message.cardType = 'PT_CTA';
+        //     if ($scope.appCodefield == null) {
+        //         swal('Oops...', 'Fill Primary CTA Link & Primary CTA Text fields before submission!', 'warning');
+        //         return false;
+        //     }
+        //     if ($scope.selectType.targetTypeValue == 'New Window') {
+        //         $scope.appCodefield.target = '_blank';
+        //     } else if ($scope.selectType.targetTypeValue == 'Same Window') {
+        //         $scope.appCodefield.target = '_self';
+        //     }
+        //     $scope.appCodes = [];
+        //     $scope.appCodefieldsAll = {};
+        //     $scope.callToAction = [];
+        //     $scope.callToAction.push($scope.appCodefield);
+        //     $scope.appCodefieldsAll.appCode = $scope.selectType.appCodeTypeValue;
+        //     $scope.appCodefieldsAll.callToAction = $scope.callToAction;
+        //     $scope.appCodes.push($scope.appCodefieldsAll);
+        // }
 
-        UserNotificationService.createMessage(message).then(function(res) {
-            $scope.res = res;
-            if ($scope.res.status == 200) {
-                $scope.appCodefield = {};
-                swal({
-                    title: "Done!",
-                    text: "Message sent to queue successfully",
-                    type: "success"
-                }, function() {
-                    $location.path('/viewCampaigns');
-                });
-            }
-        });
-        $scope.message = {};
-        $scope.searchText = null;
-        $scope.dateRangeStart = null;
-        $scope.dateRangeEnd = null;
-        $scope.selectedIds = null;
+        // message.from = 'cms';
+        // message.type = $scope.systemTypeValue.name;
+        // message.validFrom = $scope.dateRangeStart;
+        // message.validTill = $scope.dateRangeEnd;
+        // message.appCodes = $scope.appCodes;
+
+        // UserNotificationService.createMessage(message).then(function(res) {
+        //     $scope.res = res;
+        //     if ($scope.res.status == 200) {
+        //         $scope.appCodefield = {};
+        //         swal({
+        //             title: "Done!",
+        //             text: "Message sent to queue successfully",
+        //             type: "success"
+        //         }, function() {
+        //             $location.path('/viewCampaigns');
+        //         });
+        //     }
+        // });
+        // $scope.message = {};
+        // $scope.searchText = null;
+        // $scope.dateRangeStart = null;
+        // $scope.dateRangeEnd = null;
+        // $scope.selectedIds = null;
     }
 
     $scope.limmiter = function() {
