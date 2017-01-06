@@ -28,14 +28,14 @@ app.directive('newDirective', function($compile) {
         // scope: {},
         scope: true,
         template:
-            '<div style="padding-bottom: 5px;">' +
-            '<input type="text" ng-model="model.name" placeholder="Key">' +
-            '<input style="margin-left: 2px;" type="text" ng-model="model.value" placeholder="Value">' +
-            '<button style="margin-left: 3px;" ng-click="remove()">X</button>' +
-            '</div>',
+            `<div style="padding-bottom: 5px;">
+            <input type="text" ng-model="local[].name" placeholder="Key">
+            <input style="margin-left: 2px;" type="text" ng-model="local[].value" placeholder="Value">
+            <button style="margin-left: 3px;" ng-click="remove()">X</button>
+            </div>`,
         link: function(scope, element, attributes) {
             scope.remove = function() {
-            scope.$parent.local = 'newDirective';
+//            scope.$parent.local = 'newDirective';
             console.log(scope.local);
                 element.remove();
             }
