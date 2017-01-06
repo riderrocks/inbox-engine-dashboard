@@ -166,7 +166,6 @@
                         <label for="memberId">Member ID <span id="red">*</span>:</label>
                     </th>
                     <td>
-                        <!-- <div id="value1" ng-model="message.memberId"></div> -->
                         <input class="form-control" ng-model='message.memberId' placeholder="memberId" disabled />
                     </td>
                 </tr>
@@ -175,7 +174,24 @@
                         <label for="appCode">Appcode:</label>
                     </th>
                     <td>
-                        <select class="btn btn-default" ng-model="selectType.appCodeTypeValue" ng-options="v for v in selectType.appCodeTypeValues"></select>
+                        <div class="md-padding demo checkboxdemoSelectAll">
+                            <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
+                                <span ng-if="isChecked()">Un-</span>Select All Appcodes
+                            </md-checkbox>
+                            <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in items">
+                                <md-checkbox ng-checked="exists(item, selected);" ng-click="toggle(item, selected)">
+                                    {{ item }}
+                                </md-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-show="showDiv">
+                    <th>
+                        tEST
+                    </th>
+                    <td>
+                        dEMO
                     </td>
                 </tr>
             </thead>

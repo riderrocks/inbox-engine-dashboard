@@ -8,7 +8,6 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
     $scope.currentPage = 1;
     $scope.pageSize = 10;
     $scope.currentTime = new Date().toISOString();
-
     $scope.state = {
         "campaignState": "all",
         "campaignStatus": ['all', 'scheduled', 'running', 'completed', 'stopped']
@@ -16,6 +15,9 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
 
     UserNotificationService.getAllCampaigns($scope.state.campaignState).then(function(campaign) {
         $scope.campaigns = campaign;
+        console.log($scope.campaigns.data[0].appCodes);
+        console.log($scope.campaigns.data[0].regionCode);
+
     });
 
     $scope.getAllCampaigns = function(state) {

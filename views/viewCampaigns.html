@@ -33,7 +33,7 @@
                     <td class="announcement">{{data.memberEmail ? data.memberEmail : 'All Users'}}</td>
                     <td class="announcement">{{data.validFrom | date:'dd-MM-yyyy HH:mm a'}}</td>
                     <td class="announcement">{{data.validTill | date:'dd-MM-yyyy HH:mm a'}}</td>
-                    <td class="announcement">{{data.appCodes[0].appCode}}</td>
+                    <td class="announcement"><span ng-repeat="data in data.appCodes"> {{data.appCode}} </td>
                     <td class="announcement"><span ng-repeat="data in data.regionCode"> {{data}} </span></td>
                     <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
                     <td class="announcement">{{data.count ? data.count : '1'}}</td>
@@ -43,8 +43,8 @@
                     <td class="announcement">
                         <button ng-if="!data.isStopped" class="btn btn-info" ng-disabled="data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
                             < currentTime ? 'Completed' : 'Stop'}}</button>
-                        <button ng-if="data.isStopped" class="btn btn-info" ng-disabled="data.isStopped ||data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
-                            < currentTime ? 'Stopped' : 'Stop'}}</button>    
+                                <button ng-if="data.isStopped" class="btn btn-info" ng-disabled="data.isStopped ||data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
+                                    < currentTime ? 'Stopped' : 'Stop'}}</button>
                     </td>
                 </tr>
             </tbody>

@@ -9,17 +9,21 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
 
     if (param) {
         UserNotificationService.getNotification(param).then(function(notification) {
+            var val = [];
             $scope.notification = notification.data[0];
+            $scope.selected = val;
             $scope.dateRangeStart = $scope.notification.validFrom;
             $scope.dateRangeEnd = $scope.notification.validTill;
+            for (var i = 0; i < $scope.notification.appCodes.length; i++) {
+                val[i] = $scope.notification.appCodes[i].appCode;
+            }
+            show();
         });
     }
 
     $scope.selectType = {
         "systemTypeValue": "CMS Announcement",
-        "systemTypeValues": ['CMS Announcement', 'CMS Notification'],
-        "appCodeTypeValue": "WEBIN",
-        "appCodeTypeValues": ['WEBIN', 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10']
+        "systemTypeValues": ['CMS Announcement', 'CMS Notification']
     };
 
     $scope.notificationData = {};
@@ -88,7 +92,66 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
             console.log(err);
         })
     }
+    var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
+    //for new appcode checkboxex
+    $scope.items = appCodeTypeValues;
+    $scope.selected = [];
 
+    function show() {
+        if ($scope.selected.length == 0) {
+            $scope.showDiv = false;
+            console.log("hidden");
+
+        } else {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i] == "MOBAND2") {
+                    $scope.showDiv = true;
+                    break;
+                } else {
+                    $scope.showDiv = false;
+
+                }
+            }
+            if ($scope.showDiv == true) {
+                console.log("visible");
+            } else {
+                $scope.showDiv = false;
+                console.log("hidden");
+            }
+
+        }
+    }
+    $scope.toggle = function(item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+            list.splice(idx, 1);
+        } else {
+            list.push(item);
+        }
+        show();
+    };
+
+    $scope.exists = function(item, list) {
+        return list.indexOf(item) > -1;
+    };
+
+    $scope.isIndeterminate = function() {
+        return ($scope.selected.length !== 0 &&
+            $scope.selected.length !== $scope.items.length);
+    };
+
+    $scope.isChecked = function() {
+        return $scope.selected.length === $scope.items.length;
+    };
+
+    $scope.toggleAll = function() {
+        if ($scope.selected.length === $scope.items.length) {
+            $scope.selected = [];
+        } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+            $scope.selected = $scope.items.slice(0);
+        }
+        show();
+    };
     $scope.update = function(notification) {
         if (notification.cardType == 'PlainText with CTA' || notification.cardType == 'PT_CTA') {
             $scope.notificationData.cardType = 'PT_CTA';
@@ -110,6 +173,14 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
             return false;
         }
 
+        var appCodesAllFields = [];
+        for (var i = 0; i < $scope.selected.length; i++) {
+            $scope.callToAction[0] = $scope.appCodefield;
+            $scope.appCodes.push({
+                appCode: $scope.selected[i],
+                callToAction: $scope.callToAction
+            })
+        }
         $scope.notificationData._id = notification._id;
         $scope.notificationData.campaign = notification.campaign;
         $scope.notificationData.shortTxt = notification.shortTxt;
@@ -121,10 +192,6 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         $scope.notificationData.validTill = $scope.dateRangeEnd;
         $scope.notificationData.memberId = notification.memberId;
         $scope.notificationData.memberEmail = notification.memberEmail;
-        $scope.callToAction[0] = $scope.appCodefield;
-        $scope.appCodefieldsAll.appCode = notification.appCodes[0].appCode;
-        $scope.appCodefieldsAll.callToAction = $scope.callToAction;
-        $scope.appCodes[0] = $scope.appCodefieldsAll;
         $scope.notificationData.flag = 'N';
         $scope.notificationData.from = "dashboard";
         $scope.notificationData.appCodes = $scope.appCodes;
