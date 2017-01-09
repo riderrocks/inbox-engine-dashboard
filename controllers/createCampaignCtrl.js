@@ -156,8 +156,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     function show() {
         if ($scope.selected.length == 0) {
             $scope.showDiv = false;
-            console.log("hidden");
-
         } else {
             for (var i = 0; i < $scope.selected.length; i++) {
                 if ($scope.selected[i] == "MOBAND2") {
@@ -168,15 +166,9 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
                 }
             }
-            if ($scope.showDiv == true) {
-                console.log("visible");
-            } else {
-                $scope.showDiv = false;
-                console.log("hidden");
-            }
-
         }
     }
+
     $scope.toggle = function(item, list) {
         var idx = list.indexOf(item);
         if (idx > -1) {
@@ -208,11 +200,11 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         }
         show();
     };
+    
     //for new appcode checkboxex
 
     $scope.create = function(message) {
         $scope.pushToParseKeyValuePair();
-        console.log($scope.parsedKeyValuePair);
 
         if ($scope.dateRangeStart == null) {
             swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
