@@ -14,10 +14,10 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
     });
 
     $scope.validateEmail = function(email) {
-        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{3,6}(?:\.[a-z]{3})?)$/i;
+        var re = /^[a-z0-9](\.?[a-z0-9]){5,}@bookmyshow\.com$/;
         if (!(re.test(email))) {
             $scope.alertFlag = true;
-            $scope.alertMsg = 'please specify a valid email address';
+            $scope.alertMsg = 'please specify a valid email @bookmyshow.com';
         } else {
             $scope.alertFlag = false;
             $scope.alertMsg = '';
@@ -49,10 +49,13 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
 
         if (!$scope.alertFlag) {
             UserNotificationService.createUser(user).then(function(response) {
-                console.log(response);
                 if (response.data.status.httpResponseCode == 200) {
                     $scope.user = {};
                     swal("Done!", "User created successfully", "success");
+                } 
+
+                if(response.data.status.httpResponseCode == 400 && response.data.error.code == 11000) {
+                	swal("Oops!", "Email id already exists", "error");
                 }
             });
         }
