@@ -33,8 +33,6 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         function show() {
             if ($scope.selected.length == 0) {
                 $scope.showDiv = false;
-                console.log("hidden");
-
             } else {
                 for (var i = 0; i < $scope.selected.length; i++) {
                     if ($scope.selected[i] == "MOBAND2") {
@@ -45,15 +43,9 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
 
                     }
                 }
-                if ($scope.showDiv == true) {
-                    console.log("visible");
-                } else {
-                    $scope.showDiv = false;
-                    console.log("hidden");
-                }
-
             }
         }
+
         $scope.toggle = function(item, list) {
             var idx = list.indexOf(item);
             if (idx > -1) {

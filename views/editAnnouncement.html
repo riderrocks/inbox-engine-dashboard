@@ -148,8 +148,11 @@
                         <label for="appCode">Appcode:</label>
                     </th>
                     <td>
-                        <!--  <select class="btn btn-default" ng-model="announcement.appCodes[0].appCode" ng-options="v for v in selectType.appCodeTypeValues"></select> -->
-                        <div class="md-padding demo checkboxdemoSelectAll">
+                         <!-- <select class="btn btn-default" ng-model="announcement.appCodes[0].appCode" ng-options="v for v in selectType.appCodeTypeValues"></select>{{announcement.appCodes[0].appCode}} -->
+                         <select class="btn btn-default" ng-model="announcement.appCodes[0].appCode">
+                            <option ng-selected="announcement.appCodes[0].appCode">{{announcement.appCodes[0].appCode}}</option>
+                        </select>
+                        <!-- <div class="md-padding demo checkboxdemoSelectAll">
                             <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
                                 <span ng-if="isChecked()">Un-</span>Select All Appcodes
                             </md-checkbox>
@@ -158,17 +161,17 @@
                                     {{ item }}
                                 </md-checkbox>
                             </div>
-                        </div>
+                        </div> -->
                     </td>
                 </tr>
-                <tr ng-show='showDiv'>
+                <!-- <tr ng-show='showDiv'>
                     <th>
                         tEST
                     </th>
                     <td>
                         dEMO
                     </td>
-                </tr>
+                </tr> -->
             </thead>
         </table>
         <button type="button" class="btn btn-success" ng-click="update(announcement)">Update</button>

@@ -15,9 +15,6 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
 
     UserNotificationService.getAllCampaigns($scope.state.campaignState).then(function(campaign) {
         $scope.campaigns = campaign;
-        console.log($scope.campaigns.data[0].appCodes);
-        console.log($scope.campaigns.data[0].regionCode);
-
     });
 
     $scope.getAllCampaigns = function(state) {
