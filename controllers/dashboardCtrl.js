@@ -10,8 +10,8 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
             $scope.routeName = 'Dashboard';
         } else if (curRoute == '/createCampaign') {
             $scope.routeName = 'New Message';
-        } else if (curRoute == '/sent') {
-            $scope.routeName = 'Sent Message';
+        } else if (curRoute == '/createUser') {
+            $scope.routeName = 'Create User';
         } else if (curRoute == '/scheduled') {
             $scope.routeName = 'Scheduled Message';
         } else if (curRoute == '/viewCampaigns') {
