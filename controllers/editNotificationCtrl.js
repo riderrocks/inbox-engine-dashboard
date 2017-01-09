@@ -169,7 +169,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         }
 
         if ($scope.notification.memberId == null || $scope.dateRangeStart == null || $scope.dateRangeEnd == null || $scope.notification.shortTxt == null || $scope.notification.longTxt == null) {
-            swal("Ah ah!", "Fill all mandatory fields please", "error");
+            swal("Oops!", "Fill all mandatory fields please", "error");
             return false;
         }
 

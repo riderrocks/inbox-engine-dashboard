@@ -12,7 +12,7 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
-    
+
     this.getAllEmails = function() {
         var defer = $q.defer();
         $http({
@@ -183,7 +183,9 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         var defer = $q.defer();
         $http({
             method: 'POST',
-            data: { status: state },
+            data: {
+                status: state
+            },
             url: this.baseUrl + "/inbox/messages"
         }).then(function successCallback(response) {
             var campaigns = response;
@@ -199,12 +201,42 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
             data: campaign
         }).then(function successCallback(response) {
             if (response.status == 200 && response.data.success == 'success') {
-                swal({title: "Done!", text: "Campaign stopped successfully", type: "success"}, function() {
+                swal({
+                    title: "Done!",
+                    text: "Campaign stopped successfully",
+                    type: "success"
+                }, function() {
                     $window.location.reload();
                 });
             }
         }, function errorCallback(response) {
             console.log(response);
         });
+    }
+
+    this.getRoles = function() {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/roles"
+        }).then(function successCallback(response) {
+            var roles = response;
+            defer.resolve(roles);
+        });
+        return defer.promise;
+    }
+
+    this.createUser = function(user) {
+        var defer = $q.defer();
+        $http({
+            method: 'POST',
+            url: this.baseUrl + "/users",
+            data: user
+        }).then(function successCallback(response) {
+            defer.resolve(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+        return defer.promise;
     }
 }]);

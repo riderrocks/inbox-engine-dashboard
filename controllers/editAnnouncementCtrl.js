@@ -167,7 +167,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         }
 
         if ($scope.announcement.regionCode == null || $scope.dateRangeStart == null || $scope.dateRangeEnd == null || $scope.announcement.shortTxt == null || $scope.announcement.longTxt == null) {
-            swal("Ah ah!", "Fill all mandatory fields please", "error");
+            swal("Oops!", "Fill all mandatory fields please", "error");
             return false;
         }
 

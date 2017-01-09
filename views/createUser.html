@@ -1,27 +1,53 @@
 <div ng-include="'views/dashboard.html'"></div>
 <div class="container announcement-container" ng-controller="CreateUserCtrl">
     <div class="form-container">
-        <!-- <div class="alert alert-danger"></div> -->
-    <form method="post">
-        <div class="form-group">
-            <label for="firstName">First name</label>
-            <input type="text" name="firstName" id="firstName" class="form-control" required />
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last name</label>
-            <input type="text" name="lastName" id="lastName" class="form-control" required />
-        </div>
-        <div class="form-group">
-            <label for="username">Email</label>
-            <input type="text" name="email" id="email" class="form-control" required />
-        </div>
-        <div class="form-group">
-            <label for="password">Mobile No</label>
-            <input type="text" name="mobileno" id="mobileno" class="form-control" required />
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Register</button>
-        </div>
-    </form>
-</div>
+        <div class="alert alert-danger" ng-show="alertFlag">{{alertMsg}}</div>
+        <table class="table MT15">
+            <thead>
+                <tr>
+                    <th>
+                        <label for="firstName">First name<span id="red"> *</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" ng-model="user.firstName" maxlength="12" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="lastName">Last name<span id="red"> *</span>:</label>
+                    </th>
+                    <td>
+                        <input type="text" ng-model="user.lastName" maxlength="12" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="username">Email<span id="red"> *</span>:</label>
+                    </th>
+                    <td>
+                        <input type="email" ng-model="user.email" maxlength="40" class="form-control" ng-blur="validateEmail(user.email)" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="mobileno">Mobile No<span id="red"> *</span>:</label>
+                    </th>
+                    <td>
+                        <input type="tel" ng-model="user.phone" maxlength="10" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="role">Select Role<span id="red"> *</span>:</label>
+                    </th>
+                    <td>
+                        <select class="btn btn-default" ng-model="user._userRole">
+                            <option ng-repeat="role in roles.data" ng-value="role._id">{{role.roleName}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <button type="submit" class="btn btn-primary" ng-click="createUser(user)">Register</button>
+    </div>
 </div>
