@@ -239,4 +239,18 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         });
         return defer.promise;
     }
+    this.resetPassword = function(user,token) {
+        var defer = $q.defer();
+        $http({
+            method: 'PUT',
+            url: this.baseUrl + "/resetPassword",
+            headers: {'x-access-token': token},
+            data: user
+        }).then(function successCallback(response) {
+            defer.resolve(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+        return defer.promise;
+    }
 }]);
