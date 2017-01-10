@@ -3,11 +3,16 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
     $routeProvider.when('/announcement/:id', {
         templateUrl: 'views/editAnnouncement.html',
     });
-}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
+}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
+
+    if (!AuthenticationService.getToken()) {
+        $location.path('/authUser');
+        return;
+    }
 
     var param = $routeParams.id;
 
-    UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+    MessageService.getAllRegionCodes().then(function(regionCode) {
         var cities = [];
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
@@ -77,7 +82,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             }
             show();
         };
-        UserNotificationService.getAnnouncement(param).then(function(announcement) {
+        MessageService.getAnnouncement(param).then(function(announcement) {
             var val = [];
             $scope.announcement = announcement.data[0];
             $scope.selected = val;
@@ -201,7 +206,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             confirmButtonText: "Yes, update it!",
             closeOnConfirm: false
         }, function() {
-            UserNotificationService.updateAnnouncement($scope.announcementData);
+            MessageService.updateAnnouncement($scope.announcementData);
         });
     }
 }]);

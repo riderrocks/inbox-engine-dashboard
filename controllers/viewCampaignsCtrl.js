@@ -3,7 +3,12 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
     $routeProvider.when('/viewCampaigns', {
         templateUrl: 'views/viewCampaigns.html',
     });
-}]).controller('ViewCampaignsCtrl', ['$scope', 'UserNotificationService', function($scope, UserNotificationService) {
+}]).controller('ViewCampaignsCtrl', ['$scope', '$location', 'MessageService', 'AuthenticationService', function($scope, $location, MessageService, AuthenticationService) {
+
+    if (!AuthenticationService.getToken()) {
+        $location.path('/authUser');
+        return;
+    }
 
     $scope.currentPage = 1;
     $scope.pageSize = 10;
@@ -13,12 +18,12 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
         "campaignStatus": ['all', 'scheduled', 'running', 'completed', 'stopped']
     };
 
-    UserNotificationService.getAllCampaigns($scope.state.campaignState).then(function(campaign) {
+    MessageService.getAllCampaigns($scope.state.campaignState).then(function(campaign) {
         $scope.campaigns = campaign;
     });
 
     $scope.getAllCampaigns = function(state) {
-        UserNotificationService.getAllCampaigns(state).then(function(campaign) {
+        MessageService.getAllCampaigns(state).then(function(campaign) {
             $scope.campaigns = campaign;
         });
     }
@@ -38,7 +43,7 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
             confirmButtonText: "Yes, stop it!",
             closeOnConfirm: false
         }, function() {
-            UserNotificationService.stopCampaign(campaign);
+            MessageService.stopCampaign(campaign);
         });
     }
 }]).controller('OtherController', ['$scope', function($scope) {

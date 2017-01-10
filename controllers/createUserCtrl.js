@@ -3,14 +3,23 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
     $routeProvider.when('/createUser', {
         templateUrl: 'views/createUser.html',
     });
-}]).controller('CreateUserCtrl', ['$scope', 'UserNotificationService', function($scope, UserNotificationService) {
+}]).controller('CreateUserCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
+    if (!AuthenticationService.getToken()) {
+        $location.path('/authUser');
+        return;
+    }
+    
     $scope.user = {};
     $scope.alertFlag = false;
     $scope.alertMsg = '';
 
-    UserNotificationService.getRoles().then(function(role) {
+    AuthenticationService.getRoles().then(function(role) {
         $scope.roles = role.data;
+        var roles = $scope.roles;
+        for (var i=0; i < roles.data.length; i++) {
+            localStorage.setItem(roles.data[i]._id,roles.data[i].roleName);
+        }
     });
 
     $scope.validateEmail = function(email) {
@@ -33,22 +42,15 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
             return;
         }
 
-        var validateEmail = $scope.validateEmail($scope.user.email);
-        if (!validateEmail) {
-            $scope.alertFlag = true;
-            $scope.alertMsg = 'please specify a valid email address';
-        } else {
-            $scope.alertFlag = false;
-            $scope.alertMsg = '';
-        }
-
+        $scope.validateEmail($scope.user.email);
+        
         if ($scope.user.phone.length < 10) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'mobile number has be of 10 characters';
         }
 
         if (!$scope.alertFlag) {
-            UserNotificationService.createUser(user).then(function(response) {
+            AuthenticationService.createUser(user).then(function(response) {
                 if (response.data.status.httpResponseCode == 200) {
                     $scope.user = {};
                     swal("Done!", "User created successfully", "success");

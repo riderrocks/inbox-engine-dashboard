@@ -12,20 +12,11 @@
             <ul class="topNav tooltip-bottom">
                 <li class="mainLink noBrd" id="acctTime">{{ clock | date:'medium'}}</li>
                 <li class="mainLink" id="accountLists">
+                    <span ng-click="logout()">Logout</span>
                     <a href="#" class="accountName" data-toggle="dropdown">
                         <span class="profile-username ">
-                    <span>Inbox Engine</span>
                         </span>
                     </a>
-                    <div class="dropdown-list">
-                        <div class="ac-head">
-                            My Apps <a href="javaScript:void(0);" class="closePanel">×</a>
-                        </div>
-                        <div class="ft-link">
-                            <p style="height: 10px;">&nbsp;</p>
-                            <a href="#"><i class="icon-off MR10" style="vertical-align: middle;"></i>Logout</a>
-                        </div>
-                    </div>
                 </li>
             </ul>
         </div>
@@ -36,13 +27,10 @@
         <!--BEGIN SIDEBAR-->
         <div id="menu" role="navigation">
             <ul class="main-menu">
-                <li class="submenu">
-                    <i class="margin-right-10 fa fa-tachometer"></i><span>Dashboards</span></li>
-                <ul class="submenu-option">
-                    <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-paper-plane"></i> View Campaigns</a></li>
-                    <!--  <li ng-class="{active : isRouteActive('/sent')}"><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li> -->
-                    <!--    <li ng-class="{active : isRouteActive('/scheduled')}"><a href="#/scheduled" class=""><i class="fa fa-hourglass-start"></i> Scheduled Notifications</a></li>
-                <li ng-class="{active : isRouteActive('/draft')}"><a href="#/draft" class=""><i class="fa fa-file-text-o"></i> Notifications in draft</a></li> -->
+                <li class="submenu"><i class="margin-right-10 fa fa-users"></i>User Management
+                </li>
+                <ul class="submenu-option tooltip-right">
+                    <li ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-paper-plane"></i> Create User</a></li>
                 </ul>
                 <li class="submenu"><i class="margin-right-10 fa fa-users"></i>Manage Campaigns
                 </li>
@@ -50,10 +38,13 @@
                     <!-- <li class=""><a href="javascript:void(0)">Create Campaigns</a></li> -->
                     <li ng-class="{active : isRouteActive('/createCampaign')}"><a href="#/createCampaign" class=""><i class="fa fa-paper-plane"></i> Create Campaign</a></li>
                 </ul>
-                <li class="submenu"><i class="margin-right-10 fa fa-users"></i>User Management
-                </li>
-                <ul class="submenu-option tooltip-right">
-                    <li ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-paper-plane"></i> Create User</a></li>
+                <li class="submenu">
+                    <i class="margin-right-10 fa fa-tachometer"></i><span>Dashboards</span></li>
+                <ul class="submenu-option">
+                    <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-paper-plane"></i> View Campaigns</a></li>
+                    <!--  <li ng-class="{active : isRouteActive('/sent')}"><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li> -->
+                    <!--    <li ng-class="{active : isRouteActive('/scheduled')}"><a href="#/scheduled" class=""><i class="fa fa-hourglass-start"></i> Scheduled Notifications</a></li>
+                <li ng-class="{active : isRouteActive('/draft')}"><a href="#/draft" class=""><i class="fa fa-file-text-o"></i> Notifications in draft</a></li> -->
                 </ul>
             </ul>
             <div class="clearfix"></div>

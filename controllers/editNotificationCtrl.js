@@ -3,12 +3,17 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
     $routeProvider.when('/notification/:id', {
         templateUrl: 'views/editNotification.html',
     });
-}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'UserNotificationService', function($scope, $location, $routeParams, UserNotificationService) {
+}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
+
+    if (!AuthenticationService.getToken()) {
+        $location.path('/authUser');
+        return;
+    }
 
     var param = $routeParams.id;
 
     if (param) {
-        UserNotificationService.getNotification(param).then(function(notification) {
+        MessageService.getNotification(param).then(function(notification) {
             var val = [];
             $scope.notification = notification.data[0];
             $scope.selected = val;
@@ -82,7 +87,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
 
     $scope.fetchMemberId = function() {
         var memberEmail = $scope.notification.memberEmail;
-        UserNotificationService.fetchMemberIdFromEmail(memberEmail).then(function(res) {
+        MessageService.fetchMemberIdFromEmail(memberEmail).then(function(res) {
             if (res.data._id) {
                 $scope.notification.memberId = res.data.memberId;
             } else {
@@ -112,13 +117,6 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
 
                 }
             }
-            if ($scope.showDiv == true) {
-                console.log("visible");
-            } else {
-                $scope.showDiv = false;
-                console.log("hidden");
-            }
-
         }
     }
     $scope.toggle = function(item, list) {
@@ -204,7 +202,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
             confirmButtonText: "Yes, update it!",
             closeOnConfirm: false
         }, function() {
-            UserNotificationService.updateNotification($scope.notificationData);
+            MessageService.updateNotification($scope.notificationData);
         });
     }
 }]);

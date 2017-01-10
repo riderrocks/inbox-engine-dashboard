@@ -3,8 +3,8 @@ angular.module('myApp.listNotifications', ['ngRoute','ui.bootstrap.datetimepicke
     $routeProvider.when('/listNotifications', {
         templateUrl: 'views/listNotifications.html',
     });
-}]).controller('listNotificationsCtrl', ['$scope', '$location', 'UserNotificationService', function($scope, $location, UserNotificationService) {
-    UserNotificationService.getAllNotifications().then(function(notification) {
+}]).controller('listNotificationsCtrl', ['$scope', '$location', 'MessageService', function($scope, $location, MessageService) {
+    MessageService.getAllNotifications().then(function(notification) {
         $scope.notifications = notification;
     });
 }]);

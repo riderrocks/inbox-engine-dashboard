@@ -3,8 +3,14 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     $routeProvider.when('/createCampaign', {
         templateUrl: 'views/createCampaign.html',
     });
-}]).controller('NewCtrl', ['$scope', '$window', '$location', '$element', 'UserNotificationService', '$timeout', '$q', function($scope, $window, $location, $element, UserNotificationService, $timeout, $q) {
-    UserNotificationService.getAllRegionCodes().then(function(regionCode) {
+}]).controller('NewCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $window, $location, MessageService, AuthenticationService, $timeout, $q) {
+    
+    if (!AuthenticationService.getToken()) {
+        $location.path('/authUser');
+        return;
+    }
+
+    MessageService.getAllRegionCodes().then(function(regionCode) {
         var TopCities = regionCode.BookMyShow.TopCities;
         var OtherCities = regionCode.BookMyShow.OtherCities;
         var rawCities = TopCities.concat(OtherCities);
@@ -81,7 +87,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     $scope.fetchMemberId = function() {
         var memberEmail = $scope.searchText;
-        UserNotificationService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
+        MessageService.fetchMemberIdFromEmailId(memberEmail).then(function(response) {
             if (response.error == "No data exist") {
                 swal('Oops...', 'No matching Email Id found.', 'warning');
             } else {
@@ -297,7 +303,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
 
-        UserNotificationService.createMessage(message).then(function(res) {
+        MessageService.createMessage(message).then(function(res) {
             $scope.res = res;
             if ($scope.res.status == 200) {
                 $scope.appCodefield = {};
@@ -360,7 +366,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     $scope.checkCampaign = function() {
         var value = $scope.message.campaign;
         if ($scope.messageType.name === "announcement") {
-            UserNotificationService.checkUniqueAnnouncementCampaign(value).then(function(response) {
+            MessageService.checkUniqueAnnouncementCampaign(value).then(function(response) {
                 if ($scope.message.campaign !== null) {
                     if (response !== null) {
                         $scope.message.campaign = null;
@@ -369,7 +375,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
                 }
             });
         } else if ($scope.messageType.name == 'notification') {
-            UserNotificationService.checkUniqueNotificationCampaign(value).then(function(response) {
+            MessageService.checkUniqueNotificationCampaign(value).then(function(response) {
                 if ($scope.message.campaign !== null) {
                     if (response !== null) {
                         $scope.message.campaign = null;
@@ -405,7 +411,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     }
 
     function loadAll() {
-        return UserNotificationService.getAllEmails().then(function(emails) {
+        return MessageService.getAllEmails().then(function(emails) {
             for (var i = 0; i < emails.data.length; i++) {
                 $scope.emailList.push(emails.data[i].memberEmail);
             }

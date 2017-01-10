@@ -3265,6 +3265,20 @@ input[type="radio"] + label span {
     vertical-align: bottom;
 }
 
+.login-container {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.page-header h2 {
+    text-align: center;
+}
+
+.login-container-msgbox {
+    max-width: 355px;
+    margin: 0 auto;
+}
 
 /*for new appcode checkbox*/
 

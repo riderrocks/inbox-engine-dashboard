@@ -3,7 +3,13 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
     $routeProvider.when('/dashboard', {
         templateUrl: 'views/dashboard.html',
     });
-}]).controller('DashboardCtrl', ['$scope', '$location', '$timeout', function($scope, $location, $timeout) {
+}]).controller('DashboardCtrl', ['$scope', '$location', '$timeout', 'AuthenticationService', function($scope, $location, $timeout, AuthenticationService) {
+
+    if (!AuthenticationService.getToken()) {
+        $location.path('/authUser');
+        return;
+    }
+
     $scope.isRouteActive = function(route) {
         var curRoute = $location.path();
         if (curRoute == '/dashboard') {
@@ -38,4 +44,17 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
 
     $scope.isRouteActive();
     $timeout(tick, $scope.tickInterval);
+
+    $scope.logout = function() {
+        swal({
+            title: "Are you sure you want to logout?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, log me out!",
+            closeOnConfirm: true
+        }, function() {
+            AuthenticationService.logoutUser();
+        });
+    }
 }]);

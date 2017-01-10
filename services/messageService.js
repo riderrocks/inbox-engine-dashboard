@@ -1,4 +1,4 @@
-var UserNotificationService = app.service('UserNotificationService', ['$q', '$http', '$window', 'CONFIG', '$filter', function($q, $http, $window, CONFIG, $filter) {
+var messageService = app.service('MessageService', ['$q', '$http', '$window', 'CONFIG', function($q, $http, $window, CONFIG) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
 
     this.getAllRegionCodes = function() {
@@ -212,31 +212,5 @@ var UserNotificationService = app.service('UserNotificationService', ['$q', '$ht
         }, function errorCallback(response) {
             console.log(response);
         });
-    }
-
-    this.getRoles = function() {
-        var defer = $q.defer();
-        $http({
-            method: 'GET',
-            url: this.baseUrl + "/roles"
-        }).then(function successCallback(response) {
-            var roles = response;
-            defer.resolve(roles);
-        });
-        return defer.promise;
-    }
-
-    this.createUser = function(user) {
-        var defer = $q.defer();
-        $http({
-            method: 'POST',
-            url: this.baseUrl + "/users",
-            data: user
-        }).then(function successCallback(response) {
-            defer.resolve(response);
-        }, function errorCallback(response) {
-            console.log(response);
-        });
-        return defer.promise;
     }
 }]);
