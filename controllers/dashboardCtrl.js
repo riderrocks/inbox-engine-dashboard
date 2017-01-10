@@ -30,6 +30,8 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
             $scope.routeName = 'Edit Announcement';
         } else if (curRoute.indexOf('/notification') > -1) {
             $scope.routeName = 'Edit Notification';
+        } else if (curRoute == '/resetPassword') {
+            $scope.routeName = 'Reset Password';
         }
         return curRoute.match(route);
     }
