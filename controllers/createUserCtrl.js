@@ -6,7 +6,7 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
 }]).controller('CreateUserCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
-        $location.path('/authUser');
+        $location.path('/login');
         return;
     }
     
@@ -16,10 +16,6 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
 
     AuthenticationService.getRoles().then(function(role) {
         $scope.roles = role.data;
-        var roles = $scope.roles;
-        for (var i=0; i < roles.data.length; i++) {
-            localStorage.setItem(roles.data[i]._id,roles.data[i].roleName);
-        }
     });
 
     $scope.validateEmail = function(email) {

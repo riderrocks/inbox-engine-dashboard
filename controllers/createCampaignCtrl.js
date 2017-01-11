@@ -6,7 +6,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $window, $location, MessageService, AuthenticationService, $timeout, $q) {
     
     if (!AuthenticationService.getToken()) {
-        $location.path('/authUser');
+        $location.path('/login');
         return;
     }
 

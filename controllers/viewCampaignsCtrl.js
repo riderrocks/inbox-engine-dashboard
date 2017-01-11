@@ -6,7 +6,7 @@ angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPa
 }]).controller('ViewCampaignsCtrl', ['$scope', '$location', 'MessageService', 'AuthenticationService', function($scope, $location, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
-        $location.path('/authUser');
+        $location.path('/login');
         return;
     }
 
