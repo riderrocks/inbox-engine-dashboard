@@ -36,16 +36,14 @@ angular.module('myApp.resetPassword', ['ngRoute']).config(['$routeProvider', fun
 
         if (!$scope.alertFlag) {
             var token = AuthenticationService.getToken();
-            console.log(token);
             AuthenticationService.resetPassword(user, token).then(function(response) {
                 if (response.data.status.httpResponseCode == 200) {
                     $scope.user = {};
                     swal("Done!", "Password updated successfully", "success");
                 }
 
-                if (response.data.status.httpResponseCode == 400 && response.data.error.code == 11000) {
-                    swal("Oops!", "Something went wrong", "error");
-                }
+            }).catch(function(response){
+                    swal("Oops!", "Old password is incorrect", "error");
             });
         }
     };

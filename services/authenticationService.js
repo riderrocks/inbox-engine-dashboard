@@ -72,7 +72,7 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         }).then(function successCallback(response) {
             defer.resolve(response);
         }, function errorCallback(response) {
-            console.log(response);
+           defer.reject(response);
         });
         return defer.promise;
     }
