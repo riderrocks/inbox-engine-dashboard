@@ -10,6 +10,7 @@
         </div>
         <div class="right">
             <ul class="topNav tooltip-bottom">
+                <li class="mainLink noBrd"><a ng-class="{active: isRouteActive('/profile')}" href="#/profile"><span class="glyphicon glyphicon-user"></span></a></li>
                 <li class="mainLink noBrd" id="acctTime">{{ clock | date:'medium'}}</li>
                 <li class="mainLink" id="accountLists">
                     <span ng-click="logout()">Logout</span>
@@ -31,7 +32,7 @@
                 </li>
                 <ul class="submenu-option tooltip-right">
                     <li ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-paper-plane"></i> Create User</a></li>
-                    <li  ng-class="{active : isRouteActive('/resetPassword')}"><a href="#/resetPassword" class=""><i class="fa fa-paper-plane"></i> Change Password</a></li>
+                    <li ng-class="{active : isRouteActive('/resetPassword')}"><a href="#/resetPassword" class=""><i class="fa fa-paper-plane"></i> Change Password</a></li>
                 </ul>
                 <li class="submenu"><i class="margin-right-10 fa fa-users"></i>Manage Campaigns
                 </li>
