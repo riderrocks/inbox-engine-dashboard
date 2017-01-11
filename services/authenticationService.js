@@ -18,6 +18,7 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         // loginObj.$unauth();
         user = '';
         localStorage.removeItem('userToken');
+        localStorage.removeItem('_userRole');
         $location.path('/authUser');
     }
 
@@ -61,7 +62,7 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         return defer.promise;
     }
 
-    this.resetPassword = function(user,token) {
+    this.resetPassword = function(user, token) {
         var defer = $q.defer();
         $http({
             method: 'PUT',
@@ -74,5 +75,17 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
             console.log(response);
         });
         return defer.promise;
+    }
+
+    this.getUserDetails = function(token) {
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/users/me",
+            headers: {'x-access-token': token}
+        }).then(function successCallback(response) {
+            localStorage.setItem("_userRole", response.data.data._userRole);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
     }
 }]);

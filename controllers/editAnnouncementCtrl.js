@@ -6,7 +6,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
 }]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
-        $location.path('/authUser');
+        $location.path('/login');
         return;
     }
 

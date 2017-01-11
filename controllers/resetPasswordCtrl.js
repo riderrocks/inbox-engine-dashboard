@@ -3,7 +3,7 @@ angular.module('myApp.resetPassword', ['ngRoute']).config(['$routeProvider', fun
     $routeProvider.when('/resetPassword', {
         templateUrl: 'views/resetPassword.html',
     });
-}]).controller('ResetPassowrdCtrl', ['$scope', 'UserNotificationService', function($scope, UserNotificationService) {
+}]).controller('ResetPasswordCtrl', ['$scope', 'AuthenticationService', function($scope, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;

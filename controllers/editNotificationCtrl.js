@@ -6,7 +6,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
 }]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
-        $location.path('/authUser');
+        $location.path('/login');
         return;
     }
 
