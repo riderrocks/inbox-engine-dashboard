@@ -21,6 +21,7 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         localStorage.removeItem('_userRole');
         $location.path('/authUser');
     }
+   
 
     this.getRoles = function() {
         var defer = $q.defer();
@@ -66,13 +67,13 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         var defer = $q.defer();
         $http({
             method: 'PUT',
-            url: this.baseUrl + "/resetPassword",
-            headers: {'x-access-token': token},
+            url: this.baseUrl + "/users/resetPassword",
+            headers: { 'x-access-token': token },
             data: user
         }).then(function successCallback(response) {
             defer.resolve(response);
         }, function errorCallback(response) {
-            console.log(response);
+           defer.reject(response);
         });
         return defer.promise;
     }
