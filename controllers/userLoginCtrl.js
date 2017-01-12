@@ -3,7 +3,7 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
     $routeProvider.when('/login', {
         templateUrl: 'views/userLogin.html',
     });
-}]).controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
+}]).controller('UserLoginCtrl', ['$scope', '$location', '$window', 'AuthenticationService', function($scope, $location, $window, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;
@@ -61,6 +61,7 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
                     if (authToken) {
                         AuthenticationService.setToken(authToken);
                         AuthenticationService.getUserDetails(authToken);
+                        $window.location.reload();
                         $location.path('/viewCampaigns');
                     }
                     $scope.user = {};

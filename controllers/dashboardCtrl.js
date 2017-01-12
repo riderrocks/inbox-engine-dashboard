@@ -2,26 +2,21 @@
 angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/dashboard', {
         templateUrl: 'views/dashboard.html',
+        controller: 'DashboardCtrl'
     });
 }]).controller('DashboardCtrl', ['$scope', '$location', '$timeout', 'AuthenticationService', function($scope, $location, $timeout, AuthenticationService) {
 
-    $scope.userRole = '';
+    // $scope.userRole = '';
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');
         return;
     }
 
-    $scope.checkUserRole = function() {
-        var userRoleId = localStorage.getItem('_userRole');
-        if (userRoleId == localStorage.getItem('Admin')) {
-            $scope.userRole = 'Admin';
-        } else if (userRoleId == localStorage.getItem('CC Team')) {
-            $scope.userRole = 'CCT';
-        } else if (userRoleId == localStorage.getItem('Member')) {
-            $scope.userRole = 'Member';
-        }
-    }
+    $scope.userRole = AuthenticationService.checkUserRole();
+    // if (userRole == 'Admin') {
+    //     $scope.userRole = 'Admin';
+    // }
 
     $scope.isRouteActive = function(route) {
         var curRoute = $location.path();
@@ -58,7 +53,6 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
     }
 
     $scope.isRouteActive();
-    $scope.checkUserRole();
     $timeout(tick, $scope.tickInterval);
 
     $scope.logout = function() {
