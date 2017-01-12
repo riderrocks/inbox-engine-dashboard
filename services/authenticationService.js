@@ -79,14 +79,17 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
     }
 
     this.getUserDetails = function(token) {
-        $http({
+        var defer=$q.defer();
+       $http({
             method: 'GET',
             url: this.baseUrl + "/users/me",
             headers: {'x-access-token': token}
         }).then(function successCallback(response) {
             localStorage.setItem("_userRole", response.data.data._userRole);
+            defer.resolve(response.data.data);
         }, function errorCallback(response) {
             console.log(response);
         });
+         return defer.promise;
     }
 }]);

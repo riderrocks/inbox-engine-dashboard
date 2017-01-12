@@ -8,11 +8,21 @@ angular.module('myApp.userProfile', ['ngRoute']).config(['$routeProvider', funct
     $scope.user = {};
     $scope.alertFlag = false;
     $scope.alertMsg = '';
+    var token = AuthenticationService.getToken();
+    AuthenticationService.getUserDetails(token).then(function(response) {
+        // console.log(response);
+        $scope.profile = response;
+    });
 
     $scope.validatePassword = function(user) {
         if ($scope.user.newPassword == null || $scope.user.confirmPassword == null || $scope.user.oldPassword == null) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'Oops! Fill all mandatory fields please';
+            return;
+        }
+        if ($scope.user.newPassword.length < 6) {
+            $scope.alertFlag = true;
+            $scope.alertMsg = 'password has be of minimum 6 characters';
             return;
         }
         var result = angular.equals($scope.user.newPassword, $scope.user.confirmPassword);
@@ -34,16 +44,27 @@ angular.module('myApp.userProfile', ['ngRoute']).config(['$routeProvider', funct
         $scope.validatePassword(user);
 
         if (!$scope.alertFlag) {
-            var token = AuthenticationService.getToken();
-            AuthenticationService.resetPassword(user, token).then(function(response) {
+            swal({
+                title: "Are you sure?",
+                text: "Please confirm do you want to change the password!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, Change it!",
+                closeOnConfirm: false
+            }, function() {
+                AuthenticationService.resetPassword($scope.user, token).then(function(response) {
                 if (response.data.status.httpResponseCode == 200) {
                     $scope.user = {};
                     swal("Done!", "Password updated successfully", "success");
                 }
 
-            }).catch(function(response){
-                    swal("Oops!", "Old password is incorrect", "error");
+            }).catch(function(response) {
+                swal("Oops!", "Current password is incorrect", "error");
             });
+            });
+
+            
         }
     };
 }]);

@@ -1,52 +1,52 @@
 <div ng-controller="ProfileCtrl">
     <div ng-include="'views/dashboard.html'"></div>
-    <div class="container">
+    <div class="container  announcement-container">
         <form class="form-horizontal">
-            <legend>Profile details</legend>
+            <legend >Profile details</legend>
             <div class="form-group">
-                <label class="col-md-4 control-label">First name :</label>
+                <label class="col-md-4 control-label"> Name :</label>
                 <div class="col-md-4">
-                    <p>{{}}</p>
+                    <p class="profile-p">{{profile.firstName +" "+profile.lastName}}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-4 control-label">Last name :</label>
+                <label class="col-md-4 control-label">Email:</label>
                 <div class="col-md-4">
-                   <p>{{}}</p>
+                    <p class="profile-p">{{profile.email}}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 control-label">Mobile number :</label>
                 <div class="col-md-4">
-                   <p>{{}}</p>
+                    <p class="profile-p">{{profile.phone}}</p>
                 </div>
             </div>
-            
         </form>
         <form class="form-horizontal">
-            <legend>Change Password</legend>
+            <legend >Change Password</legend>
+            <div class="alert alert-danger" ng-show="alertFlag">{{alertMsg}}</div>
             <div class="form-group">
-                <label class="col-md-4 control-label">Current password</label>
+                <label class="col-md-4 control-label">Current password<span id="red"> *</span>:</label>
                 <div class="col-md-4">
-                    <input id="fname" name="fname" ng-model="profile.oldPwd" type="password" class="form-control input-md" ng-required="profile.fname">
+                    <input ng-model="user.oldPassword" type="password" class="form-control input-md">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-4 control-label">New password</label>
+                <label class="col-md-4 control-label">New password<span id="red"> *</span>:</label>
                 <div class="col-md-4">
-                    <input id="lname" name="lname" ng-model="profile.newPwd" type="password" class="form-control input-md" ng-required="profile.fname">
+                    <input ng-model="user.newPassword" type="password" class="form-control input-md">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-md-4 control-label">Confirm password</label>
+                <label class="col-md-4 control-label">Confirm password<span id="red"> *</span>:</label>
                 <div class="col-md-4">
-                    <input id="phno" name="phno" ng-model="profile.confPwd" type="password" ng-error="!profile.newPwd" title="Enter the exact password" class="form-control input-md">
+                    <input ng-model="user.confirmPassword" type="password" class="form-control input-md">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-4 control-label" for="singlebutton"></label>
                 <div class="col-md-4">
-                    <button type="button" ladda-loading="login.loading" data-style="expand-right" class="btn btn-primary segoe-ui-light ladda-button" ng-disabled="!profile.oldPwd || !profile.newPwd || !profile.confPwd" ng-click="changePasswd()"><span class="ladda-label">Save</span></button>
+                    <button type="button" ladda-loading="login.loading" data-style="expand-right" class="btn btn-primary segoe-ui-light ladda-button" ng-click="resetPassword(user)"><span class="ladda-label">Save</span></button>
                 </div>
             </div>
         </form>
