@@ -2116,6 +2116,7 @@ div.alert-danger,
 div.alert-error {
     background-color: #ff6757;
     border-color: #d44646;
+    /*margin-left: 191px;*/
 }
 
 div.alert-info {
@@ -3284,4 +3285,8 @@ input[type="radio"] + label span {
 
 .checkboxdemoSelectAll .demo-select-all-checkboxes {
     padding-left: 30px;
+}
+
+.profile-p{
+    margin: 13px 0 10px;
 }

@@ -10,6 +10,7 @@
         </div>
         <div class="right">
             <ul class="topNav tooltip-bottom">
+                <li class="mainLink noBrd"><a ng-class="{active: isRouteActive('/profile')}" href="#/profile"><span class="glyphicon glyphicon-user"></span></a></li>
                 <li class="mainLink noBrd" id="acctTime">{{ clock | date:'medium'}}</li>
                 <li class="mainLink" id="accountLists">
                     <span ng-click="logout()">Logout</span>
