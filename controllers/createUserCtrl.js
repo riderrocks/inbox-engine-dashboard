@@ -19,7 +19,7 @@ angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', functi
     });
 
     $scope.validateEmail = function(email) {
-        var re = /^[a-z0-9](\.?[a-z0-9]){5,}@bookmyshow\.com$/;
+        var re = /^[a-z0-9](\.?[a-z0-9]){0,}@bookmyshow\.com$/;
         if (!(re.test(email))) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'please specify a valid email @bookmyshow.com';

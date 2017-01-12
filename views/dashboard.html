@@ -10,8 +10,8 @@
         </div>
         <div class="right">
             <ul class="topNav tooltip-bottom">
-                <li class="mainLink noBrd"><a ng-class="{active: isRouteActive('/profile')}" href="#/profile"><span class="glyphicon glyphicon-user"></span></a></li>
                 <li class="mainLink noBrd" id="acctTime">{{ clock | date:'medium'}}</li>
+                <li class="mainLink noBrd"><a ng-class="{active: isRouteActive('/profile')}" href="#/profile"><span class="glyphicon glyphicon-user"></span></a></li>
                 <li class="mainLink" id="accountLists">
                     <span ng-click="logout()">Logout</span>
                     <a href="#" class="accountName" data-toggle="dropdown">
@@ -28,25 +28,21 @@
         <!--BEGIN SIDEBAR-->
         <div id="menu" role="navigation">
             <ul class="main-menu">
-                <li class="submenu"><i class="margin-right-10 fa fa-users"></i>User Management
+                <li ng-show="userRole=='Admin'" class="submenu"><i class="margin-right-10 fa fa-users"></i>User Management
                 </li>
-                <ul class="submenu-option tooltip-right">
-                    <li ng-show="userRole=='Admin'" ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-paper-plane"></i> Create User</a></li>
-                    <li  ng-class="{active : isRouteActive('/resetPassword')}"><a href="#/resetPassword" class=""><i class="fa fa-paper-plane"></i> Change Password</a></li>
+                <ul ng-show="userRole=='Admin'" class="submenu-option tooltip-right">
+                    <li ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-user-plus" aria-hidden="true"></i> Create User</a></li>
                 </ul>
-                <li class="submenu"><i class="margin-right-10 fa fa-users"></i>Manage Campaigns
+                <li class="submenu"><i class="fa fa-wrench" aria-hidden="true"></i> Manage Campaigns
                 </li>
                 <ul class="submenu-option tooltip-right">
                     <!-- <li class=""><a href="javascript:void(0)">Create Campaigns</a></li> -->
-                    <li ng-class="{active : isRouteActive('/createCampaign')}"><a href="#/createCampaign" class=""><i class="fa fa-paper-plane"></i> Create Campaign</a></li>
+                    <li ng-class="{active : isRouteActive('/createCampaign')}"><a href="#/createCampaign" class=""><i class="fa fa-envelope" aria-hidden="true"></i> Create Campaign</a></li>
                 </ul>
                 <li class="submenu">
                     <i class="margin-right-10 fa fa-tachometer"></i><span>Dashboards</span></li>
                 <ul class="submenu-option">
-                    <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-paper-plane"></i> View Campaigns</a></li>
-                    <!--  <li ng-class="{active : isRouteActive('/sent')}"><a href="#/sent" class=""><i class="fa fa-bell"></i> Sent Notifications</a></li> -->
-                    <!--    <li ng-class="{active : isRouteActive('/scheduled')}"><a href="#/scheduled" class=""><i class="fa fa-hourglass-start"></i> Scheduled Notifications</a></li>
-                <li ng-class="{active : isRouteActive('/draft')}"><a href="#/draft" class=""><i class="fa fa-file-text-o"></i> Notifications in draft</a></li> -->
+                    <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-eye" aria-hidden="true"></i> View Campaigns</a></li>
                 </ul>
             </ul>
             <div class="clearfix"></div>

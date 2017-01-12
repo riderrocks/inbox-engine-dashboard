@@ -1,31 +1,26 @@
 'use strict';
 angular.module('myApp.userProfile', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/profile', {
-        templateUrl: 'views/profile.html',
+        templateUrl: 'views/userProfile.html',
     });
 }]).controller('ProfileCtrl', ['$scope', 'MessageService', 'AuthenticationService', function($scope, MessageService, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;
     $scope.alertMsg = '';
+
     var token = AuthenticationService.getToken();
     AuthenticationService.getUserDetails(token).then(function(response) {
-        // console.log(response);
         $scope.profile = response;
     });
 
     $scope.validatePassword = function(user) {
-        if ($scope.user.newPassword == null || $scope.user.confirmPassword == null || $scope.user.oldPassword == null) {
-            $scope.alertFlag = true;
-            $scope.alertMsg = 'Oops! Fill all mandatory fields please';
-            return;
-        }
-        if ($scope.user.newPassword.length < 6) {
+        if (user.newPassword.length < 6) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'password has be of minimum 6 characters';
             return;
         }
-        var result = angular.equals($scope.user.newPassword, $scope.user.confirmPassword);
+        var result = angular.equals(user.newPassword, user.confirmPassword);
         if (!result) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'Confirm password should be same as new password';
@@ -34,13 +29,15 @@ angular.module('myApp.userProfile', ['ngRoute']).config(['$routeProvider', funct
             $scope.alertMsg = '';
         }
 
-    };
+    }
+
     $scope.resetPassword = function(user) {
-        if ($scope.user.newPassword == null || $scope.user.confirmPassword == null || $scope.user.oldPassword == null) {
+        if (user.newPassword == null || user.confirmPassword == null || user.oldPassword == null) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'Oops! Fill all mandatory fields please';
             return;
         }
+
         $scope.validatePassword(user);
 
         if (!$scope.alertFlag) {
@@ -53,18 +50,15 @@ angular.module('myApp.userProfile', ['ngRoute']).config(['$routeProvider', funct
                 confirmButtonText: "Yes, Change it!",
                 closeOnConfirm: false
             }, function() {
-                AuthenticationService.resetPassword($scope.user, token).then(function(response) {
-                if (response.data.status.httpResponseCode == 200) {
-                    $scope.user = {};
-                    swal("Done!", "Password updated successfully", "success");
-                }
-
-            }).catch(function(response) {
-                swal("Oops!", "Current password is incorrect", "error");
+                AuthenticationService.resetPassword(user, token).then(function(response) {
+                    if (response.data.status.httpResponseCode == 200) {
+                        $scope.user = {};
+                        swal("Done!", "Password updated successfully", "success");
+                    }
+                }).catch(function(response) {
+                    swal("Oops!", "Current password is incorrect", "error");
+                });
             });
-            });
-
-            
         }
-    };
+    }
 }]);
