@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/notification/:id', {
-        templateUrl: 'views/editNotification.html',
-    });
-}]).controller('NotificationCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
+
+app.controller('EditNotificationCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');

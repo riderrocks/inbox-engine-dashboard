@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.bootstrap', 'ngMaterial', 'ngMessages', 'material.svgAssetsCache']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/createCampaign', {
-        templateUrl: 'views/createCampaign.html',
-    });
-}]).controller('NewCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $window, $location, MessageService, AuthenticationService, $timeout, $q) {
+
+app.controller('CreateCampaignCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $window, $location, MessageService, AuthenticationService, $timeout, $q) {
     
     if (!AuthenticationService.getToken()) {
         $location.path('/login');

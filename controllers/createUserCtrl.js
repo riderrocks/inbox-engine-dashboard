@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.createUser', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/createUser', {
-        templateUrl: 'views/createUser.html',
-    });
-}]).controller('CreateUserCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
+
+app.controller('CreateUserCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');

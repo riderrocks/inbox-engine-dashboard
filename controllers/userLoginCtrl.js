@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/login', {
-        templateUrl: 'views/userLogin.html',
-    });
-}]).controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
+
+app.controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;
@@ -44,8 +41,8 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
             return false;
         }
 
-        $scope.validateEmail(user.email,user.password);
-        
+        $scope.validateEmail(user.email, user.password);
+
         if (!$scope.alertFlag) {
             AuthenticationService.authUser(user).then(function(response) {
                 if (response.data.error.msg == "No valid user to login") {

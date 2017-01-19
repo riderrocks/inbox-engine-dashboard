@@ -1,10 +1,6 @@
 'use strict';
-angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/dashboard', {
-        templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl'
-    });
-}]).controller('DashboardCtrl', ['$scope', '$location', '$timeout', 'AuthenticationService', function($scope, $location, $timeout, AuthenticationService) {
+
+app.controller('DashboardCtrl', ['$scope', '$location', '$timeout', 'AuthenticationService', function($scope, $location, $timeout, AuthenticationService) {
 
     // $scope.userRole = '';
 

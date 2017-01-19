@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.viewCampaigns', ['ngRoute', 'angularUtils.directives.dirPagination']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/viewCampaigns', {
-        templateUrl: 'views/viewCampaigns.html',
-    });
-}]).controller('ViewCampaignsCtrl', ['$scope', '$location', 'MessageService', 'AuthenticationService', function($scope, $location, MessageService, AuthenticationService) {
+
+app.controller('ViewCampaignsCtrl', ['$scope', '$location', 'MessageService', 'AuthenticationService', function($scope, $location, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');

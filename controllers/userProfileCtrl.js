@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.userProfile', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/profile', {
-        templateUrl: 'views/userProfile.html',
-    });
-}]).controller('ProfileCtrl', ['$scope', 'MessageService', 'AuthenticationService', function($scope, MessageService, AuthenticationService) {
+
+app.controller('UserProfileCtrl', ['$scope', 'MessageService', 'AuthenticationService', function($scope, MessageService, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;

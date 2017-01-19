@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dateTimeInput']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/announcement/:id', {
-        templateUrl: 'views/editAnnouncement.html',
-    });
-}]).controller('AnnouncementCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
+
+app.controller('EditAnnouncementCtrl', ['$scope', '$location', '$routeParams', 'MessageService', 'AuthenticationService', function($scope, $location, $routeParams, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');
@@ -129,7 +126,6 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
 
 
     $scope.parseKeyValuePairJson = function(data) {
-        console.log(data);
         var res = JSON.stringify(data);
         $.each($.parseJSON(res), function(key, value) {
             $scope.showModel.key = key;
