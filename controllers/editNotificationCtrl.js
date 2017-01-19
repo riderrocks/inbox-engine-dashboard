@@ -102,6 +102,39 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
     $scope.items = appCodeTypeValues;
     $scope.selected = [];
 
+     // key-value functionality start
+
+    $scope.keyValuePairs = [];
+    $scope.parsedKeyValuePair = {};
+    var data = {};
+
+    $scope.parseKeyValuePair = function(key, value) {
+        $scope.keyValuePairs.forEach(function(value, index) {
+            key = value.name;
+            if (key && value.value) {
+                $scope.parsedKeyValuePair[key] = value.value;
+            }
+        });
+    };
+
+    $scope.pushToParseKeyValuePair = function() {
+        $scope.parseKeyValuePair();
+    }
+
+    $scope.addNewKeyValuePair = function() {
+        $scope.keyValuePairs.push({
+            name: '',
+            value: ''
+        });
+    }
+
+    $scope.removeKeyValuePair = function(index, key) {
+        $scope.keyValuePairs.splice(index, 1);
+        delete $scope.parsedKeyValuePair[key];
+    }
+
+    // key-value functionality end
+
     function show() {
         if ($scope.selected.length == 0) {
             $scope.showDiv = false;
@@ -150,6 +183,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         }
         show();
     };
+
     $scope.update = function(notification) {
         if (notification.cardType == 'PlainText with CTA' || notification.cardType == 'PT_CTA') {
             $scope.notificationData.cardType = 'PT_CTA';
@@ -172,6 +206,8 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         }
 
         var appCodesAllFields = [];
+        $scope.appCodes = [];
+        
         for (var i = 0; i < $scope.selected.length; i++) {
             $scope.callToAction[0] = $scope.appCodefield;
             $scope.appCodes.push({
