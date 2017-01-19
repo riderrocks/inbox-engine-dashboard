@@ -30,58 +30,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             dataSource: cities
 
         };
-        var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
-        //for new appcode checkboxex
-        $scope.items = appCodeTypeValues;
-        $scope.selected = [];
 
-        function show() {
-            if ($scope.selected.length == 0) {
-                $scope.showDiv = false;
-            } else {
-                for (var i = 0; i < $scope.selected.length; i++) {
-                    if ($scope.selected[i] == "MOBAND2") {
-                        $scope.showDiv = true;
-                        break;
-                    } else {
-                        $scope.showDiv = false;
-
-                    }
-                }
-            }
-        }
-
-        $scope.toggle = function(item, list) {
-            var idx = list.indexOf(item);
-            if (idx > -1) {
-                list.splice(idx, 1);
-            } else {
-                list.push(item);
-            }
-            show();
-        };
-
-        $scope.exists = function(item, list) {
-            return list.indexOf(item) > -1;
-        };
-
-        $scope.isIndeterminate = function() {
-            return ($scope.selected.length !== 0 &&
-                $scope.selected.length !== $scope.items.length);
-        };
-
-        $scope.isChecked = function() {
-            return $scope.selected.length === $scope.items.length;
-        };
-
-        $scope.toggleAll = function() {
-            if ($scope.selected.length === $scope.items.length) {
-                $scope.selected = [];
-            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-                $scope.selected = $scope.items.slice(0);
-            }
-            show();
-        };
         MessageService.getAnnouncement(param).then(function(announcement) {
             var val = [];
             $scope.announcement = announcement.data[0];
@@ -95,6 +44,101 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             show();
         });
     });
+
+    function show() {
+        if ($scope.selected.length == 0) {
+            $scope.showDiv = false;
+        } else {
+            for (var i = 0; i < $scope.selected.length; i++) {
+                if ($scope.selected[i] == "MOBAND2") {
+                    $scope.showDiv = true;
+                    break;
+                } else {
+                    $scope.showDiv = false;
+                }
+            }
+        }
+    }
+
+    $scope.toggle = function(item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+            list.splice(idx, 1);
+        } else {
+            list.push(item);
+        }
+        show();
+    };
+
+    $scope.exists = function(item, list) {
+        return list.indexOf(item) > -1;
+    };
+
+    $scope.isIndeterminate = function() {
+        return ($scope.selected.length !== 0 &&
+            $scope.selected.length !== $scope.items.length);
+    };
+
+    $scope.isChecked = function() {
+        return $scope.selected.length === $scope.items.length;
+    };
+
+    $scope.toggleAll = function() {
+        if ($scope.selected.length === $scope.items.length) {
+            $scope.selected = [];
+        } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+            $scope.selected = $scope.items.slice(0);
+        }
+        show();
+    };
+
+    var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
+    $scope.items = appCodeTypeValues;
+    $scope.selected = [];
+
+    // key-value functionality start
+
+    $scope.keyValuePairs = [];
+    $scope.parsedKeyValuePair = {};
+    var data = {};
+
+    $scope.parseKeyValuePair = function(key, value) {
+        $scope.keyValuePairs.forEach(function(value, index) {
+            key = value.name;
+            if (key && value.value) {
+                $scope.parsedKeyValuePair[key] = value.value;
+            }
+        });
+    };
+
+    $scope.pushToParseKeyValuePair = function() {
+        $scope.parseKeyValuePair();
+    }
+
+    $scope.addNewKeyValuePair = function() {
+        $scope.keyValuePairs.push({
+            name: '',
+            value: ''
+        });
+    }
+
+    $scope.removeKeyValuePair = function(index, key) {
+        $scope.keyValuePairs.splice(index, 1);
+        delete $scope.parsedKeyValuePair[key];
+    }
+
+
+    $scope.parseKeyValuePairJson = function(data) {
+        console.log(data);
+        var res = JSON.stringify(data);
+        $.each($.parseJSON(res), function(key, value) {
+            $scope.showModel.key = key;
+            $scope.showModel.value = value;
+        });
+        // return showModel;
+    }
+
+    // key-value functionality end
 
     $scope.selectType = {
         "systemTypeValue": "CMS announcement",
@@ -176,7 +220,8 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             return false;
         }
 
-        var appCodesAllFields = [];
+        $scope.appCodes = [];
+
         for (var i = 0; i < $scope.selected.length; i++) {
             $scope.callToAction[0] = $scope.appCodefield;
             $scope.appCodes.push({
@@ -184,6 +229,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
                 callToAction: $scope.callToAction
             })
         }
+
         $scope.announcementData._id = announcement._id;
         $scope.announcementData.campaign = announcement.campaign;
         $scope.announcementData.shortTxt = announcement.shortTxt;

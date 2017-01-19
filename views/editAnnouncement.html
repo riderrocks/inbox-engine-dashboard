@@ -116,6 +116,27 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <label for="appCode">Appcode:</label>
+                    </th>
+                    <td>
+                        <div class="md-padding demo checkboxdemoSelectAll">
+                            <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
+                                <span ng-if="isChecked()">Un-</span>Select All Appcodes
+                            </md-checkbox>
+                            <div class="row">
+                                <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in items">
+                                    <div class="col-md-3">
+                                        <md-checkbox ng-checked="exists(item, selected);" ng-click="toggle(item, selected)">
+                                            {{ item }}
+                                        </md-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <tr ng-show="announcement.cardType == 'PT_CTA' || announcement.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="text">Primary CTA text:</label>
@@ -143,7 +164,7 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-show="showDiv">
                     <th>
                         <label for="appCode" style="margin-bottom: 46%;">Appcode<span id="red">*</span>:</label>
                     </th>

@@ -18,6 +18,7 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         // loginObj.$unauth();
         user = '';
         localStorage.removeItem('userToken');
+        localStorage.removeItem('_userRole');
         localStorage.removeItem('Admin');
         $location.path('/authUser');
     }
