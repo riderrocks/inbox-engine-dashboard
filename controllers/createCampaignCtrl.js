@@ -4,7 +4,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         templateUrl: 'views/createCampaign.html',
     });
 }]).controller('NewCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $window, $location, MessageService, AuthenticationService, $timeout, $q) {
-    
+
     if (!AuthenticationService.getToken()) {
         $location.path('/login');
         return;
@@ -62,7 +62,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         });
     }
 
-    $scope.removeKeyValuePair = function(index,key) {
+    $scope.removeKeyValuePair = function(index, key) {
         $scope.keyValuePairs.splice(index, 1);
         delete $scope.parsedKeyValuePair[key];
     }
@@ -121,7 +121,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     }
 
     $scope.$on('start-date-changed', function(event, args) {
-        //$scope.dateChecker_validfrom();
+        $scope.dateChecker_validfrom();
     });
 
     function endDateOnSetTime() {
@@ -129,7 +129,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     }
 
     $scope.$on('end-date-changed', function(event, args) {
-        // $scope.dateChecker_validtill();
+        $scope.dateChecker_validtill();
     });
 
     function startDateBeforeRender($dates) {
@@ -206,7 +206,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         }
         show();
     };
-    
+
     //for new appcode checkboxex
 
     $scope.create = function(message) {
@@ -221,14 +221,18 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
             message.flag = 'A';
             delete message.memberId;
             delete message.memberEmail;
-            if ($scope.selectedIds == null) {
-                swal("Heyy!", "Need to specify the RegionCode", "error");
+            if ($scope.selected.length == 0 || $scope.selectedIds == null || $scope.message.campaign == null || $scope.message.shortTxt == null || $scope.message.longTxt == null) {
+                swal("Heyy!", "Need To Fill Up The Mandatory Feilds", "error");
                 return false;
             }
         } else if ($scope.messageType.name == 'notification') {
             message.flag = 'N';
             message.memberEmail = $scope.searchText;
             delete message.regionCode;
+            if ($scope.selected.length == 0 || $scope.message.memberId == null || $scope.searchText == null || $scope.message.campaign == null || $scope.message.shortTxt == null || $scope.message.longTxt == null) {
+                swal("Heyy!", "Need To Fill Up The Mandatory Feilds", "error");
+                return false;
+            }
         }
 
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
@@ -264,9 +268,15 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         } else if ($scope.selectType.messageCardTypeValue == 'PlainText with CTA') {
             message.cardType = 'PT_CTA';
             message.customKeyValuePair = $scope.parsedKeyValuePair;
+            console.log($scope.appCodefield);
             if ($scope.appCodefield == null) {
-                swal('Oops...', 'Fill Primary CTA Link & Primary CTA Text fields before submission!', 'warning');
+                swal('Oops...', "Need To Fill Up The Mandatory Feilds", "error");
                 return false;
+            } else {
+                if ($scope.appCodefield.text == null || $scope.appCodefield.link == null) {
+                    swal('Oops...', "Need To Fill Up The Mandatory Feilds", "error");
+                    return false;
+                }
             }
             if ($scope.selectType.targetTypeValue == 'New Window') {
                 $scope.appCodefield.target = '_blank';
@@ -302,7 +312,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
         message.validFrom = $scope.dateRangeStart;
         message.validTill = $scope.dateRangeEnd;
         message.appCodes = $scope.appCodes;
-
+        console.log(message);
         MessageService.createMessage(message).then(function(res) {
             $scope.res = res;
             if ($scope.res.status == 200) {
