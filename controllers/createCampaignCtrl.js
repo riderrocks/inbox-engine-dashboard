@@ -43,6 +43,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     $scope.parseKeyValuePair = function(key, value) {
         $scope.keyValuePairs.forEach(function(value, index) {
+            console.log(value);
             key = value.name;
             if (key && value.value) {
                 $scope.parsedKeyValuePair[key] = value.value;
@@ -236,7 +237,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
         if ($scope.selectType.messageCardTypeValue == 'PlainText') {
             message.cardType = 'PT';
-
+            message.customKeyValuePair = $scope.parsedKeyValuePair;
             if ($scope.selected.length > 1) {
                 $scope.appCodes = [];
                 $scope.appCodefieldsAll = {};

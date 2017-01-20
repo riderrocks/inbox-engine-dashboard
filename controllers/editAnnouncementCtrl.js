@@ -9,95 +9,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
         $location.path('/login');
         return;
     }
-
-    var param = $routeParams.id;
-
-    MessageService.getAllRegionCodes().then(function(regionCode) {
-        var cities = [];
-        var TopCities = regionCode.BookMyShow.TopCities;
-        var OtherCities = regionCode.BookMyShow.OtherCities;
-        var rawCities = TopCities.concat(OtherCities);
-        for (var i = 0; i < rawCities.length; i++) {
-            cities.push({
-                name_city: rawCities[i].RegionName,
-                code_city: rawCities[i].RegionCode
-            });
-        }
-        $scope.selectOptions = {
-            placeholder: "Select RegionCode...",
-            dataTextField: 'name_city',
-            dataValueField: 'code_city',
-            dataSource: cities
-
-        };
-
-        MessageService.getAnnouncement(param).then(function(announcement) {
-            var val = [];
-            $scope.announcement = announcement.data[0];
-            $scope.selected = val;
-            $scope.selectedIds = $scope.announcement.regionCode;
-            $scope.dateRangeStart = $scope.announcement.validFrom;
-            $scope.dateRangeEnd = $scope.announcement.validTill;
-            for (var i = 0; i < $scope.announcement.appCodes.length; i++) {
-                val[i] = $scope.announcement.appCodes[i].appCode;
-            }
-            show();
-        });
-    });
-
-    function show() {
-        if ($scope.selected.length == 0) {
-            $scope.showDiv = false;
-        } else {
-            for (var i = 0; i < $scope.selected.length; i++) {
-                if ($scope.selected[i] == "MOBAND2") {
-                    $scope.showDiv = true;
-                    break;
-                } else {
-                    $scope.showDiv = false;
-                }
-            }
-        }
-    }
-
-    $scope.toggle = function(item, list) {
-        var idx = list.indexOf(item);
-        if (idx > -1) {
-            list.splice(idx, 1);
-        } else {
-            list.push(item);
-        }
-        show();
-    };
-
-    $scope.exists = function(item, list) {
-        return list.indexOf(item) > -1;
-    };
-
-    $scope.isIndeterminate = function() {
-        return ($scope.selected.length !== 0 &&
-            $scope.selected.length !== $scope.items.length);
-    };
-
-    $scope.isChecked = function() {
-        return $scope.selected.length === $scope.items.length;
-    };
-
-    $scope.toggleAll = function() {
-        if ($scope.selected.length === $scope.items.length) {
-            $scope.selected = [];
-        } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-            $scope.selected = $scope.items.slice(0);
-        }
-        show();
-    };
-
-    var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
-    $scope.items = appCodeTypeValues;
-    $scope.selected = [];
-
     // key-value functionality start
-
     $scope.keyValuePairs = [];
     $scope.parsedKeyValuePair = {};
     var data = {};
@@ -123,22 +35,96 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
     }
 
     $scope.removeKeyValuePair = function(index, key) {
-        $scope.keyValuePairs.splice(index, 1);
-        delete $scope.parsedKeyValuePair[key];
-    }
+            $scope.keyValuePairs.splice(index, 1);
+            delete $scope.parsedKeyValuePair[key];
+        }
+        // till here.
 
+    var param = $routeParams.id;
+    MessageService.getAllRegionCodes().then(function(regionCode) {
+        var cities = [];
+        var TopCities = regionCode.BookMyShow.TopCities;
+        var OtherCities = regionCode.BookMyShow.OtherCities;
+        var rawCities = TopCities.concat(OtherCities);
+        for (var i = 0; i < rawCities.length; i++) {
+            cities.push({
+                name_city: rawCities[i].RegionName,
+                code_city: rawCities[i].RegionCode
+            });
+        }
+        $scope.selectOptions = {
+            placeholder: "Select RegionCode...",
+            dataTextField: 'name_city',
+            dataValueField: 'code_city',
+            dataSource: cities
 
-    $scope.parseKeyValuePairJson = function(data) {
-        console.log(data);
-        var res = JSON.stringify(data);
-        $.each($.parseJSON(res), function(key, value) {
-            $scope.showModel.key = key;
-            $scope.showModel.value = value;
+        };
+        var appCodeTypeValues = ["WEBIN", 'MOBAND2', 'WEB', 'WEBTOUCH', 'MOBIOS3', 'MOBWIN10'];
+        //for new appcode checkboxex
+        $scope.items = appCodeTypeValues;
+        $scope.selected = [];
+
+        function show() {
+            if ($scope.selected.length == 0) {
+                $scope.showDiv = false;
+            } else {
+                for (var i = 0; i < $scope.selected.length; i++) {
+                    if ($scope.selected[i] == "MOBAND2") {
+                        $scope.showDiv = true;
+                        break;
+                    } else {
+                        $scope.showDiv = false;
+
+                    }
+                }
+            }
+        }
+
+        $scope.toggle = function(item, list) {
+            var idx = list.indexOf(item);
+            if (idx > -1) {
+                list.splice(idx, 1);
+            } else {
+                list.push(item);
+            }
+            show();
+        };
+
+        $scope.exists = function(item, list) {
+            return list.indexOf(item) > -1;
+        };
+
+        $scope.isIndeterminate = function() {
+            return ($scope.selected.length !== 0 &&
+                $scope.selected.length !== $scope.items.length);
+        };
+
+        $scope.isChecked = function() {
+            return $scope.selected.length === $scope.items.length;
+        };
+
+        $scope.toggleAll = function() {
+            if ($scope.selected.length === $scope.items.length) {
+                $scope.selected = [];
+            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+                $scope.selected = $scope.items.slice(0);
+            }
+            show();
+        };
+        MessageService.getAnnouncement(param).then(function(announcement) {
+            var val = [];
+            $scope.announcement = announcement.data[0];
+            console.log($scope.announcement.customKeyValuePair);
+            $scope.selected = val;
+            $scope.selectedIds = $scope.announcement.regionCode;
+            $scope.dateRangeStart = $scope.announcement.validFrom;
+            $scope.dateRangeEnd = $scope.announcement.validTill;
+            for (var i = 0; i < $scope.announcement.appCodes.length; i++) {
+                val[i] = $scope.announcement.appCodes[i].appCode;
+            }
+            show();
         });
-        // return showModel;
-    }
-
-    // key-value functionality end
+    });
 
     $scope.selectType = {
         "systemTypeValue": "CMS announcement",
@@ -220,8 +206,7 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
             return false;
         }
 
-        $scope.appCodes = [];
-
+        var appCodesAllFields = [];
         for (var i = 0; i < $scope.selected.length; i++) {
             $scope.callToAction[0] = $scope.appCodefield;
             $scope.appCodes.push({
@@ -229,7 +214,6 @@ angular.module('myApp.editAnnouncement', ['ngRoute', 'kendo.directives', 'ui.dat
                 callToAction: $scope.callToAction
             })
         }
-
         $scope.announcementData._id = announcement._id;
         $scope.announcementData.campaign = announcement.campaign;
         $scope.announcementData.shortTxt = announcement.shortTxt;
