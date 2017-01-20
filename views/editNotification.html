@@ -121,6 +121,27 @@
                         <input type="text" class="form-control" ng-model='notification.memberId' placeholder="Member ID" readonly required>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <label for="appCode">Appcode:</label>
+                    </th>
+                    <td>
+                        <div class="md-padding demo checkboxdemoSelectAll">
+                            <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
+                                <span ng-if="isChecked()">Un-</span>Select All Appcodes
+                            </md-checkbox>
+                            <div class="row">
+                                <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in items">
+                                    <div class="col-md-3">
+                                        <md-checkbox ng-checked="exists(item, selected);" ng-click="toggle(item, selected)">
+                                            {{ item }}
+                                        </md-checkbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <tr ng-show="notification.cardType == 'PT_CTA' || notification.cardType == 'PlainText with CTA'">
                     <th>
                         <label for="text">Primary CTA text:</label>
@@ -149,35 +170,21 @@
                     </td>
                 </tr>
                 </tr>
-                <tr>
+                 <tr ng-show="showDiv">
                     <th>
-                        <label for="appCode">Appcode:</label>
+                        <label for="showKeyValue">Custom key-value pairs</label>
                     </th>
                     <td>
-                        <!--  <select class="btn btn-default" ng-model="announcement.appCodes[0].appCode" ng-options="v for v in selectType.appCodeTypeValues"></select> -->
-                         <select class="btn btn-default" ng-model="notification.appCodes[0].appCode">
-                            <option ng-selected="notification.appCodes[0].appCode">{{notification.appCodes[0].appCode}}</option>
-                        </select>
-                        <!-- <div class="md-padding demo checkboxdemoSelectAll">
-                            <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
-                                <span ng-if="isChecked()">Un-</span>Select All Appcodes
-                            </md-checkbox>
-                            <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in items">
-                                <md-checkbox ng-checked="exists(item, selected);" ng-click="toggle(item, selected)">
-                                    {{ item }}
-                                </md-checkbox>
+                        <div class="grid push-form">
+                            <div data-ng-repeat="keyValuePair in keyValuePairs" style="padding-bottom: 5px;">
+                                <input type="text" ng-model="keyValuePair.name" placeholder="Key">
+                                <input style="margin-left: 2px;" type="text" ng-model="keyValuePair.value" placeholder="Value">
+                                <button style="margin-left: 3px;" ng-click="removeKeyValuePair($index,keyValuePair.name)">X</button>
                             </div>
-                        </div> -->
+                            <a href data-ng-click="addNewKeyValuePair()">+ Add New Pair</a>
+                        </div>
                     </td>
                 </tr>
-               <!--  <tr ng-show='showDiv'>
-                    <th>
-                        tEST
-                    </th>
-                    <td>
-                        dEMO
-                    </td>
-                </tr> -->
             </thead>
         </table>
         <button type="button" class="btn btn-success" ng-click="update(notification)">Update</button>

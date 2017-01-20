@@ -42,7 +42,6 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
     var data = {};
 
     $scope.parseKeyValuePair = function(key, value) {
-        // $scope.parsedKeyValuePair = {};
         $scope.keyValuePairs.forEach(function(value, index) {
             key = value.name;
             if (key && value.value) {

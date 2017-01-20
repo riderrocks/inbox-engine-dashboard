@@ -3,7 +3,7 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
     $routeProvider.when('/login', {
         templateUrl: 'views/userLogin.html',
     });
-}]).controller('UserLoginCtrl', ['$scope', '$location', '$window', 'AuthenticationService', function($scope, $location, $window, AuthenticationService) {
+}]).controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;
@@ -38,7 +38,7 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
     }
 
     $scope.authUser = function(user) {
-        if (user.email == null || user.password == '') {
+        if (user.email == null || user.password == '' || user.password == undefined) {
             $scope.alertFlag = true;
             $scope.alertMsg = 'email and password cannot be blank';
             return false;
@@ -64,7 +64,6 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
                     if (authToken) {
                         AuthenticationService.setToken(authToken);
                         AuthenticationService.getUserDetails(authToken);
-                        $window.location.reload();
                         $location.path('/viewCampaigns');
                     }
                     $scope.user = {};
