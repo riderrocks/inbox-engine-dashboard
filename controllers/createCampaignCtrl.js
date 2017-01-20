@@ -211,7 +211,7 @@ angular.module('myApp.createCampaign', ['ngRoute', 'kendo.directives', 'ui.boots
 
     $scope.create = function(message) {
         $scope.pushToParseKeyValuePair();
-
+        console.log($scope.keyValuePairs);
         if ($scope.dateRangeStart == null) {
             swal('Oops...', 'Fill Valid From & Valid Till fields before submission!', 'warning');
             return false;

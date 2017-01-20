@@ -17,6 +17,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
             var val = [];
             $scope.notification = notification.data[0];
             $scope.selected = val;
+            $scope.parseKeyValuePairJson($scope.notification.customKeyValuePair);
             $scope.dateRangeStart = $scope.notification.validFrom;
             $scope.dateRangeEnd = $scope.notification.validTill;
             for (var i = 0; i < $scope.notification.appCodes.length; i++) {
@@ -102,8 +103,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
     $scope.items = appCodeTypeValues;
     $scope.selected = [];
 
-     // key-value functionality start
-
+    // key-value functionality start
     $scope.keyValuePairs = [];
     $scope.parsedKeyValuePair = {};
     var data = {};
@@ -132,6 +132,19 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
         $scope.keyValuePairs.splice(index, 1);
         delete $scope.parsedKeyValuePair[key];
     }
+
+
+    $scope.parseKeyValuePairJson = function(data) {
+        var res = JSON.stringify(data);
+        angular.forEach(angular.fromJson(res), function(value, key) {
+            $scope.keyValuePair = {};
+            $scope.keyValuePair.name = key;
+            $scope.keyValuePair.value = value;
+            $scope.keyValuePairs.push($scope.keyValuePair);
+
+        });
+    }
+
 
     // key-value functionality end
 
@@ -185,6 +198,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
     };
 
     $scope.update = function(notification) {
+        $scope.pushToParseKeyValuePair();
         if (notification.cardType == 'PlainText with CTA' || notification.cardType == 'PT_CTA') {
             $scope.notificationData.cardType = 'PT_CTA';
             $scope.appCodefield.text = notification.appCodes[0].callToAction[0].text;
@@ -207,7 +221,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
 
         var appCodesAllFields = [];
         $scope.appCodes = [];
-        
+
         for (var i = 0; i < $scope.selected.length; i++) {
             $scope.callToAction[0] = $scope.appCodefield;
             $scope.appCodes.push({
@@ -215,6 +229,7 @@ angular.module('myApp.editNotification', ['ngRoute', 'ui.dateTimeInput']).config
                 callToAction: $scope.callToAction
             })
         }
+        $scope.notificationData.customKeyValuePair = $scope.parsedKeyValuePair;
         $scope.notificationData._id = notification._id;
         $scope.notificationData.campaign = notification.campaign;
         $scope.notificationData.shortTxt = notification.shortTxt;

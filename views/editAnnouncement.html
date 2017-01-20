@@ -118,7 +118,7 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="appCode" style="margin-bottom: 46%;">Appcode<span id="red">*</span>:</label>
+                        <label for="appCode">Appcode:</label>
                     </th>
                     <td>
                         <div class="md-padding demo checkboxdemoSelectAll">
@@ -166,16 +166,14 @@
                 </tr>
                 <tr ng-show="showDiv">
                     <th>
-                        <label for="showKeyValue">Custom key-value pairs:</label>
+                        <label for="showKeyValue">Custom key-value pairs</label>
                     </th>
                     <td>
                         <div class="grid push-form">
-                            <div ng-model="showKeyValue" ng-show="showKeyValue">
-                                <div data-ng-repeat="keyValuePair in keyValuePairs" style="padding-bottom: 5px;">
-                                    <input type="text" ng-model="keyValuePair.name" placeholder="Key">
-                                    <input style="margin-left: 2px;" type="text" ng-model="keyValuePair.value" placeholder="Value">
-                                    <button style="margin-left: 3px;" ng-click="removeKeyValuePair($index,keyValuePair.name)">X</button>
-                                </div>
+                            <div data-ng-repeat="keyValuePair in keyValuePairs" style="padding-bottom: 5px;">
+                                <input type="text" ng-model="keyValuePair.name" placeholder="Key">
+                                <input style="margin-left: 2px;" type="text" ng-model="keyValuePair.value" placeholder="Value">
+                                <button style="margin-left: 3px;" ng-click="removeKeyValuePair($index,keyValuePair.name)">X</button>
                             </div>
                             <a href data-ng-click="addNewKeyValuePair()">+ Add New Pair</a>
                         </div>
