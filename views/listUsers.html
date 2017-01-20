@@ -1,0 +1,48 @@
+<div ng-include="'views/dashboard.html'"></div>
+<div class="container announcement-container" ng-controller="ListUsersCtrl">
+    <div class="row">
+        
+        <div class="col-xs-6">
+            <label for="search">Search:</label>
+            <input ng-model="q.firstName
+" id="search" class="form-control" placeholder="Search UserName">
+        </div>
+    </div>
+    <div class="viewCampaignsTable">
+        <table class="announcement MT15" style="width:131%">
+            <thead>
+                <th class="announcement">User Name</th>
+                <th class="announcement">Email</th>
+                <th class="announcement">Phone</th>
+                <th class="announcement">Created On</th>
+                  <th class="announcement">Role</th>
+                <th class="announcement">Status</th>
+               <th class="announcement">Action</th>
+            </thead>
+            <tbody>
+                <tr dir-paginate="users in users.data | filter:q:strict | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
+                    <td class="announcement">{{users.firstName}}</td>
+                    <td class="announcement">{{users.email}}</td>
+                   <!--  <td class="announcement">{{data.memberEmail ? data.memberEmail : 'All Users'}}</td> -->
+                    <td class="announcement">{{users.phone}}</td>
+                    <td class="announcement">{{users.createdOn}}</td>
+                     <td class="announcement">{{users.role}}</td>
+                    <td class="announcement">
+                    <div ng-class="{true:'user-active',false:'user-deactive'}[users.isActive]">
+                       {{users.isActive?'Active':'Deactive'}}
+                       </div>
+                    </td>
+                    <td class="announcement">
+                        <button  class="btn btn-info"  ng-click="activeDeactiveUser(users)">{{users.isActive?'Deactivate':'Activate'}}</button>
+                                
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-controller="OtherController">
+        <div class="text-center">
+            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="lib/pagination/dirPagination.tpl.html"></dir-pagination-controls>
+        </div>
+    </div>
+</div>
