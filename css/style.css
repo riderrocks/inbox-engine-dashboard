@@ -849,14 +849,14 @@ div.profile-box {
 /* 5 Basic (Grids) */
 
 .grid {
-  background:#fff;
-  border:1px solid #d2d5d8;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  margin: 0 0 26px 0;
-  padding: 20px 20px 20px 20px;
-  width: 480px;
+    background: #fff;
+    border: 1px solid #d2d5d8;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin: 0 0 26px 0;
+    padding: 20px 20px 20px 20px;
+    width: 480px;
 }
 
 .grid-transparent {
@@ -3281,13 +3281,14 @@ input[type="radio"] + label span {
     margin: 0 auto;
 }
 
+
 /*for new appcode checkbox*/
 
 .checkboxdemoSelectAll .demo-select-all-checkboxes {
     padding-left: 30px;
 }
 
-.profile-p{
+.profile-p {
     margin: 13px 0 10px;
 }
 
@@ -3297,4 +3298,18 @@ input[type="radio"] + label span {
 
 .login-button {
     margin-left: 208px;
+}
+
+.user-active {
+    background-color: green;
+    text-align: -webkit-center;
+    border-radius: 7%;
+    color: white;
+}
+
+.user-deactive {
+    background-color: red;
+    text-align: -webkit-center;
+    border-radius: 7%;
+    color: white;
 }

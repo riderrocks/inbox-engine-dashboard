@@ -48,6 +48,9 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
         
         if (!$scope.alertFlag) {
             AuthenticationService.authUser(user).then(function(response) {
+                if(response.data.error.msg== "user is deactivated"){
+                    swal("Sorry!","User is deactivated","error");
+                }
                 if (response.data.error.msg == "No valid user to login") {
                     swal("Sorry!", "No valid user to login", "error");
                 }

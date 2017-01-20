@@ -42,6 +42,8 @@ angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', functio
             $scope.routeName = 'Reset Password';
         }else if(curRoute=='/profile'){
             $scope.routeName='Profile'
+        }else if(curRoute=='/listUsers'){
+            $scope.routeName='List Users'
         }
         return curRoute.match(route);
     }
