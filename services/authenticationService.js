@@ -22,12 +22,12 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         localStorage.removeItem('Admin');
         $location.path('/authUser');
     }
-   
+
     this.checkUserRole = function() {
         var userRoleId = localStorage.getItem('_userRole');
         if (userRoleId == localStorage.getItem('Admin')) {
             return 'Admin';
-        } 
+        }
     }
 
     this.getRoles = function() {
@@ -48,6 +48,18 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
             method: 'POST',
             url: this.baseUrl + "/users",
             data: user
+        }).then(function successCallback(response) {
+            defer.resolve(response);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+        return defer.promise;
+    }
+    this.getUsers = function() {
+        var defer = $q.defer();
+        $http({
+            method: 'GET',
+            url: this.baseUrl + "/users",
         }).then(function successCallback(response) {
             defer.resolve(response);
         }, function errorCallback(response) {
@@ -80,23 +92,37 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         }).then(function successCallback(response) {
             defer.resolve(response);
         }, function errorCallback(response) {
-           defer.reject(response);
+            defer.reject(response);
         });
         return defer.promise;
     }
 
     this.getUserDetails = function(token) {
-        var defer=$q.defer();
-       $http({
+        var defer = $q.defer();
+        $http({
             method: 'GET',
             url: this.baseUrl + "/users/me",
-            headers: {'x-access-token': token}
+            headers: { 'x-access-token': token }
         }).then(function successCallback(response) {
             localStorage.setItem("_userRole", response.data.data._userRole);
             defer.resolve(response.data.data);
         }, function errorCallback(response) {
             console.log(response);
         });
-         return defer.promise;
+        return defer.promise;
+    }
+
+    this.activeDeactiveUser = function(user) {
+        var defer = $q.defer();
+        $http({
+            method: 'PUT',
+            url: this.baseUrl + "/users/activeDeactiveUser",
+            data: user
+        }).then(function successCallback(response) {
+            defer.resolve(response);
+        }, function errorCallback(response) {
+            defer.reject(response);
+        });
+        return defer.promise;
     }
 }]);
