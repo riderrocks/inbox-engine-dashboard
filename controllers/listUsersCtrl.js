@@ -14,8 +14,6 @@ angular.module('myApp.listUsers', ['ngRoute', 'angularUtils.directives.dirPagina
     $scope.pageSize = 10;
 
     AuthenticationService.getUsers().then(function(users) {
-       // $scope.users = users.data;
-       console.log(users);
         for (var i = 0; i < users.data.data.length; i++) {
             if (users.data.data[i]._userRole == localStorage.getItem('Admin')) {
                 users.data.data[i].role = 'Admin';
