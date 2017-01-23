@@ -1,22 +1,11 @@
 'use strict';
-angular.module('myApp.dashboard', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/dashboard', {
-        templateUrl: 'views/dashboard.html',
-        controller: 'DashboardCtrl'
-    });
-}]).controller('DashboardCtrl', ['$scope', '$location', '$timeout', 'AuthenticationService', function($scope, $location, $timeout, AuthenticationService) {
 
-    // $scope.userRole = '';
+app.controller('DashboardCtrl', ['$scope', '$location', '$timeout', 'AuthenticationService', function($scope, $location, $timeout, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');
         return;
     }
-
-    $scope.userRole = AuthenticationService.checkUserRole();
-    // if (userRole == 'Admin') {
-    //     $scope.userRole = 'Admin';
-    // }
 
     $scope.isRouteActive = function(route) {
         var curRoute = $location.path();

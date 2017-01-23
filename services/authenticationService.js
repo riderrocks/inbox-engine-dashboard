@@ -1,6 +1,61 @@
-var authenticationService = app.service('AuthenticationService', ['$q', '$http', '$location', 'CONFIG', function($q, $http, $location, CONFIG) {
+var authenticationService = app.service('AuthenticationService', ['$q', '$rootScope', '$sessionStorage', '$http', '$location', 'CONFIG', function($q,  $rootScope, $sessionStorage, $http, $location, CONFIG) {
     this.baseUrl = CONFIG.INBOX.baseUrl;
     var user = '';
+
+    /* START - permission-based-auth-system-in-angularjs*/
+    // var auth = {};
+
+    // auth.init = function() {
+    //     if (auth.isLoggedIn()) {
+    //         $rootScope.user = currentUser();
+    //     }
+    // };
+
+    // auth.checkPermissionForView = function(view) {
+    //     if (!view.requiresAuthentication) {
+    //         return true;
+    //     }
+    // };
+
+    // var userHasPermissionForView = function(view) {
+    //     if (!auth.isLoggedIn()) {
+    //         return false;
+    //     }
+
+    //     if (!view.permissions || !view.permissions.length) {
+    //         return true;
+    //     }
+
+    //     return auth.userHasPermission(view.permissions);
+    // };
+
+    // auth.userHasPermission = function(permissions) {
+    //     if (!auth.isLoggedIn()) {
+    //         return false;
+    //     }
+
+    //     var found = false;
+    //     angular.forEach(permissions, function(permission, index) {
+    //         if ($sessionStorage.user.user_permissions.indexOf(permission) >= 0) {
+    //             found = true;
+    //             return;
+    //         }
+    //     });
+
+    //     return found;
+    // };
+
+    // auth.currentUser = function() {
+    //     return $sessionStorage.user;
+    // };
+
+    // auth.isLoggedIn = function() {
+    //     return $sessionStorage.user != null;
+    // };
+
+    // return auth;
+
+    /* END - permission-based-auth-system-in-angularjs*/
 
     this.getToken = function() {
         if (user == '') {
@@ -20,15 +75,17 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         localStorage.removeItem('userToken');
         localStorage.removeItem('_userRole');
         localStorage.removeItem('Admin');
-        $location.path('/authUser');
+         delete $sessionStorage.user;
+        delete $rootScope.user;
+        $location.path('/login');
     }
 
-    this.checkUserRole = function() {
-        var userRoleId = localStorage.getItem('_userRole');
-        if (userRoleId == localStorage.getItem('Admin')) {
-            return 'Admin';
-        }
-    }
+    // this.checkUserRole = function() {
+    //     var userRoleId = localStorage.getItem('_userRole');
+    //     if (userRoleId == localStorage.getItem('Admin')) {
+    //         return 'Admin';
+    //     }
+    // }
 
     this.getRoles = function() {
         var defer = $q.defer();
@@ -75,6 +132,8 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
             url: this.baseUrl + "/users/login",
             data: user
         }).then(function successCallback(response) {
+            $sessionStorage.user = response.data.data;
+            $rootScope.user = $sessionStorage.user;
             defer.resolve(response);
         }, function errorCallback(response) {
             console.log(response);
@@ -87,7 +146,9 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         $http({
             method: 'PUT',
             url: this.baseUrl + "/users/resetPassword",
-            headers: { 'x-access-token': token },
+            headers: {
+                'x-access-token': token
+            },
             data: user
         }).then(function successCallback(response) {
             defer.resolve(response);
@@ -102,9 +163,10 @@ var authenticationService = app.service('AuthenticationService', ['$q', '$http',
         $http({
             method: 'GET',
             url: this.baseUrl + "/users/me",
-            headers: { 'x-access-token': token }
+            headers: {
+                'x-access-token': token
+            }
         }).then(function successCallback(response) {
-            localStorage.setItem("_userRole", response.data.data._userRole);
             defer.resolve(response.data.data);
         }, function errorCallback(response) {
             console.log(response);

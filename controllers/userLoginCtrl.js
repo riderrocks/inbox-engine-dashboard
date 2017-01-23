@@ -1,20 +1,17 @@
 'use strict';
-angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/login', {
-        templateUrl: 'views/userLogin.html',
-    });
-}]).controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
+
+app.controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService', function($scope, $location, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;
     $scope.alertMsg = '';
 
-    AuthenticationService.getRoles().then(function(role) {
-        var roles = role.data;
-        for (var i = 0; i < roles.data.length; i++) {
-            localStorage.setItem(roles.data[i].roleName, roles.data[i]._id);
-        }
-    });
+    // AuthenticationService.getRoles().then(function(role) {
+    //     var roles = role.data;
+    //     for (var i = 0; i < roles.data.length; i++) {
+    //         localStorage.setItem(roles.data[i].roleName, roles.data[i]._id);
+    //     }
+    // });
 
     $scope.validateEmail = function(email, password) {
         var re = /^[a-z0-9](\.?[a-z0-9]){0,}@bookmyshow\.com$/;
@@ -44,8 +41,8 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
             return false;
         }
 
-        $scope.validateEmail(user.email,user.password);
-        
+        $scope.validateEmail(user.email, user.password);
+
         if (!$scope.alertFlag) {
             AuthenticationService.authUser(user).then(function(response) {
                 if(response.data.error.msg== "user is deactivated"){
@@ -63,7 +60,7 @@ angular.module('myApp.userLogin', ['ngRoute']).config(['$routeProvider', functio
                     var authToken = response.data.data.token;
                     if (authToken) {
                         AuthenticationService.setToken(authToken);
-                        AuthenticationService.getUserDetails(authToken);
+                        // AuthenticationService.getUserDetails(authToken);
                         $location.path('/viewCampaigns');
                     }
                     $scope.user = {};

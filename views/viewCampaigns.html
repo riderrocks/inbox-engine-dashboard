@@ -24,7 +24,7 @@
                 <th class="announcement">Region</th>
                 <th class="announcement">Created On</th>
                 <th class="announcement">Messages Sent</th>
-                <th class="announcement" colspan="2">Action</th>
+                <th class="announcement" colspan="2" permission="['announcement_edit']">Action</th>
             </thead>
             <tbody>
                 <tr dir-paginate="data in campaigns.data | filter:q:strict | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
@@ -37,11 +37,11 @@
                     <td class="announcement"><span ng-repeat="data in data.regionCode"> {{data}} </span></td>
                     <td class="announcement">{{data.createdOn | date:'dd-MM-yyyy HH:mm a'}}</td>
                     <td class="announcement">{{data.count ? data.count : '1'}}</td>
-                    <td class="announcement">
+                    <td class="announcement" permission="['announcement_edit']">
                         <a ng-show="!data.isStopped && data.validTill > currentTime" href="#/{{data.memberId ? 'notification' : 'announcement'}}/{{data._id}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                     </td>
-                    <td class="announcement">
-                        <button ng-if="!data.isStopped" class="btn btn-info btnwidth" ng-disabled="data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
+                    <td class="announcement" permission="['announcement_stop']">
+                        <button ng-if="!data.isStopped" class="btn btn-info" ng-disabled="data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
                             < currentTime ? 'Completed' : 'Stop'}}</button>
                                 <button ng-if="data.isStopped" class="btn btn-info btnwidth" ng-disabled="data.isStopped ||data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
                                     < currentTime ? 'Stopped' : 'Stop'}}</button>
