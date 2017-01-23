@@ -15,7 +15,7 @@ app.controller('ListUsersCtrl', ['$scope', '$window', '$location', 'MessageServi
             if (users.data.data[i]._userRole == localStorage.getItem('Admin')) {
                 users.data.data[i].role = 'Admin';
             } else if (users.data.data[i]._userRole == localStorage.getItem('CCExecutive')) {
-                users.data.data[i].role = 'CC Team';
+                users.data.data[i].role = 'CCExecutive';
             }else if(users.data.data[i]._userRole == localStorage.getItem('Member')){
                   users.data.data[i].role = 'Member';
             }
