@@ -11,8 +11,8 @@
     <div class="viewCampaignsTable">
         <table class="announcement MT15" style="width:131%">
             <thead>
-                <th class="announcement">User Name</th>
-                <th class="announcement">Email</th>
+                <th class="announcement">Name</th>
+                <th class="announcement">Email / User Id</th>
                 <th class="announcement">Phone</th>
                 <th class="announcement">Created On</th>
                   <th class="announcement">Role</th>
@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <tr dir-paginate="users in users.data | filter:q:strict | itemsPerPage: pageSize" current-page="currentPage" class="announcement">
-                    <td class="announcement">{{users.firstName}}</td>
+                    <td class="announcement">{{users.firstName +" "+users.lastName}}</td>
                     <td class="announcement">{{users.email}}</td>
                    <!--  <td class="announcement">{{data.memberEmail ? data.memberEmail : 'All Users'}}</td> -->
                     <td class="announcement">{{users.phone}}</td>
