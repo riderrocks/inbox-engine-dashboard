@@ -1,6 +1,6 @@
 'use strict';
 
-var inboxUrl = 'http://172.16.65.7:6633';
+var inboxUrl = 'http://172.16.66.39:6633';
 
 var app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngStorage', 'kendo.directives', 'ui.bootstrap', 'ngMaterial', 
 	'angularUtils.directives.dirPagination', 

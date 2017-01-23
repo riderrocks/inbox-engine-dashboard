@@ -14,7 +14,7 @@ app.controller('ListUsersCtrl', ['$scope', '$window', '$location', 'MessageServi
         for (var i = 0; i < users.data.data.length; i++) {
             if (users.data.data[i]._userRole == localStorage.getItem('Admin')) {
                 users.data.data[i].role = 'Admin';
-            } else if (users.data.data[i]._userRole == localStorage.getItem('CCTeam')) {
+            } else if (users.data.data[i]._userRole == localStorage.getItem('CCExecutive')) {
                 users.data.data[i].role = 'CC Team';
             }else if(users.data.data[i]._userRole == localStorage.getItem('Member')){
                   users.data.data[i].role = 'Member';
