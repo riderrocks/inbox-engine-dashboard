@@ -3313,3 +3313,7 @@ input[type="radio"] + label span {
     border-radius: 7%;
     color: white;
 }
+
+.btnwidth {
+    width: 95px;
+}
