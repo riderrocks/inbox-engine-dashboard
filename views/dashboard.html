@@ -28,22 +28,27 @@
         <!--BEGIN SIDEBAR-->
         <div id="menu" role="navigation">
             <ul class="main-menu">
-                <li ng-show="userRole=='Admin'" class="submenu"><i class="margin-right-10 fa fa-users"></i>User Management
-                </li>
-                <ul ng-show="userRole=='Admin'" class="submenu-option tooltip-right">
-                    <li ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-user-plus" aria-hidden="true"></i> Create User</a></li>
-                </ul>
+                <div permission="['user_create']">
+                    <li class="submenu"><i class="margin-right-10 fa fa-users"></i>User Management
+                    </li>
+                    <ul class="submenu-option tooltip-right">
+                        <li ng-class="{active : isRouteActive('/createUser')}"><a href="#/createUser" class=""><i class="fa fa-user-plus" aria-hidden="true"></i> Create User</a></li>
+                    </ul>
+                </div>
+                <div permission="['announcement_create']">
                 <li class="submenu"><i class="fa fa-wrench" aria-hidden="true"></i> Manage Campaigns
                 </li>
                 <ul class="submenu-option tooltip-right">
-                    <!-- <li class=""><a href="javascript:void(0)">Create Campaigns</a></li> -->
                     <li ng-class="{active : isRouteActive('/createCampaign')}"><a href="#/createCampaign" class=""><i class="fa fa-envelope" aria-hidden="true"></i> Create Campaign</a></li>
                 </ul>
+                </div>
+                <div>
                 <li class="submenu">
                     <i class="margin-right-10 fa fa-tachometer"></i><span>Dashboards</span></li>
                 <ul class="submenu-option">
                     <li ng-class="{active : isRouteActive('/viewCampaigns')}"><a href="#/viewCampaigns" class=""><i class="fa fa-eye" aria-hidden="true"></i> View Campaigns</a></li>
                 </ul>
+                </div>
             </ul>
             <div class="clearfix"></div>
         </div>

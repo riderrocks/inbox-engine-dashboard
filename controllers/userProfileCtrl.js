@@ -1,15 +1,11 @@
 'use strict';
 
-app.controller('UserProfileCtrl', ['$scope', 'MessageService', 'AuthenticationService', function($scope, MessageService, AuthenticationService) {
+app.controller('UserProfileCtrl', ['$rootScope', '$scope', 'MessageService', 'AuthenticationService', function($rootScope, $scope, MessageService, AuthenticationService) {
 
     $scope.user = {};
     $scope.alertFlag = false;
     $scope.alertMsg = '';
-
-    var token = AuthenticationService.getToken();
-    AuthenticationService.getUserDetails(token).then(function(response) {
-        $scope.profile = response;
-    });
+    $scope.profile = $rootScope.user.user;
 
     $scope.validatePassword = function(user) {
         if (user.newPassword.length < 6) {
@@ -25,7 +21,6 @@ app.controller('UserProfileCtrl', ['$scope', 'MessageService', 'AuthenticationSe
             $scope.alertFlag = false;
             $scope.alertMsg = '';
         }
-
     }
 
     $scope.resetPassword = function(user) {

@@ -6,12 +6,12 @@ app.controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService',
     $scope.alertFlag = false;
     $scope.alertMsg = '';
 
-    AuthenticationService.getRoles().then(function(role) {
-        var roles = role.data;
-        for (var i = 0; i < roles.data.length; i++) {
-            localStorage.setItem(roles.data[i].roleName, roles.data[i]._id);
-        }
-    });
+    // AuthenticationService.getRoles().then(function(role) {
+    //     var roles = role.data;
+    //     for (var i = 0; i < roles.data.length; i++) {
+    //         localStorage.setItem(roles.data[i].roleName, roles.data[i]._id);
+    //     }
+    // });
 
     $scope.validateEmail = function(email, password) {
         var re = /^[a-z0-9](\.?[a-z0-9]){0,}@bookmyshow\.com$/;
@@ -57,7 +57,7 @@ app.controller('UserLoginCtrl', ['$scope', '$location', 'AuthenticationService',
                     var authToken = response.data.data.token;
                     if (authToken) {
                         AuthenticationService.setToken(authToken);
-                        AuthenticationService.getUserDetails(authToken);
+                        // AuthenticationService.getUserDetails(authToken);
                         $location.path('/viewCampaigns');
                     }
                     $scope.user = {};

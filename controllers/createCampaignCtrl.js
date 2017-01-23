@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('CreateCampaignCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $window, $location, MessageService, AuthenticationService, $timeout, $q) {
+app.controller('CreateCampaignCtrl', ['$scope', '$location', 'MessageService', 'AuthenticationService', '$timeout', '$q', function($scope, $location, MessageService, AuthenticationService, $timeout, $q) {
     
     if (!AuthenticationService.getToken()) {
         $location.path('/login');

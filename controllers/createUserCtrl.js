@@ -7,6 +7,13 @@ app.controller('CreateUserCtrl', ['$scope', '$location', 'AuthenticationService'
         return;
     }
     
+    // if (Auth.userHasPermission(["administration"])){
+    //     // some evil logic here
+    //     var userName = Auth.currentUser().name;
+    //     console.log(userName);
+    //     // ...
+    // }
+ 
     $scope.user = {};
     $scope.alertFlag = false;
     $scope.alertMsg = '';
