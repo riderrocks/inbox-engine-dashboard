@@ -29,6 +29,11 @@ var app = angular.module('myApp', ['ngRoute', 'ngResource', 'ngStorage', 'kendo.
             requiresAuthentication: true,
             permissions: ["user_create"]
         })
+        .when('/listUsers', {
+            templateUrl: 'views/listUsers.html',
+            requiresAuthentication: true,
+            permissions: ["user_list"]
+        })
         .when('/profile', {
             templateUrl: 'views/userProfile.html',
             requiresAuthentication: true

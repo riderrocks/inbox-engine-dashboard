@@ -1,9 +1,6 @@
 'use strict';
-angular.module('myApp.listUsers', ['ngRoute', 'angularUtils.directives.dirPagination']).config(['$routeProvider', function($routeProvider) {
-    $routeProvider.when('/listUsers', {
-        templateUrl: 'views/listUsers.html',
-    });
-}]).controller('ListUsersCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', function($scope, $window, $location, MessageService, AuthenticationService) {
+
+app.controller('ListUsersCtrl', ['$scope', '$window', '$location', 'MessageService', 'AuthenticationService', function($scope, $window, $location, MessageService, AuthenticationService) {
 
     if (!AuthenticationService.getToken()) {
         $location.path('/login');
