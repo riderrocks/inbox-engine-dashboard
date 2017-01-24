@@ -41,7 +41,7 @@
                         <a ng-show="!data.isStopped && data.validTill > currentTime" href="#/{{data.memberId ? 'notification' : 'announcement'}}/{{data._id}}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                     </td>
                     <td class="announcement" permission="['announcement_stop']">
-                        <button ng-if="!data.isStopped" class="btn btn-info" ng-disabled="data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
+                        <button ng-if="!data.isStopped" class="btn btn-info btnwidth" ng-disabled="data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
                             < currentTime ? 'Completed' : 'Stop'}}</button>
                                 <button ng-if="data.isStopped" class="btn btn-info btnwidth" ng-disabled="data.isStopped ||data.validTill < currentTime" ng-click="stopCampaign(data)">{{data.isStopped || data.validTill
                                     < currentTime ? 'Stopped' : 'Stop'}}</button>
